@@ -150,14 +150,19 @@ public partial class MultiplayerController : Control
 	/// </summary>
 	/// <param name="name"></param>
 	/// <param name="id"></param>
-	[Rpc(MultiplayerApi.RpcMode.AnyPeer)]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	private void sendPlayerInformation(string name, int id)
 	{
 		PlayerInfo playerInfo = new PlayerInfo(){
 			Name = name,
 			Id = id,
 		};
-		if (!GameManager.Players.Contains(playerInfo)) {
+
+		// Check to see if the GameManager already has the player by id.
+		// Note: Players.Contains(playerInfo) did not work and duplicated players with 3 or more instances
+		var fromList = GameManager.Players.FirstOrDefault(i => i.Id == id);
+		if (fromList == null)
+		{
 			GameManager.Players.Add(playerInfo);
 		}
 

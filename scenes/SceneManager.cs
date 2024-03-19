@@ -7,6 +7,9 @@ public partial class SceneManager : Node
 	private PackedScene playerScene;
 
 	// Called when the node enters the scene tree for the first time.
+	/// <summary>
+	/// this will spawn all the players into the game once it is started
+	/// </summary>
 	public override void _Ready()
 	{
 		int index = 0;
@@ -17,6 +20,8 @@ public partial class SceneManager : Node
 			currentPlayer.Name = item.Id.ToString();
 			currentPlayer.SetUpPlayer(item.Name);
 			AddChild(currentPlayer);
+
+			// loop through the spawn points and select one for the current player
 			foreach (Node3D spawnPoint in GetTree().GetNodesInGroup("PlayerSpawnpoints"))
 			{
 				if(int.Parse(spawnPoint.Name) == index){
