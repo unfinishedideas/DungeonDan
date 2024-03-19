@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3 uid="uid://b2u02icsr411f"]
+
+[ext_resource type="Script" path="res://scenes/SceneManager.cs" id="1_2neb3"]
+[ext_resource type="PackedScene" uid="uid://bptr8nwuooajv" path="res://scenes/env_test.tscn" id="1_rjjjo"]
+[ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/player.tscn" id="2_5eet4"]
+[ext_resource type="Material" uid="uid://dyg2jtrh5u5ov" path="res://materials/spawner.tres" id="4_6rtub"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5w772"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_i52d6"]
+sky_material = SubResource("ProceduralSkyMaterial_5w772")
+
+[sub_resource type="Environment" id="Environment_uqe24"]
+background_mode = 2
+sky = SubResource("Sky_i52d6")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pob76"]
+
+[node name="World" type="Node"]
+script = ExtResource("1_2neb3")
+playerScene = ExtResource("2_5eet4")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_uqe24")
+
+[node name="env_test" parent="." instance=ExtResource("1_rjjjo")]
+
+[node name="PlayerSpawnpoints" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04057, 0)
+
+[node name="0" type="Node3D" parent="PlayerSpawnpoints" groups=["PlayerSpawnpoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76553, 9.133)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerSpawnpoints/0"]
+mesh = SubResource("CapsuleMesh_pob76")
+surface_material_override/0 = ExtResource("4_6rtub")
+
+[node name="1" type="Node3D" parent="PlayerSpawnpoints" groups=["PlayerSpawnpoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76553, -7.667)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerSpawnpoints/1"]
+mesh = SubResource("CapsuleMesh_pob76")
+surface_material_override/0 = ExtResource("4_6rtub")
+
+[node name="2" type="Node3D" parent="PlayerSpawnpoints" groups=["PlayerSpawnpoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.975, 1.76553, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerSpawnpoints/2"]
+mesh = SubResource("CapsuleMesh_pob76")
+surface_material_override/0 = ExtResource("4_6rtub")
+
+[node name="3" type="Node3D" parent="PlayerSpawnpoints" groups=["PlayerSpawnpoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.929, 1.76553, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerSpawnpoints/3"]
+mesh = SubResource("CapsuleMesh_pob76")
+surface_material_override/0 = ExtResource("4_6rtub")
