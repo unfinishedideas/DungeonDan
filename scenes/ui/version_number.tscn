@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://o8673033ltch"]
+
+[node name="Version Number" type="Label"]
+text = "version 0.01"
+horizontal_alignment = 2
+vertical_alignment = 2

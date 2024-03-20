@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://bn1o0e0w6iimt"]
 
-[ext_resource type="Script" path="res://Player.cs" id="1_sj7s7"]
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_1tq64"]
 [ext_resource type="PackedScene" uid="uid://iwlpamd20oko" path="res://addons/customizableCrosshair/crosshair/crosshair.tscn" id="2_kk2is"]
 [ext_resource type="PackedScene" uid="uid://by8w02m7gr4aq" path="res://scenes/bolt-old.tscn" id="2_plbiq"]
 [ext_resource type="PackedScene" uid="uid://t08d6vcn7pw" path="res://blender/wpn_crossbow.blend" id="2_yd0g4"]
@@ -130,7 +130,7 @@ properties/2/spawn = true
 properties/2/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
-script = ExtResource("1_sj7s7")
+script = ExtResource("1_1tq64")
 Bolt = ExtResource("2_plbiq")
 
 [node name="crosshair" parent="." instance=ExtResource("2_kk2is")]

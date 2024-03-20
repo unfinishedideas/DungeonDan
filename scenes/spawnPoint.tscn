@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cactmd4td5qde"]
+
+[ext_resource type="Material" uid="uid://dyg2jtrh5u5ov" path="res://materials/spawner.tres" id="1_5wvwk"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pob76"]
+
+[node name="0" type="Node3D" groups=["PlayerSpawnpoints"]]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_pob76")
+surface_material_override/0 = ExtResource("1_5wvwk")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -1)

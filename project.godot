@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="DungeonDan"
-run/main_scene="res://scenes/MultiplayerController.tscn"
+run/main_scene="res://scenes/ui/MultiplayerController.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GameManager="*res://GameManager.cs"
+GameManager="*res://scripts/GameManager.cs"
 
 [display]
 

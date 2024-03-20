@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=3 uid="uid://7kwbu6lmy8b6"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.cs" id="1_bgwwh"]
+[ext_resource type="PackedScene" uid="uid://o8673033ltch" path="res://scenes/ui/version_number.tscn" id="2_irtcp"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bgwwh")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -335.5
+offset_top = -200.0
+offset_right = 335.5
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Dungeon Dan!"
+horizontal_alignment = 1
+
+[node name="SinglePlayer" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Single Player"
+
+[node name="MultiPlayer" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Multiplayer"
+
+[node name="Quit" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="Version Number" parent="." instance=ExtResource("2_irtcp")]
+offset_left = 1269.0
+offset_top = 1057.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[connection signal="button_down" from="PanelContainer/MarginContainer/VBoxContainer/SinglePlayer" to="." method="_on_single_player_button_down"]
+[connection signal="button_down" from="PanelContainer/MarginContainer/VBoxContainer/MultiPlayer" to="." method="_on_multi_player_button_down"]
+[connection signal="button_down" from="PanelContainer/MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_button_down"]

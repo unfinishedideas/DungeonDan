@@ -17,6 +17,8 @@ public partial class MultiplayerController : Control
 	private ENetMultiplayerPeer peer;
 	private ENetConnection.CompressionMode compression_mode = ENetConnection.CompressionMode.Fastlz;
 
+	private bool hosting = false;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -25,6 +27,7 @@ public partial class MultiplayerController : Control
 		Multiplayer.PeerDisconnected += PeerDisconnected;
 		Multiplayer.ConnectedToServer += ConnectedToServer;
 		Multiplayer.ConnectionFailed += ConnectionFailed;
+		Multiplayer.ServerDisconnected += ServerDisconnected;
 
 		// if a dedicated server
 		if (OS.GetCmdlineArgs().Contains("--server"))
@@ -32,11 +35,11 @@ public partial class MultiplayerController : Control
 			hostGame();
 		}
 	}
-	
+
 	/// <summary>
 	/// runs when the connection fails and it runs only on the client
 	/// </summary>
-    private void ConnectionFailed()
+	private void ConnectionFailed()
     {
 		GD.Print("connection failed!");
     }
@@ -48,7 +51,7 @@ public partial class MultiplayerController : Control
     {
 		GD.Print("connected to server");
 		// RPC ID makes the RPC to a specific ip. In this case, the server
-		RpcId(1, "sendPlayerInformation", GetNode<LineEdit>("NameEntry").Text, Multiplayer.GetUniqueId());
+		RpcId(1, "sendPlayerInformation", GetNode<LineEdit>("Panel/NameEntry").Text, Multiplayer.GetUniqueId());
     }
 
 	/// <summary>
@@ -82,20 +85,14 @@ public partial class MultiplayerController : Control
     }
 
 	/// <summary>
-	/// Create a server and host the game
+	/// runs when the server disconnects, runs only emitted on clients
 	/// </summary>
-	private void hostGame()
+	/// <param name="id"></param>
+	private void ServerDisconnected()
 	{
-		peer = new ENetMultiplayerPeer();
-		var error = peer.CreateServer(port, max_clients);
-		if (error != Error.Ok)
-		{
-			GD.Print("failed to host game! : " + error.ToString());
-			return;
-		}
-		peer.Host.Compress(compression_mode);
-		Multiplayer.MultiplayerPeer = peer;
-		GD.Print("waiting for players!");
+		GameManager.Players.Clear();
+		GD.Print("Lost connection to server!");
+		// clear the game scene and load the menu?
 	}
 
 	/// <summary>
@@ -103,8 +100,19 @@ public partial class MultiplayerController : Control
 	/// </summary>
 	public void _on_host_button_down()
 	{
-		hostGame();
-		sendPlayerInformation(GetNode<LineEdit>("NameEntry").Text, 1);
+		if (hosting == false)
+		{
+			hosting = true;
+			hostGame();
+			sendPlayerInformation(GetNode<LineEdit>("Panel/NameEntry").Text, 1);
+			GetNode<Label>("Panel/StatusText").Text = "You are hosting!";
+			GetNode<Button>("Panel/Join").Disabled = true;
+			GetNode<Button>("Panel/StartGame").Disabled = false;
+		}
+		else
+		{
+			hosting = false;
+		}
 	}
 
 	/// <summary>
@@ -113,6 +121,11 @@ public partial class MultiplayerController : Control
 	public void _on_join_button_down()
 	{
 		peer = new ENetMultiplayerPeer();
+		string entered_address = GetNode<LineEdit>("Panel/IpEntry").Text;
+		if (entered_address != null)
+		{
+			address = entered_address;
+		}
 		var error = peer.CreateClient(address, port);
 		if (error != Error.Ok)
 		{
@@ -129,6 +142,13 @@ public partial class MultiplayerController : Control
 		Rpc("startGame"); // syncs a start game event for all peers
 	}
 
+	public void _on_back_button_down()
+	{
+		var scene = ResourceLoader.Load<PackedScene>("res://scenes/ui/main_menu.tscn").Instantiate<Node>();
+		GetTree().Root.AddChild(scene);
+		Hide();
+	}
+
 	/// <summary>
 	/// Starts the game, it loads the level and hides the multiplayer menu
 	/// </summary>
@@ -142,7 +162,7 @@ public partial class MultiplayerController : Control
 		}
 		var scene = ResourceLoader.Load<PackedScene>("res://scenes/test_world.tscn").Instantiate<Node>();
 		GetTree().Root.AddChild(scene);
-		this.Hide();
+		Hide();
 	}
 
 	/// <summary>
@@ -160,8 +180,8 @@ public partial class MultiplayerController : Control
 
 		// Check to see if the GameManager already has the player by id.
 		// Note: Players.Contains(playerInfo) did not work and duplicated players with 3 or more instances
-		var fromList = GameManager.Players.FirstOrDefault(i => i.Id == id);
-		if (fromList == null)
+		var playerInList = GameManager.Players.FirstOrDefault(i => i.Id == id);
+		if (playerInList == null)
 		{
 			GameManager.Players.Add(playerInfo);
 		}
@@ -174,4 +194,23 @@ public partial class MultiplayerController : Control
 			}
 		}
 	}
+
+	/// <summary>
+	/// Create a server and host the game
+	/// </summary>
+	private void hostGame()
+	{
+		peer = new ENetMultiplayerPeer();
+		var error = peer.CreateServer(port, max_clients);
+		if (error != Error.Ok)
+		{
+			GD.Print("failed to host game! : " + error.ToString());
+			return;
+		}
+		peer.Host.Compress(compression_mode);
+		Multiplayer.MultiplayerPeer = peer;
+		GD.Print("waiting for players!");
+	}
+
+
 }

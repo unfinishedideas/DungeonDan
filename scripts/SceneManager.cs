@@ -26,6 +26,7 @@ public partial class SceneManager : Node
 			{
 				if(int.Parse(spawnPoint.Name) == index){
 					currentPlayer.GlobalPosition = spawnPoint.GlobalPosition;
+					currentPlayer.GlobalRotation = spawnPoint.GlobalRotation;
 					GD.Print("Spawning player: " + currentPlayer.Name.ToString() + " at : " + index.ToString());
 					break;
 				}
