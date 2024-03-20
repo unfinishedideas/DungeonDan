@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_2neb3"]
 [ext_resource type="PackedScene" uid="uid://bptr8nwuooajv" path="res://scenes/env_test.tscn" id="1_rjjjo"]
-[ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/player.tscn" id="2_5eet4"]
+[ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="2_5eet4"]
 [ext_resource type="PackedScene" uid="uid://cactmd4td5qde" path="res://scenes/spawnPoint.tscn" id="4_4u6fu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5w772"]

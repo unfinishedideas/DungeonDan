@@ -30,6 +30,7 @@ public partial class Player : CharacterBody3D
 		_camera = (Camera3D)GetNode("camera");
 		_animPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
 		GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
+		Bolt = GD.Load<PackedScene>("res://scenes/bolt_new.tscn");
 	}
 
     public override void _UnhandledInput(InputEvent @event)

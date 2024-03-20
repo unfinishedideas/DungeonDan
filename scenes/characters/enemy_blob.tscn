@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://bxau1uefiu637"]
+
+[ext_resource type="Script" path="res://scenes/characters/enemy_blob.cs" id="1_dgwge"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_08y2i"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_87anl"]
+albedo_color = Color(0.631373, 0, 0.0588235, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_esdvy"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xueoj"]
+
+[node name="Enemy_Blob" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
+script = ExtResource("1_dgwge")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_08y2i")
+surface_material_override/0 = SubResource("StandardMaterial3D_87anl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_esdvy")
+
+[node name="SensorRange" type="Area3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="SensorCollider" type="CollisionShape3D" parent="SensorRange"]
+shape = SubResource("SphereShape3D_xueoj")

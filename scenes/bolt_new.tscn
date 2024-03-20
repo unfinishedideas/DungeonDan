@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://dnb6s8bpxe8t3"]
+
+[ext_resource type="Script" path="res://scripts/bolt.cs" id="1_3t8ia"]
+[ext_resource type="PackedScene" uid="uid://c2ck7elf51yjs" path="res://blender/proj_arrow.blend" id="1_rehfi"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_upxm4"]
+direction = Vector3(0, 0, 1)
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g6fjy"]
+albedo_color = Color(0.878431, 0.929412, 0.623529, 1)
+emission_enabled = true
+emission = Color(0.192157, 0.92549, 0.870588, 1)
+emission_energy_multiplier = 8.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_lmr38"]
+material = SubResource("StandardMaterial3D_g6fjy")
+size = Vector3(0.04, 0.04, 0.04)
+
+[node name="BoltNew" type="Node3D"]
+script = ExtResource("1_3t8ia")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -0.6)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0289996, -0.0765573)
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+randomness = 0.4
+process_material = SubResource("ParticleProcessMaterial_upxm4")
+draw_pass_1 = SubResource("BoxMesh_lmr38")
+
+[node name="arrow_mesh" parent="." instance=ExtResource("1_rehfi")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, -0.249779)

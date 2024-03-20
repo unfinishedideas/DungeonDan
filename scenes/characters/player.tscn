@@ -1,9 +1,39 @@
-[gd_scene load_steps=13 format=3 uid="uid://bn1o0e0w6iimt"]
+[gd_scene load_steps=18 format=3 uid="uid://bn1o0e0w6iimt"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_1tq64"]
+[ext_resource type="PackedScene" uid="uid://c2ck7elf51yjs" path="res://blender/proj_arrow.blend" id="2_1a50y"]
 [ext_resource type="PackedScene" uid="uid://iwlpamd20oko" path="res://addons/customizableCrosshair/crosshair/crosshair.tscn" id="2_kk2is"]
-[ext_resource type="PackedScene" uid="uid://by8w02m7gr4aq" path="res://scenes/bolt-old.tscn" id="2_plbiq"]
 [ext_resource type="PackedScene" uid="uid://t08d6vcn7pw" path="res://blender/wpn_crossbow.blend" id="2_yd0g4"]
+[ext_resource type="Script" path="res://scripts/bolt.cs" id="3_6f0ks"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dvgxf"]
+direction = Vector3(0, 0, 1)
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8w1y1"]
+albedo_color = Color(0.878431, 0.929412, 0.623529, 1)
+emission_enabled = true
+emission = Color(0.192157, 0.92549, 0.870588, 1)
+emission_energy_multiplier = 8.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_laobs"]
+material = SubResource("StandardMaterial3D_8w1y1")
+size = Vector3(0.04, 0.04, 0.04)
+
+[sub_resource type="PackedScene" id="PackedScene_1fmla"]
+_bundled = {
+"base_scene": 0,
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("BoltRoot", "script", "Bolt", "transform", "StaticBody3D", "CollisionShape3D", "RayCast3D", "target_position", "Timer", "wait_time", "one_shot", "autostart", "GPUParticles3D", "emitting", "amount", "explosiveness", "randomness", "process_material", "draw_pass_1"),
+"node_count": 5,
+"node_paths": [],
+"nodes": PackedInt32Array(-1, -1, 2147483647, 0, -1, 1, 1, 1, 0, 0, 0, 2147483647, 262146, -1, 1, 3, 2, 0, 0, 0, 6, 524294, -1, 1, 7, 3, 0, 0, 0, 8, 786440, -1, 3, 9, 4, 10, 5, 11, 5, 0, 0, 0, 12, 1048588, -1, 8, 3, 6, 13, 7, 14, 8, 10, 5, 15, 9, 16, 10, 17, 11, 18, 12, 0),
+"variants": [ExtResource("2_1a50y"), ExtResource("3_6f0ks"), Transform3D(0.03, 0, 0, 0, -1.55613e-08, -0.03, 0, 0.356, -1.31134e-09, 0, 0.0271868, -0.359008), Vector3(0, 0, -0.6), 10.0, true, Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0289996, -0.0765573), false, 20, 1.0, 0.4, SubResource("ParticleProcessMaterial_dvgxf"), SubResource("BoxMesh_laobs")],
+"version": 3
+}
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_rmayn"]
 
@@ -131,7 +161,7 @@ properties/2/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_1tq64")
-Bolt = ExtResource("2_plbiq")
+Bolt = SubResource("PackedScene_1fmla")
 
 [node name="crosshair" parent="." instance=ExtResource("2_kk2is")]
 
@@ -150,7 +180,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5049, 0)
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.439024, -0.372785, -0.37594)
 
 [node name="BoltSpawn" type="RayCast3D" parent="camera/crossbow"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.495305, -1.13744)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.495305, -1.60962)
 target_position = Vector3(0, 0, -1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

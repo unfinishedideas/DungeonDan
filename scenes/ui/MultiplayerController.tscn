@@ -99,6 +99,7 @@ offset_right = 57.0
 offset_bottom = 155.0
 
 [node name="Version Number" parent="." instance=ExtResource("2_jt3at")]
+layout_mode = 0
 offset_left = 1269.0
 offset_top = 1057.0
 offset_right = 1920.0

@@ -54,10 +54,11 @@ layout_mode = 2
 text = "Quit"
 
 [node name="Version Number" parent="." instance=ExtResource("2_irtcp")]
+layout_mode = 0
 offset_left = 1269.0
-offset_top = 1057.0
+offset_top = 1056.0
 offset_right = 1920.0
-offset_bottom = 1080.0
+offset_bottom = 1079.0
 
 [connection signal="button_down" from="PanelContainer/MarginContainer/VBoxContainer/SinglePlayer" to="." method="_on_single_player_button_down"]
 [connection signal="button_down" from="PanelContainer/MarginContainer/VBoxContainer/MultiPlayer" to="." method="_on_multi_player_button_down"]

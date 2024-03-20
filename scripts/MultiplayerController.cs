@@ -7,10 +7,8 @@ public partial class MultiplayerController : Control
 {
 	[Export]
 	private int port = 8910;
-
 	[Export]
 	private string address = "127.0.0.1"; 
-
 	[Export]
 	private int max_clients = 16;
 	
@@ -36,6 +34,7 @@ public partial class MultiplayerController : Control
 		}
 	}
 
+	// Multiplayer Event Functions ---------------------------------------------------------------------------------------
 	/// <summary>
 	/// runs when the connection fails and it runs only on the client
 	/// </summary>
@@ -92,63 +91,10 @@ public partial class MultiplayerController : Control
 	{
 		GameManager.Players.Clear();
 		GD.Print("Lost connection to server!");
-		// clear the game scene and load the menu?
+		// TODO: clear the game scene and load the menu?
 	}
 
-	/// <summary>
-	/// set up a server and then join it, registers host info
-	/// </summary>
-	public void _on_host_button_down()
-	{
-		if (hosting == false)
-		{
-			hosting = true;
-			hostGame();
-			sendPlayerInformation(GetNode<LineEdit>("Panel/NameEntry").Text, 1);
-			GetNode<Label>("Panel/StatusText").Text = "You are hosting!";
-			GetNode<Button>("Panel/Join").Disabled = true;
-			GetNode<Button>("Panel/StartGame").Disabled = false;
-		}
-		else
-		{
-			hosting = false;
-		}
-	}
-
-	/// <summary>
-	/// create a client and join a game
-	/// </summary>
-	public void _on_join_button_down()
-	{
-		peer = new ENetMultiplayerPeer();
-		string entered_address = GetNode<LineEdit>("Panel/IpEntry").Text;
-		if (entered_address != null)
-		{
-			address = entered_address;
-		}
-		var error = peer.CreateClient(address, port);
-		if (error != Error.Ok)
-		{
-			GD.Print("failed to join game! : " + error.ToString());
-			return;
-		}
-		peer.Host.Compress(compression_mode);
-		Multiplayer.MultiplayerPeer = peer;
-		GD.Print("joining game!");
-	}
-
-	public void _on_start_game_button_down()
-	{
-		Rpc("startGame"); // syncs a start game event for all peers
-	}
-
-	public void _on_back_button_down()
-	{
-		var scene = ResourceLoader.Load<PackedScene>("res://scenes/ui/main_menu.tscn").Instantiate<Node>();
-		GetTree().Root.AddChild(scene);
-		Hide();
-	}
-
+	// Functions ---------------------------------------------------------------------------------------------------------
 	/// <summary>
 	/// Starts the game, it loads the level and hides the multiplayer menu
 	/// </summary>
@@ -212,5 +158,58 @@ public partial class MultiplayerController : Control
 		GD.Print("waiting for players!");
 	}
 
+	// Button down signals -----------------------------------------------------------------------------------------------
+	/// <summary>
+	/// set up a server and then join it, registers host info
+	/// </summary>
+	public void _on_host_button_down()
+	{
+		if (hosting == false)
+		{
+			hosting = true;
+			hostGame();
+			sendPlayerInformation(GetNode<LineEdit>("Panel/NameEntry").Text, 1);
+			GetNode<Label>("Panel/StatusText").Text = "You are hosting!";
+			GetNode<Button>("Panel/Join").Disabled = true;
+			GetNode<Button>("Panel/StartGame").Disabled = false;
+		}
+		else
+		{
+			hosting = false;
+		}
+	}
 
+	/// <summary>
+	/// create a client and join a game
+	/// </summary>
+	public void _on_join_button_down()
+	{
+		peer = new ENetMultiplayerPeer();
+		string entered_address = GetNode<LineEdit>("Panel/IpEntry").Text;
+		if (entered_address != null)
+		{
+			address = entered_address;
+		}
+		var error = peer.CreateClient(address, port);
+		if (error != Error.Ok)
+		{
+			GD.Print("failed to join game! : " + error.ToString());
+			return;
+		}
+		peer.Host.Compress(compression_mode);
+		Multiplayer.MultiplayerPeer = peer;
+		GD.Print("joining game!");
+	}
+
+	public void _on_start_game_button_down()
+	{
+		Rpc("startGame"); // syncs a start game event for all peers
+	}
+
+	public void _on_back_button_down()
+	{
+		var scene = ResourceLoader.Load<PackedScene>("res://scenes/ui/main_menu.tscn").Instantiate<Node>();
+		GetTree().Root.AddChild(scene);
+		Hide();
+	}
 }
