@@ -51,51 +51,51 @@ public partial class enemy_blob : CharacterBody3D
 	private void determineTarget()
 	{
 		// enumerate potential targets and get the cloest one
-		Node3D closestTarget = new Node3D();
-		float closest_distance = float.MaxValue;
-		Godot.Collections.Array<Node3D> targets = _sensorArea.GetOverlappingBodies();
-		targets.Remove(this);
-		if (targets.Count > 0)
+		_currentTarget = null;
+		float closestDistance = float.MaxValue;
+        Godot.Collections.Array<Node3D> targets = _sensorArea.GetOverlappingBodies();
+		
+		foreach (var target in targets)
 		{
-			foreach (var target in targets) {
-				if (target != this && !isTargetWorld(target))
+			if (target.IsInGroup("Players"))
+			{
+				float distanceFromTarget = this.GlobalPosition.DistanceTo(target.GlobalPosition);
+				if (distanceFromTarget < closestDistance)
 				{
-					float current_distance = this.GlobalPosition.DistanceTo(target.GlobalPosition);
-					if (current_distance < closest_distance)
-					{
-						targeting = true;
-						_currentTarget = target;
-						closestTarget = target;
-					}
+					closestDistance = distanceFromTarget;
+					_currentTarget = target;
+					targeting = true;
 				}
-			}
-			GD.Print(this.Name.ToString() + ": Targeting: " + closestTarget.Name.ToString());
+            }
+		}
+		if (_currentTarget == null) 
+		{
+			GD.Print(this.Name.ToString() + ": Target lost");
+			targeting = false;
 		}
 		else
 		{
-			targeting = false;
-			_currentTarget = null;
-			GD.Print(this.Name.ToString() + ": No longer targeting");
+			GD.Print(this.Name.ToString() + ": targeting: " + _currentTarget.Name.ToString());
 		}
-	}
+    }
 
 	// signals
 	public void _on_sensor_range_body_entered(Node3D body)
 	{
-		if (body != this && !isTargetWorld(this))
-		{
-			GD.Print(this.Name.ToString() + ": BODY ENTERED: " + body.Name.ToString());
+        if (body.IsInGroup("Players"))
+        {
+			GD.Print(this.Name.ToString() + ": FOUND A PLAYER: " + body.Name.ToString());
 			determineTarget();
 		}
 	}
 
 	public void _on_sensor_area_body_exited(Node3D body)
 	{
-		if (body != this && !isTargetWorld(body))
+		if (body.IsInGroup("Players"))
 		{
-            GD.Print(this.Name.ToString() + ": BODY EXITED: " + body.Name.ToString());
+            GD.Print(this.Name.ToString() + ": FOUND A PLAYER: " + body.Name.ToString());
             determineTarget();
-        }
+		}
 	}
 
     // TODO: Fix ground check to something more generic/useful than "Plane"

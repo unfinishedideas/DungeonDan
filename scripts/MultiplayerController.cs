@@ -61,7 +61,7 @@ public partial class MultiplayerController : Control
     {
 		GD.Print("player disconnected: " + id.ToString());
 		GameManager.Players.Remove((PlayerInfo)GameManager.Players.Where(i => i.Id == id).First<PlayerInfo>());
-		var players = GetTree().GetNodesInGroup("Player");
+		var players = GetTree().GetNodesInGroup("Players");
 
 		// look through all the players, remove the one who disconnected
 		foreach(var item in players)

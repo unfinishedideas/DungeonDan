@@ -10,6 +10,7 @@ albedo_color = Color(0.631373, 0, 0.0588235, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_esdvy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xueoj"]
+radius = 2.0
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fkicl"]
 properties/0/path = NodePath(".:position")
