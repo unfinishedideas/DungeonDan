@@ -4,8 +4,14 @@ using System.Linq;
 
 public partial class Player : CharacterBody3D
 {
+	[Export]
 	public const float Speed = 10.0f;
+	[Export]
 	public const float JumpVelocity = 10.0f;
+	[Export]
+	public const float SprintMultiplier = 1.5f;
+	[Export]
+	public const float coyoteTime = 1.0f;
 	[Export]
     public float MouseSensitivity = 0.005f;
 	[Export]
@@ -76,8 +82,13 @@ public partial class Player : CharacterBody3D
 			Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 			if (direction != Vector3.Zero)
 			{
-				velocity.X = direction.X * Speed;
-				velocity.Z = direction.Z * Speed;
+				float currentSpeed = Speed;
+				if (Input.IsActionPressed("sprint"))
+				{
+					currentSpeed *= SprintMultiplier;
+				}
+				velocity.X = direction.X * currentSpeed;
+				velocity.Z = direction.Z * currentSpeed;
 			}
 			else
 			{

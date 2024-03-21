@@ -3,15 +3,14 @@ using System;
 
 public partial class enemy_blob : CharacterBody3D
 {
-	public const float Speed = 5.0f;
-	public const float JumpVelocity = 4.5f;
+	public const float Speed = 1.0f;
 	private Area3D _sensorArea;
 	private Node3D _currentTarget;
-	private bool targeting = false;
 
     public override void _Ready()
     {
 		_sensorArea = GetNode<Area3D>("SensorArea");
+		_currentTarget = null;
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -21,32 +20,31 @@ public partial class enemy_blob : CharacterBody3D
 	{
 		Vector3 velocity = Velocity;
 
-		// Add the gravity.
-		if (!IsOnFloor())
-			velocity.Y -= gravity * (float)delta;
+		// Add the gravity. Nah :)
+		//if (!IsOnFloor())
+		//	velocity.Y -= gravity * (float)delta;
 
-		// Handle Jump.
-		if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
-			velocity.Y = JumpVelocity;
-
-		// Get the input direction and handle the movement/deceleration.
-		// As good practice, you should replace UI actions with custom gameplay actions.
-		Vector2 inputDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-		if (direction != Vector3.Zero)
+		// If we are targeting a player, move toward them
+		if (_currentTarget != null)
 		{
-			velocity.X = direction.X * Speed;
-			velocity.Z = direction.Z * Speed;
-		}
-		else
-		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-			velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
-		}
+			Vector3 direction = _currentTarget.GlobalPosition - this.GlobalPosition;
+			if (direction != Vector3.Zero)
+			{
+				velocity.X = direction.X * Speed;
+				velocity.Y = direction.Y * Speed;
+				velocity.Z = direction.Z * Speed;
+			}
+			else
+			{
+				velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+				velocity.Y = Mathf.MoveToward(Velocity.Y, 0, Speed);
+				velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+			}
 
-		Velocity = velocity;
-		MoveAndSlide();
-	}
+			Velocity = velocity;
+			MoveAndSlide();
+		}
+    }
 
 	private void determineTarget()
 	{
@@ -64,14 +62,12 @@ public partial class enemy_blob : CharacterBody3D
 				{
 					closestDistance = distanceFromTarget;
 					_currentTarget = target;
-					targeting = true;
 				}
             }
 		}
 		if (_currentTarget == null) 
 		{
 			GD.Print(this.Name.ToString() + ": Target lost");
-			targeting = false;
 		}
 		else
 		{
