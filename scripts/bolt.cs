@@ -5,7 +5,7 @@ public partial class bolt : Node3D
 {
 
 	[Export]
-	const float SPEED = 100.0f;
+	const float Speed = 100.0f;
 
 	private Node3D mesh;
 	private RayCast3D raycast;
@@ -23,7 +23,7 @@ public partial class bolt : Node3D
 	public override void _Process(double delta)
 	{
 		// TODO: Make sure this is an okay cast for delta
-		Translate(new Vector3(0,0,-SPEED * (float)delta));
+		Translate(new Vector3(0,0,-Speed * (float)delta));
 		if (raycast.IsColliding())
 		{
 			mesh.Visible = false;
@@ -31,15 +31,10 @@ public partial class bolt : Node3D
 		}
 	}
 
-	private async void d()
-	{
-		await ToSignal(GetTree().CreateTimer(1.0f), "timeout");
-		QueueFree();
-	}
-
 	// delete the bullet when timer is up
 	private void _on_timer_timeout()
 	{
+		GD.Print("Bolt gone");
 		QueueFree();
 	}
 }

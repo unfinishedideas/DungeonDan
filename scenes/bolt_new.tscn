@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dnb6s8bpxe8t3"]
+[gd_scene load_steps=10 format=3 uid="uid://dnb6s8bpxe8t3"]
 
 [ext_resource type="Script" path="res://scripts/bolt.cs" id="1_3t8ia"]
 [ext_resource type="PackedScene" uid="uid://c2ck7elf51yjs" path="res://blender/proj_arrow.blend" id="1_rehfi"]
@@ -18,21 +18,40 @@ emission_energy_multiplier = 8.0
 material = SubResource("StandardMaterial3D_g6fjy")
 size = Vector3(0.04, 0.04, 0.04)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_5kq1k"]
+size = Vector3(0.175, 0.145, 1.17)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_18dxv"]
+albedo_color = Color(0.92549, 0, 0.145098, 1)
+emission_enabled = true
+emission = Color(0.839216, 0.470588, 0, 1)
+emission_energy_multiplier = 4.2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fdgxv"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 0, 0)
+spread = 63.243
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_03slw"]
+size = Vector3(0.01, 0.01, 0.01)
+
 [node name="BoltNew" type="Node3D"]
 script = ExtResource("1_3t8ia")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -0.6)
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 10.0
+[node name="ProjectileTimeout" type="Timer" parent="."]
+wait_time = 5.0
 one_shot = true
 autostart = true
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0289996, -0.0765573)
 emitting = false
-amount = 20
+amount = 100
 one_shot = true
 explosiveness = 1.0
 randomness = 0.4
@@ -40,4 +59,21 @@ process_material = SubResource("ParticleProcessMaterial_upxm4")
 draw_pass_1 = SubResource("BoxMesh_lmr38")
 
 [node name="arrow_mesh" parent="." instance=ExtResource("1_rehfi")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, -0.249779)
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, -0.249779)
+
+[node name="HitBoxArea" type="Area3D" parent="." groups=["Projectiles"]]
+transform = Transform3D(0.945, 0, 0, 0, 0.945, 0, 0, 0, 0.945, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBoxArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -0.31)
+shape = SubResource("BoxShape3D_5kq1k")
+
+[node name="Sparkles" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_18dxv")
+cast_shadow = 0
+amount = 493
+randomness = 0.53
+process_material = SubResource("ParticleProcessMaterial_fdgxv")
+draw_pass_1 = SubResource("BoxMesh_03slw")
+
+[connection signal="timeout" from="ProjectileTimeout" to="." method="_on_timer_timeout"]

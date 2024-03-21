@@ -3,7 +3,12 @@ using System;
 
 public partial class enemy_blob : CharacterBody3D
 {
+	[Export]
 	public const float Speed = 1.0f;
+	[Export]
+	public float MaxHp = 40f;
+	public float CurrentHp;
+
 	private Area3D _sensorArea;
 	private Node3D _currentTarget;
 
@@ -11,6 +16,7 @@ public partial class enemy_blob : CharacterBody3D
     {
 		_sensorArea = GetNode<Area3D>("SensorArea");
 		_currentTarget = null;
+		CurrentHp = MaxHp;
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -24,8 +30,8 @@ public partial class enemy_blob : CharacterBody3D
 		//if (!IsOnFloor())
 		//	velocity.Y -= gravity * (float)delta;
 
-		// If we are targeting a player, move toward them
-		if (_currentTarget != null)
+		// If we are targeting a player, and they haven't disconnected, move toward them
+		if (IsInstanceValid(_currentTarget) && _currentTarget != null)
 		{
 			Vector3 direction = _currentTarget.GlobalPosition - this.GlobalPosition;
 			if (direction != Vector3.Zero)
@@ -75,6 +81,23 @@ public partial class enemy_blob : CharacterBody3D
 		}
     }
 
+	public void takeDamage(Area3D area)
+	{
+		GD.Print("TAKING DAMAGE");
+		//damage = body.
+		float damage = 10f;
+		CurrentHp -= damage;
+		if (CurrentHp <= 0)
+		{
+			Die();
+		}
+    }
+
+	public void Die()
+	{
+		GD.Print(this.Name.ToString() + ": has died!");
+	}
+
 	// signals
 	public void _on_sensor_range_body_entered(Node3D body)
 	{
@@ -94,15 +117,20 @@ public partial class enemy_blob : CharacterBody3D
 		}
 	}
 
-    // TODO: Fix ground check to something more generic/useful than "Plane"
-    /// <summary>
-    /// Takes in a Node3D and determines if the node is part of the world geometry or not
-    /// </summary>
-    /// <param name="target"></param>
-    /// <returns></returns>
-    public bool isTargetWorld(Node3D target)
+    public void _on_hitbox_body_entered(Node3D body)
 	{
-		return target.GetParent().Name.ToString() == "Plane";
-		//return target.GetOwner<Node3D>().Name.ToString() == "env_test"; // doesn't work
+		if (body.IsInGroup("Players"))
+		{
+			GD.Print("You should get hurt here");
+		}
+	}
+
+	public void _on_hitbox_area_entered(Area3D area)
+	{
+
+		if (area.IsInGroup("Projectiles"))
+		{
+			takeDamage(area);
+		}
 	}
 }
