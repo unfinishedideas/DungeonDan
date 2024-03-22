@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b2u02icsr411f"]
+[gd_scene load_steps=10 format=3 uid="uid://b2u02icsr411f"]
 
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_2neb3"]
 [ext_resource type="PackedScene" uid="uid://bptr8nwuooajv" path="res://scenes/env_test.tscn" id="1_rjjjo"]
@@ -17,6 +17,9 @@ background_mode = 2
 sky = SubResource("Sky_i52d6")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aai03"]
+size = Vector3(1000, 1000, 1000)
 
 [node name="World" type="Node"]
 script = ExtResource("1_2neb3")
@@ -48,3 +51,8 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.2258
 
 [node name="Enemy_Blob" parent="." instance=ExtResource("5_1lppk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.517566, 3.1074, -23.8458)
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_aai03")

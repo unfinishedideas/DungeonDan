@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bn1o0e0w6iimt"]
+[gd_scene load_steps=24 format=3 uid="uid://bn1o0e0w6iimt"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_1tq64"]
 [ext_resource type="PackedScene" uid="uid://iwlpamd20oko" path="res://addons/customizableCrosshair/crosshair/crosshair.tscn" id="2_kk2is"]
@@ -123,6 +123,10 @@ _bundled = {
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_rmayn"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f1kq6"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_leys1"]
+radius = 0.01
+height = 0.02
 
 [sub_resource type="Animation" id="Animation_d81ig"]
 length = 0.001
@@ -261,9 +265,16 @@ shape = SubResource("CapsuleShape3D_f1kq6")
 [node name="camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5049, 0)
 
+[node name="AimSphere" type="MeshInstance3D" parent="camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10000)
+visible = false
+mesh = SubResource("SphereMesh_leys1")
+
 [node name="ProjectileRaycast" type="RayCast3D" parent="camera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.0857)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1000, 0, 0, -1.0857)
+visible = false
 target_position = Vector3(0, 0, -1)
+collide_with_areas = true
 
 [node name="crossbow" parent="camera" instance=ExtResource("4_xi047")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.439024, -0.372785, -0.37594)

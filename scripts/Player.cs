@@ -30,6 +30,7 @@ public partial class Player : CharacterBody3D
 	private RayCast3D _projectileRaycast;
 	private RayCast3D _boltSpawn;
 	private AnimationPlayer _animPlayer;
+	private MeshInstance3D _aimSphere;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -39,6 +40,7 @@ public partial class Player : CharacterBody3D
 		_animPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
 		_boltSpawn = GetNode<RayCast3D>("camera/crossbow/BoltSpawn");
 		_projectileRaycast = GetNode<RayCast3D>("camera/ProjectileRaycast");
+		_aimSphere= GetNode<MeshInstance3D>("camera/AimSphere");
 		Bolt = GD.Load<PackedScene>("res://scenes/bolt.tscn");
 		GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
     }
@@ -139,13 +141,20 @@ public partial class Player : CharacterBody3D
 
 	private void ShootArrow()
 	{
-		Vector3 target = _projectileRaycast.GetCollisionPoint();
-		Node3D b = Bolt.Instantiate<Node3D>();
-		b.Position = _boltSpawn.GlobalPosition;
-		//b.LookAtFromPosition(b.GlobalPosition, target);
+		// raycast aiming
+		Vector3 targetPos;
+		if (_projectileRaycast.IsColliding())
+		{
+			targetPos = _projectileRaycast.GetCollisionPoint();
+        }
+        else
+        {
+            targetPos = _aimSphere.GlobalPosition;
+        }
 
-		b.Basis = _boltSpawn.GlobalTransform.Basis;
-		//b.LookAtFromPosition(b.GlobalPosition, target);
+        Node3D b = Bolt.Instantiate<Node3D>();
+		b.Position = _boltSpawn.GlobalPosition;
+		b.LookAtFromPosition(_boltSpawn.GlobalPosition, targetPos);
 		GetTree().Root.GetNode("World").AddChild(b);
 	}
 

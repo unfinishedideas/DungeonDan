@@ -8,7 +8,7 @@ using System.Reflection.Metadata.Ecma335;
 public partial class bolt : Node3D
 {
     [Export]
-    public const float SPEED = -260.0f;
+    public const float SPEED = -100.0f;
     [Export]
     public float damage = 10f;
 
@@ -21,6 +21,7 @@ public partial class bolt : Node3D
     private GpuParticles3D _flyParticles;
     private MeshInstance3D _mesh;
     private MeshInstance3D _impactSphereMesh;
+    private Timer _ProjectileHitTimer;
     private bool destroyed = false;
 
 
@@ -32,6 +33,7 @@ public partial class bolt : Node3D
         _flyParticles = GetNode<GpuParticles3D>("Sparkles");
         _mesh = GetNode<MeshInstance3D>("arrow1");
         _impactSphereMesh = GetNode<MeshInstance3D>("ImpactSphereMesh");
+        _ProjectileHitTimer = GetNode<Timer>("ProjectileHitTimer");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -89,6 +91,7 @@ public partial class bolt : Node3D
 
     public void PlayHitEffects()
     {
+        _ProjectileHitTimer.Start();
         destroyed = true;
         _mesh.Visible = false;
         _hitParticles.Emitting = true;
@@ -100,5 +103,10 @@ public partial class bolt : Node3D
     public void _on_projectile_timeout_timeout()
     {
         QueueFree();
+    }
+
+    public void _on_projectile_hit_timer_timeout()
+    {
+        _impactSphereMesh.Visible = false;
     }
 }

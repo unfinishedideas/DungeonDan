@@ -94,6 +94,7 @@ public partial class enemy_blob : CharacterBody3D
 	public void Die()
 	{
 		GD.Print(this.Name.ToString() + ": has died!");
+		QueueFree();
 	}
 
 	// signals
