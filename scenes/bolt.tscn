@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=3 uid="uid://c3hm5n64bxe2d"]
+
+[ext_resource type="Script" path="res://scripts/bolt.cs" id="1_ieid6"]
+[ext_resource type="PackedScene" uid="uid://bk44ovsj42k5i" path="res://meshes/arrow1.glb" id="1_r27ih"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_00qvv"]
+emission_shape_offset = Vector3(0, 0.13, -1.27)
+direction = Vector3(0, 0, 0)
+spread = 20.0
+initial_velocity_min = 10.0
+initial_velocity_max = 20.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k6la0"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 6.04
+
+[sub_resource type="BoxMesh" id="BoxMesh_41ol0"]
+material = SubResource("StandardMaterial3D_k6la0")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c2vbp"]
+albedo_color = Color(0.92549, 0, 0.145098, 1)
+emission_enabled = true
+emission = Color(0.839216, 0.470588, 0, 1)
+emission_energy_multiplier = 4.2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s2f40"]
+emission_shape_offset = Vector3(0, 0, 0.18)
+emission_shape_scale = Vector3(0.5, 0.5, 0.5)
+emission_shape = 1
+emission_sphere_radius = 2.0
+direction = Vector3(0, 0, 0)
+spread = 50.0
+gravity = Vector3(0, -1, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_el7yo"]
+size = Vector3(0.01, 0.01, 0.01)
+
+[node name="Bolt" type="Node3D"]
+script = ExtResource("1_ieid6")
+
+[node name="arrow1" parent="." instance=ExtResource("1_r27ih")]
+transform = Transform3D(6, 0, 0, 0, 6, 0, 0, 0, 6, 0, -0.02743, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0)
+target_position = Vector3(0, 0, 1)
+collide_with_areas = true
+
+[node name="ProjectileTimeout" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="ImpactParticles" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 10
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_00qvv")
+draw_pass_1 = SubResource("BoxMesh_41ol0")
+
+[node name="Sparkles" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_c2vbp")
+cast_shadow = 0
+amount = 500
+lifetime = 3.0
+randomness = 0.53
+process_material = SubResource("ParticleProcessMaterial_s2f40")
+draw_pass_1 = SubResource("BoxMesh_el7yo")
+
+[connection signal="timeout" from="ProjectileTimeout" to="." method="_on_projectile_timeout_timeout"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://dnb6s8bpxe8t3"]
 
 [ext_resource type="Script" path="res://scripts/bolt.cs" id="1_3t8ia"]
-[ext_resource type="PackedScene" uid="uid://c2ck7elf51yjs" path="res://blender/proj_arrow.blend" id="1_rehfi"]
+[ext_resource type="PackedScene" uid="uid://c2ck7elf51yjs" path="res://meshes/blender/proj_arrow.blend" id="1_rehfi"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_upxm4"]
 direction = Vector3(0, 0, 1)
