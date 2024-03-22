@@ -44,7 +44,7 @@ emission_energy_multiplier = 11.29
 
 [sub_resource type="BoxMesh" id="BoxMesh_8g50c"]
 material = SubResource("StandardMaterial3D_8b0sy")
-size = Vector3(0.1, 0.1, 0.1)
+size = Vector3(0.05, 0.05, 0.05)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sbho5"]
 emission_enabled = true
