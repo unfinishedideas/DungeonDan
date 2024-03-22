@@ -6,7 +6,8 @@ using System;
 
 public partial class bolt : Node3D
 {
-	public const float SPEED = -260.0f;
+	//public const float SPEED = -1.0f;
+    public const float SPEED = -260.0f;
     private const float MIN_RAYCAST_DISTANCE = 0.05f;
 
 	private Vector3 _velocity;
@@ -15,6 +16,8 @@ public partial class bolt : Node3D
     private GpuParticles3D _hitParticles;
     private GpuParticles3D _flyParticles;
     private MeshInstance3D _mesh;
+    private MeshInstance3D _impactSphereMesh;
+    private bool destroyed = false;
 
 
     public override void _Ready()
@@ -24,39 +27,62 @@ public partial class bolt : Node3D
         _hitParticles = GetNode<GpuParticles3D>("ImpactParticles");
         _flyParticles = GetNode<GpuParticles3D>("Sparkles");
         _mesh = GetNode<MeshInstance3D>("arrow1");
+        _impactSphereMesh = GetNode<MeshInstance3D>("ImpactSphereMesh");
     }
 
     public override void _PhysicsProcess(double delta)
 	{
-        // Move the bolt
-        var distance = _velocity.Length() * delta;
-        Vector3 delta_velocity = new Vector3(_velocity.X * (float)delta, _velocity.Y * (float)delta, _velocity.Z * (float)delta);
+        if (!destroyed)
+        {
+            // Move the bolt
+            var distance = _velocity.Length() * delta;
+            Vector3 delta_velocity = new Vector3(_velocity.X * (float)delta, _velocity.Y * (float)delta, _velocity.Z * (float)delta);
 
-        this.Transform = this.Transform.Translated(delta_velocity);
+            this.Transform = this.Transform.Translated(delta_velocity);
 
-        // Change the ray start position to the bullets's previous position
-        // NOTE: The ray is backwards, so if it is hitting multiple targets, we
-        // get the target closest to the bullet start position.
-        // Also make the ray at least the min length
-        //if (distance > MIN_RAYCAST_DISTANCE)
-        //{
-        //_ray.TargetPosition.Z = -distance;
-        //_ray.Transform.Origin.Z = distance;
-        //}
-        //else
-        //{
-        //_ray.target_position.z = -MIN_RAYCAST_DISTANCE;
-        //_ray.transform.origin.z = MIN_RAYCAST_DISTANCE;
-        //}
+                        // Change the ray start position to the bullets's previous position
+            // NOTE: The ray is backwards, so if it is hitting multiple targets, we
+            // get the target closest to the bullet start position.
+            // Also make the ray at least the min length
+            Vector3 targetPos = _ray.TargetPosition;
+            Transform3D rayTransform = _ray.Transform;
+            if (distance > MIN_RAYCAST_DISTANCE)
+            {
+                targetPos.Z = -(float)distance;
+                rayTransform.Origin.Z = (float)distance;
+            }
+            else
+            {
+                targetPos.Z = -MIN_RAYCAST_DISTANCE;
+                rayTransform.Origin.Z = MIN_RAYCAST_DISTANCE;
+            }
+            _ray.TargetPosition = targetPos;
+            _ray.Transform = rayTransform;
 
-        // Check if bolt hit something
+            // Check if bolt hit something
+            _ray.ForceRaycastUpdate();
+            if (_ray.IsColliding())
+            {
+                var collider = _ray.GetCollider();
+
+                // move bolt back to the impact point
+                Transform3D boltTransform = this.Transform;
+                boltTransform.Origin = _ray.GetCollisionPoint();
+                this.GlobalTransform = boltTransform;
+
+                // Hit object
+                PlayHitEffects();
+            }
+        }
     }
 
     public void PlayHitEffects()
     {
+        destroyed = true;
         _mesh.Visible = false;
         _hitParticles.Emitting = true;
         _flyParticles.Emitting = false;
+        _impactSphereMesh.Visible = true;
     }
 
     // Delete the bolt after a timeout 
