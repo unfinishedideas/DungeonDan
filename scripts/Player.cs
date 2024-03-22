@@ -146,7 +146,7 @@ public partial class Player : CharacterBody3D
 
 		b.Basis = _boltSpawn.GlobalTransform.Basis;
 		//b.LookAtFromPosition(b.GlobalPosition, target);
-		GetTree().Root.AddChild(b);
+		GetTree().Root.GetNode("World").AddChild(b);
 	}
 
 	private void _on_animation_player_animation_finished(string anim_name)

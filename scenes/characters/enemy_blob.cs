@@ -61,7 +61,7 @@ public partial class enemy_blob : CharacterBody3D
 		
 		foreach (var target in targets)
 		{
-			if (target.IsInGroup("Players"))
+			if (target.IsInGroup("players"))
 			{
 				float distanceFromTarget = this.GlobalPosition.DistanceTo(target.GlobalPosition);
 				if (distanceFromTarget < closestDistance)
@@ -81,11 +81,9 @@ public partial class enemy_blob : CharacterBody3D
 		}
     }
 
-	public void takeDamage(Area3D area)
+	public void applyDamage(float damage)
 	{
-		GD.Print("TAKING DAMAGE");
-		//damage = body.
-		float damage = 10f;
+		GD.Print("TAKING DAMAGE: " + damage.ToString());
 		CurrentHp -= damage;
 		if (CurrentHp <= 0)
 		{
@@ -101,7 +99,7 @@ public partial class enemy_blob : CharacterBody3D
 	// signals
 	public void _on_sensor_range_body_entered(Node3D body)
 	{
-        if (body.IsInGroup("Players"))
+        if (body.IsInGroup("players"))
         {
 			GD.Print(this.Name.ToString() + ": FOUND A PLAYER: " + body.Name.ToString());
 			determineTarget();
@@ -110,7 +108,7 @@ public partial class enemy_blob : CharacterBody3D
 
 	public void _on_sensor_area_body_exited(Node3D body)
 	{
-		if (body.IsInGroup("Players"))
+		if (body.IsInGroup("players"))
 		{
             GD.Print(this.Name.ToString() + ": FOUND A PLAYER: " + body.Name.ToString());
             determineTarget();
@@ -119,7 +117,7 @@ public partial class enemy_blob : CharacterBody3D
 
     public void _on_hitbox_body_entered(Node3D body)
 	{
-		if (body.IsInGroup("Players"))
+		if (body.IsInGroup("players"))
 		{
 			GD.Print("You should get hurt here");
 		}
@@ -127,10 +125,20 @@ public partial class enemy_blob : CharacterBody3D
 
 	public void _on_hitbox_area_entered(Area3D area)
 	{
-
-		if (area.IsInGroup("Projectiles"))
+		if (area.IsInGroup("projectiles"))
 		{
-			takeDamage(area);
+			float damage = 0f;
+			switch(area.GetOwner<Node3D>().GetType().ToString())
+			{
+				case "bolt":
+					bolt temp = new bolt();
+					damage = temp.damage;
+					break;
+				default:
+					break;
+			}
+			applyDamage(damage);
 		}
 	}
+	
 }

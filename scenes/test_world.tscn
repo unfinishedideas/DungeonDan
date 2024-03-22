@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://bxau1uefiu637" path="res://scenes/characters/enemy_blob.tscn" id="5_1lppk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5w772"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 
 [sub_resource type="Sky" id="Sky_i52d6"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c3hm5n64bxe2d"]
+[gd_scene load_steps=14 format=3 uid="uid://c3hm5n64bxe2d"]
 
 [ext_resource type="Script" path="res://scripts/bolt.cs" id="1_ieid6"]
 [ext_resource type="PackedScene" uid="uid://bk44ovsj42k5i" path="res://meshes/arrow1.glb" id="1_r27ih"]
@@ -55,6 +55,9 @@ emission_energy_multiplier = 7.15
 material = SubResource("StandardMaterial3D_sbho5")
 size = Vector3(0.19, 0.58, 1.98)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_amcbj"]
+size = Vector3(0.303, 0.31, 2.005)
+
 [node name="Bolt" type="Node3D"]
 script = ExtResource("1_ieid6")
 
@@ -97,5 +100,11 @@ mesh = SubResource("BoxMesh_8g50c")
 [node name="TEMPBOX" type="MeshInstance3D" parent="."]
 visible = false
 mesh = SubResource("BoxMesh_q00ff")
+
+[node name="Area3D" type="Area3D" parent="." groups=["projectiles"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13, 0)
+shape = SubResource("BoxShape3D_amcbj")
 
 [connection signal="timeout" from="ProjectileTimeout" to="." method="_on_projectile_timeout_timeout"]

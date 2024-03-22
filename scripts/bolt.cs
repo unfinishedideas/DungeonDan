@@ -7,13 +7,16 @@ using System.Reflection.Metadata.Ecma335;
 
 public partial class bolt : Node3D
 {
-	//public const float SPEED = -1.0f;
+    [Export]
     public const float SPEED = -260.0f;
+    [Export]
+    public float damage = 10f;
+
     private const float MIN_RAYCAST_DISTANCE = 0.05f;
+    //[Signal] public delegate void BoltCollidedEventHandler(float damage);
 
-	private Vector3 _velocity;
+    private Vector3 _velocity;
     private RayCast3D _ray;
-
     private GpuParticles3D _hitParticles;
     private GpuParticles3D _flyParticles;
     private MeshInstance3D _mesh;
@@ -41,7 +44,7 @@ public partial class bolt : Node3D
 
             this.Transform = this.Transform.Translated(delta_velocity);
 
-                        // Change the ray start position to the bullets's previous position
+            // Change the ray start position to the bullets's previous position
             // NOTE: The ray is backwards, so if it is hitting multiple targets, we
             // get the target closest to the bullet start position.
             // Also make the ray at least the min length
@@ -65,12 +68,13 @@ public partial class bolt : Node3D
             if (_ray.IsColliding())
             {
                 var collider = (Node)_ray.GetCollider();
-                if (collider.IsInGroup("enemy_hitbox"))
+                if (!collider.IsInGroup("enemy_sensor_area"))
                 {
-                    GD.Print("HIT ENEMY");
-                }
-                else if (!collider.IsInGroup("enemy_sensor_area"))
-                {
+                    if (collider.IsInGroup("enemy_hitbox"))
+                    {
+                        GD.Print("HIT ENEMY");
+                        //EmitSignal(SignalName.BoltCollided, damage);
+                    }
                     // move bolt back to the impact point
                     Transform3D boltTransform = this.Transform;
                     boltTransform.Origin = _ray.GetCollisionPoint();
@@ -97,40 +101,4 @@ public partial class bolt : Node3D
     {
         QueueFree();
     }
-
-
-
-    //[Export]
-    //const float Speed = 100.0f;
-
-    //private Node3D mesh;
-    //private RayCast3D raycast;
-    //private GpuParticles3D particles;
-
-    //// Called when the node enters the scene tree for the first time.
-    //public override void _Ready()
-    //{
-    //	mesh = (Node3D)GetNode("arrow_mesh");
-    //	raycast = (RayCast3D)GetNode("RayCast3D");
-    //	particles = GetNode<GpuParticles3D>("GPUParticles3D");
-    //}
-
-    //// Called every frame. 'delta' is the elapsed time since the previous frame.
-    //public override void _Process(double delta)
-    //{
-    //	// TODO: Make sure this is an okay cast for delta
-    //	Translate(new Vector3(0,0,-Speed * (float)delta));
-    //	if (raycast.IsColliding())
-    //	{
-    //		mesh.Visible = false;
-    //		particles.Emitting = true;
-    //	}
-    //}
-
-    //// delete the bolt when timer is up
-    //private void _on_timer_timeout()
-    //{
-    //	QueueFree();
-    //}
-
 }
