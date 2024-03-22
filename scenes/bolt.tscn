@@ -81,17 +81,16 @@ one_shot = true
 autostart = true
 
 [node name="Sparkles" type="GPUParticles3D" parent="."]
-visible = false
 material_override = SubResource("StandardMaterial3D_c2vbp")
 cast_shadow = 0
-amount = 500
+amount = 200
 lifetime = 3.0
 randomness = 0.53
 process_material = SubResource("ParticleProcessMaterial_s2f40")
 draw_pass_1 = SubResource("BoxMesh_el7yo")
 
 [node name="ImpactSphereMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.154521, -1.25729)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.154521, -1.18455)
 visible = false
 mesh = SubResource("BoxMesh_8g50c")
 

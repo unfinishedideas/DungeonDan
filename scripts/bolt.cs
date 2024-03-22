@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Reflection.Metadata.Ecma335;
 
 // Some reference from here: https://github.com/ImmersiveRPG/ExampleRaycastBullets/blob/master/project/src/Bullet/Bullet.gd
 // https://www.youtube.com/watch?v=joMBVo_ZwKI
@@ -63,15 +64,21 @@ public partial class bolt : Node3D
             _ray.ForceRaycastUpdate();
             if (_ray.IsColliding())
             {
-                var collider = _ray.GetCollider();
-
-                // move bolt back to the impact point
-                Transform3D boltTransform = this.Transform;
-                boltTransform.Origin = _ray.GetCollisionPoint();
-                this.GlobalTransform = boltTransform;
-
-                // Hit object
-                PlayHitEffects();
+                var collider = (Node)_ray.GetCollider();
+                if (collider.IsInGroup("enemy_hitbox"))
+                {
+                    GD.Print("HIT ENEMY");
+                }
+                else if (!collider.IsInGroup("enemy_sensor_area"))
+                {
+                    // move bolt back to the impact point
+                    Transform3D boltTransform = this.Transform;
+                    boltTransform.Origin = _ray.GetCollisionPoint();
+                    this.GlobalTransform = boltTransform;
+                    _impactSphereMesh.GlobalTransform = boltTransform;
+                    // Hit object
+                    PlayHitEffects();                    
+                }
             }
         }
     }

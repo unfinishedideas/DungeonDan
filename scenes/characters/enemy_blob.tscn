@@ -19,7 +19,7 @@ properties/0/replication_mode = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rhxi8"]
 
-[node name="blob_body" type="CharacterBody3D"]
+[node name="blob_body" type="CharacterBody3D" groups=["enemy_hitbox"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
 script = ExtResource("1_dgwge")
 
@@ -30,7 +30,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_87anl")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_esdvy")
 
-[node name="SensorArea" type="Area3D" parent="."]
+[node name="SensorArea" type="Area3D" parent="." groups=["enemy_sensor_area"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="SensorCollider" type="CollisionShape3D" parent="SensorArea"]
@@ -39,7 +39,7 @@ shape = SubResource("SphereShape3D_xueoj")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_fkicl")
 
-[node name="Hitbox" type="Area3D" parent="."]
+[node name="Hitbox" type="Area3D" parent="." groups=["enemy_hitbox"]]
 
 [node name="HitboxCollider" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_rhxi8")
