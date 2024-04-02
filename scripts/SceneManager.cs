@@ -13,6 +13,7 @@ public partial class SceneManager : Node
 	public override void _Ready()
 	{
 		int index = 0;
+
 		int max_spawn = GetTree().GetNodesInGroup("PlayerSpawnpoints").Count - 1;
 		foreach (var item in GameManager.Players)
 		{
@@ -21,20 +22,23 @@ public partial class SceneManager : Node
 			currentPlayer.SetUpPlayer(item.Name);
 			AddChild(currentPlayer);
 
-			// loop through the spawn points and select one for the current player
-			foreach (Node3D spawnPoint in GetTree().GetNodesInGroup("PlayerSpawnpoints"))
+			if (GameManager.IsMultiplayerGame == true)
 			{
-				if(int.Parse(spawnPoint.Name) == index){
-					currentPlayer.GlobalPosition = spawnPoint.GlobalPosition;
-					currentPlayer.GlobalRotation = spawnPoint.GlobalRotation;
-					GD.Print("Spawning player: " + currentPlayer.Name.ToString() + " at : " + index.ToString());
-					break;
+				// loop through the spawn points and select one for the current player
+				foreach (Node3D spawnPoint in GetTree().GetNodesInGroup("PlayerSpawnpoints"))
+				{
+					if(int.Parse(spawnPoint.Name) == index){
+						currentPlayer.GlobalPosition = spawnPoint.GlobalPosition;
+						currentPlayer.GlobalRotation = spawnPoint.GlobalRotation;
+						GD.Print("Spawning player: " + currentPlayer.Name.ToString() + " at : " + index.ToString());
+						break;
+					}
 				}
-			}
-			index++;
-			if (index > max_spawn)
-			{
-				index = 0;
+				index++;
+				if (index > max_spawn)
+				{
+					index = 0;
+				}
 			}
 		}
 	}

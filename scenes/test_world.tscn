@@ -9,12 +9,12 @@
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5w772"]
 ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 
-[sub_resource type="Sky" id="Sky_i52d6"]
+[sub_resource type="Sky" id="Sky_6oxbw"]
 sky_material = SubResource("ProceduralSkyMaterial_5w772")
 
 [sub_resource type="Environment" id="Environment_uqe24"]
 background_mode = 2
-sky = SubResource("Sky_i52d6")
+sky = SubResource("Sky_6oxbw")
 tonemap_mode = 2
 glow_enabled = true
 
@@ -56,3 +56,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.517566, 3.1074, -23.8458)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_aai03")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.92595, 17.5576)
+use_collision = true

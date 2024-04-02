@@ -166,6 +166,7 @@ public partial class MultiplayerController : Control
 	{
 		if (hosting == false)
 		{
+			GameManager.IsMultiplayerGame = true;
 			hosting = true;
 			hostGame();
 			sendPlayerInformation(GetNode<LineEdit>("Panel/NameEntry").Text, 1);
@@ -175,7 +176,8 @@ public partial class MultiplayerController : Control
 		}
 		else
 		{
-			hosting = false;
+            GameManager.IsMultiplayerGame = false;
+            hosting = false;
 		}
 	}
 
@@ -197,7 +199,8 @@ public partial class MultiplayerController : Control
 			return;
 		}
 		peer.Host.Compress(compression_mode);
-		Multiplayer.MultiplayerPeer = peer;
+        GameManager.IsMultiplayerGame = true;
+        Multiplayer.MultiplayerPeer = peer;
 		GD.Print("joining game!");
 	}
 
@@ -209,7 +212,8 @@ public partial class MultiplayerController : Control
 	public void _on_back_button_down()
 	{
 		var scene = ResourceLoader.Load<PackedScene>("res://scenes/ui/main_menu.tscn").Instantiate<Node>();
-		GetTree().Root.AddChild(scene);
+        GameManager.IsMultiplayerGame = false;
+        GetTree().Root.AddChild(scene);
 		Hide();
 	}
 }

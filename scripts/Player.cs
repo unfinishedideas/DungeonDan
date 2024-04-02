@@ -31,6 +31,7 @@ public partial class Player : CharacterBody3D
 	private RayCast3D _boltSpawn;
 	private AnimationPlayer _animPlayer;
 	private Marker3D _aimMarker;
+	private Label3D _nametag;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -42,7 +43,12 @@ public partial class Player : CharacterBody3D
 		_projectileRaycast = GetNode<RayCast3D>("camera/ProjectileRaycast");
 		_aimMarker = GetNode<Marker3D>("camera/AimMarker");
 		Bolt = GD.Load<PackedScene>("res://scenes/bolt.tscn");
-		GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
+		if (GameManager.IsMultiplayerGame == true)
+		{
+			_nametag = GetNode<Label3D>("nametag");
+			_nametag.Visible = true;
+			GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
+		}
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -141,9 +147,10 @@ public partial class Player : CharacterBody3D
 
 	private void ShootArrow()
 	{
-		// raycast aiming
 		Vector3 targetPos;
-		if (_projectileRaycast.IsColliding())
+		// TODO: Figure out how to ignore the enemy sensor area and still get raycasting
+        var collider = (Node)_projectileRaycast.GetCollider();
+		if (_projectileRaycast.IsColliding() && !collider.IsInGroup("enemy_sensor_area"))
 		{
 			targetPos = _projectileRaycast.GetCollisionPoint();
         }
@@ -152,6 +159,7 @@ public partial class Player : CharacterBody3D
             targetPos = _aimMarker.GlobalPosition;
         }
 
+	    targetPos = _aimMarker.GlobalPosition;
         Node3D b = Bolt.Instantiate<Node3D>();
 		b.Position = _boltSpawn.GlobalPosition;
 		b.LookAtFromPosition(_boltSpawn.GlobalPosition, targetPos);

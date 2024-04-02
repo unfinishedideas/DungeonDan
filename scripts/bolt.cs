@@ -22,6 +22,7 @@ public partial class bolt : Node3D
     private MeshInstance3D _mesh;
     private MeshInstance3D _impactSphereMesh;
     private Timer _ProjectileHitTimer;
+    private OmniLight3D _light;
     private bool destroyed = false;
 
 
@@ -34,6 +35,7 @@ public partial class bolt : Node3D
         _mesh = GetNode<MeshInstance3D>("arrow1");
         _impactSphereMesh = GetNode<MeshInstance3D>("ImpactSphereMesh");
         _ProjectileHitTimer = GetNode<Timer>("ProjectileHitTimer");
+        _light = GetNode<OmniLight3D>("OmniLight3D");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -94,6 +96,7 @@ public partial class bolt : Node3D
         _ProjectileHitTimer.Start();
         destroyed = true;
         _mesh.Visible = false;
+        _light.Visible = false;
         _hitParticles.Emitting = true;
         _flyParticles.Emitting = false;
         _impactSphereMesh.Visible = true;
