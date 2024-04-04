@@ -1,11 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://b4tfpmea3tpia"]
+[gd_scene load_steps=12 format=3 uid="uid://b4tfpmea3tpia"]
 
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_5no54"]
 [ext_resource type="Material" uid="uid://dnewp25gnov6a" path="res://materials/grass.tres" id="2_sbdka"]
 [ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="3_1yp8p"]
+[ext_resource type="Material" uid="uid://cnqqgp7vgqmvr" path="res://materials/brick01.tres" id="3_gh55q"]
 [ext_resource type="Material" uid="uid://dj4vk08dhmymw" path="res://materials/wall01.tres" id="3_nxdmr"]
 [ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://materials/trunk01.tres" id="5_bh4pt"]
 [ext_resource type="Material" uid="uid://l3c86y3h6ba8" path="res://materials/treetop01.tres" id="6_nqprq"]
+[ext_resource type="PackedScene" uid="uid://bct62c0lhwdkj" path="res://scenes/torch.tscn" id="8_rb3ed"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_wioxh"]
 
@@ -31,132 +33,193 @@ environment = SubResource("Environment_pkx3l")
 [node name="Player" parent="." instance=ExtResource("3_1yp8p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.30967, 0.28026, 26.7547)
 
+[node name="scenery" type="Node3D" parent="."]
+
+[node name="castle" type="Node3D" parent="scenery"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -211.146)
+
+[node name="castle_box" type="CSGBox3D" parent="scenery/castle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 63.8026, -211.207)
+size = Vector3(120, 120, 120)
+material = ExtResource("3_gh55q")
+
+[node name="castle_walls" type="Node3D" parent="scenery/castle/castle_box"]
+
+[node name="castle_turret_1" type="CSGCylinder3D" parent="scenery/castle/castle_box/castle_walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.1618, -47.9825, 89.977)
+radius = 7.126
+height = 31.2384
+material = ExtResource("3_gh55q")
+
+[node name="castle_turret_2" type="CSGCylinder3D" parent="scenery/castle/castle_box/castle_walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73.4114, -47.9825, 89.977)
+radius = 7.126
+height = 31.2384
+material = ExtResource("3_gh55q")
+
+[node name="castle_turret_3" type="CSGCylinder3D" parent="scenery/castle/castle_box/castle_walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.1618, -47.9825, -78.3542)
+radius = 7.126
+height = 31.2384
+material = ExtResource("3_gh55q")
+
+[node name="castle_turret_4" type="CSGCylinder3D" parent="scenery/castle/castle_box/castle_walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -73.4114, -47.9825, -78.3542)
+radius = 7.126
+height = 31.2384
+material = ExtResource("3_gh55q")
+
+[node name="castle_wall" type="CSGBox3D" parent="scenery/castle/castle_box/castle_walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.20033, -55.4831, 89.3305)
+size = Vector3(135.355, 16.6709, 1)
+material = ExtResource("3_gh55q")
+
+[node name="castle_wall2" type="CSGBox3D" parent="scenery/castle/castle_box/castle_walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.20033, -55.4831, -79.0007)
+size = Vector3(135.355, 16.6709, 1)
+material = ExtResource("3_gh55q")
+
+[node name="castle_wall3" type="CSGBox3D" parent="scenery/castle/castle_box/castle_walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -73.7895, -55.4831, 6.16086)
+size = Vector3(160.205, 16.6709, 1)
+material = ExtResource("3_gh55q")
+
+[node name="castle_wall4" type="CSGBox3D" parent="scenery/castle/castle_box/castle_walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 69.7757, -55.4831, 6.16086)
+size = Vector3(160.205, 16.6709, 1)
+material = ExtResource("3_gh55q")
+
 [node name="Geometry" type="Node3D" parent="."]
 
-[node name="ground1" type="CSGBox3D" parent="Geometry"]
+[node name="area_start" type="Node3D" parent="Geometry"]
+
+[node name="ground1" type="CSGBox3D" parent="Geometry/area_start"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15152, -0.520059, 14.3813)
 use_collision = true
 size = Vector3(78.105, 1, 34.464)
 material = ExtResource("2_sbdka")
 
-[node name="wall1" type="CSGBox3D" parent="Geometry"]
+[node name="wall1" type="CSGBox3D" parent="Geometry/area_start"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.44533, 5.53345, 31.8312)
 use_collision = true
 size = Vector3(78.8282, 12.0669, 1)
 material = ExtResource("3_nxdmr")
 
-[node name="wall2" type="CSGBox3D" parent="Geometry"]
+[node name="wall2" type="CSGBox3D" parent="Geometry/area_start"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -47.7824, 5.53345, 14.621)
 use_collision = true
 size = Vector3(35.674, 12.0669, 1)
 material = ExtResource("3_nxdmr")
 
-[node name="wall3" type="CSGBox3D" parent="Geometry"]
+[node name="wall3" type="CSGBox3D" parent="Geometry/area_start"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 31.4726, 5.53345, 14.621)
 use_collision = true
 size = Vector3(35.674, 12.0669, 1)
 material = ExtResource("3_nxdmr")
 
-[node name="trees" type="Node3D" parent="Geometry"]
+[node name="trees" type="Node3D" parent="Geometry/area_start"]
 
-[node name="Tree1" type="CSGCylinder3D" parent="Geometry/trees"]
+[node name="Tree1" type="CSGCylinder3D" parent="Geometry/area_start/trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.3953, 4.001, 8.34883)
 use_collision = true
 height = 10.1579
 material = ExtResource("5_bh4pt")
 
-[node name="Treetop" type="CSGSphere3D" parent="Geometry/trees/Tree1"]
+[node name="Treetop" type="CSGSphere3D" parent="Geometry/area_start/trees/Tree1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53384, 0)
 radius = 4.45469
 material = ExtResource("6_nqprq")
 
-[node name="Tree2" type="CSGCylinder3D" parent="Geometry/trees"]
+[node name="Tree2" type="CSGCylinder3D" parent="Geometry/area_start/trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.7355, 4.001, 23.5809)
 use_collision = true
 height = 10.1579
 material = ExtResource("5_bh4pt")
 
-[node name="Treetop" type="CSGSphere3D" parent="Geometry/trees/Tree2"]
+[node name="Treetop" type="CSGSphere3D" parent="Geometry/area_start/trees/Tree2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53384, 0)
 radius = 4.45469
 material = ExtResource("6_nqprq")
 
-[node name="Tree8" type="CSGCylinder3D" parent="Geometry/trees"]
+[node name="Tree8" type="CSGCylinder3D" parent="Geometry/area_start/trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.1843, 4.001, 14.6523)
 use_collision = true
 height = 10.1579
 material = ExtResource("5_bh4pt")
 
-[node name="Treetop" type="CSGSphere3D" parent="Geometry/trees/Tree8"]
+[node name="Treetop" type="CSGSphere3D" parent="Geometry/area_start/trees/Tree8"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53384, 0)
 radius = 4.45469
 material = ExtResource("6_nqprq")
 
-[node name="Tree9" type="CSGCylinder3D" parent="Geometry/trees"]
+[node name="Tree9" type="CSGCylinder3D" parent="Geometry/area_start/trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.4307, 4.001, 1.08515)
 use_collision = true
 height = 10.1579
 material = ExtResource("5_bh4pt")
 
-[node name="Treetop" type="CSGSphere3D" parent="Geometry/trees/Tree9"]
+[node name="Treetop" type="CSGSphere3D" parent="Geometry/area_start/trees/Tree9"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53384, 0)
 radius = 4.45469
 material = ExtResource("6_nqprq")
 
-[node name="Tree3" type="CSGCylinder3D" parent="Geometry/trees"]
+[node name="Tree3" type="CSGCylinder3D" parent="Geometry/area_start/trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.51464, 4.001, 23.5809)
 use_collision = true
 height = 10.1579
 material = ExtResource("5_bh4pt")
 
-[node name="Treetop" type="CSGSphere3D" parent="Geometry/trees/Tree3"]
+[node name="Treetop" type="CSGSphere3D" parent="Geometry/area_start/trees/Tree3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53384, 0)
 radius = 4.45469
 material = ExtResource("6_nqprq")
 
-[node name="Tree4" type="CSGCylinder3D" parent="Geometry/trees"]
+[node name="Tree4" type="CSGCylinder3D" parent="Geometry/area_start/trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.8128, 4.001, 12.8113)
 use_collision = true
 height = 10.1579
 material = ExtResource("5_bh4pt")
 
-[node name="Treetop" type="CSGSphere3D" parent="Geometry/trees/Tree4"]
+[node name="Treetop" type="CSGSphere3D" parent="Geometry/area_start/trees/Tree4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53384, 0)
 radius = 4.45469
 material = ExtResource("6_nqprq")
 
-[node name="Tree5" type="CSGCylinder3D" parent="Geometry/trees"]
+[node name="Tree5" type="CSGCylinder3D" parent="Geometry/area_start/trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.12404, 4.001, 10.2448)
 use_collision = true
 height = 10.1579
 material = ExtResource("5_bh4pt")
 
-[node name="Treetop" type="CSGSphere3D" parent="Geometry/trees/Tree5"]
+[node name="Treetop" type="CSGSphere3D" parent="Geometry/area_start/trees/Tree5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53384, 0)
 radius = 4.45469
 material = ExtResource("6_nqprq")
 
-[node name="Tree6" type="CSGCylinder3D" parent="Geometry/trees"]
+[node name="Tree6" type="CSGCylinder3D" parent="Geometry/area_start/trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.7094, 4.001, 6.15351)
 use_collision = true
 height = 10.1579
 material = ExtResource("5_bh4pt")
 
-[node name="Treetop" type="CSGSphere3D" parent="Geometry/trees/Tree6"]
+[node name="Treetop" type="CSGSphere3D" parent="Geometry/area_start/trees/Tree6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53384, 0)
 radius = 4.45469
 material = ExtResource("6_nqprq")
 
-[node name="Tree7" type="CSGCylinder3D" parent="Geometry/trees"]
+[node name="Tree7" type="CSGCylinder3D" parent="Geometry/area_start/trees"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.3334, 4.001, 23.9932)
 use_collision = true
 height = 10.1579
 material = ExtResource("5_bh4pt")
 
-[node name="Treetop" type="CSGSphere3D" parent="Geometry/trees/Tree7"]
+[node name="Treetop" type="CSGSphere3D" parent="Geometry/area_start/trees/Tree7"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53384, 0)
 radius = 4.45469
 material = ExtResource("6_nqprq")
+
+[node name="torch" parent="Geometry/area_start" instance=ExtResource("8_rb3ed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.881, -0.0821543, 27.0967)
 
 [node name="Lights" type="Node3D" parent="."]
 
