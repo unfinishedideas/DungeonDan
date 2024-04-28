@@ -1,13 +1,13 @@
 [gd_scene load_steps=12 format=3 uid="uid://b4tfpmea3tpia"]
 
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_5no54"]
-[ext_resource type="Material" uid="uid://dnewp25gnov6a" path="res://materials/grass.tres" id="2_sbdka"]
+[ext_resource type="Material" uid="uid://dnewp25gnov6a" path="res://assets/materials/grass.tres" id="2_sbdka"]
 [ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="3_1yp8p"]
-[ext_resource type="Material" uid="uid://cnqqgp7vgqmvr" path="res://materials/brick01.tres" id="3_gh55q"]
-[ext_resource type="Material" uid="uid://dj4vk08dhmymw" path="res://materials/wall01.tres" id="3_nxdmr"]
-[ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://materials/trunk01.tres" id="5_bh4pt"]
-[ext_resource type="Material" uid="uid://l3c86y3h6ba8" path="res://materials/treetop01.tres" id="6_nqprq"]
-[ext_resource type="PackedScene" uid="uid://bct62c0lhwdkj" path="res://scenes/torch.tscn" id="8_rb3ed"]
+[ext_resource type="Material" uid="uid://cnqqgp7vgqmvr" path="res://assets/materials/brick01.tres" id="3_gh55q"]
+[ext_resource type="Material" uid="uid://dj4vk08dhmymw" path="res://assets/materials/wall01.tres" id="3_nxdmr"]
+[ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://assets/materials/trunk01.tres" id="5_bh4pt"]
+[ext_resource type="Material" uid="uid://l3c86y3h6ba8" path="res://assets/materials/treetop01.tres" id="6_nqprq"]
+[ext_resource type="PackedScene" uid="uid://bct62c0lhwdkj" path="res://scenes/scenery/torch.tscn" id="8_rb3ed"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_wioxh"]
 

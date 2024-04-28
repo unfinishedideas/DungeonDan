@@ -42,7 +42,7 @@ public partial class Player : CharacterBody3D
 		_boltSpawn = GetNode<RayCast3D>("camera/crossbow/BoltSpawn");
 		_projectileRaycast = GetNode<RayCast3D>("camera/ProjectileRaycast");
 		_aimMarker = GetNode<Marker3D>("camera/AimMarker");
-		Bolt = GD.Load<PackedScene>("res://scenes/bolt.tscn");
+		Bolt = GD.Load<PackedScene>("res://scenes/weapons/bolt.tscn");
 		if (GameManager.IsMultiplayerGame == true)
 		{
 			_nametag = GetNode<Label3D>("nametag");

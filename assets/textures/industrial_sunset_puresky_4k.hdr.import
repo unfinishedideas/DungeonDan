@@ -2,27 +2,26 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://85i78fodayp"
-path.s3tc="res://.godot/imported/grid.jpg-98e91c7ac35e7c2efc8df0a4f602d545.s3tc.ctex"
+uid="uid://cicrrukg3d6w1"
+path="res://.godot/imported/industrial_sunset_puresky_4k.hdr-e64b251ed115fc1c5658f61894bc8a04.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/grid.jpg"
-dest_files=["res://.godot/imported/grid.jpg-98e91c7ac35e7c2efc8df0a4f602d545.s3tc.ctex"]
+source_file="res://assets/textures/industrial_sunset_puresky_4k.hdr"
+dest_files=["res://.godot/imported/industrial_sunset_puresky_4k.hdr-e64b251ed115fc1c5658f61894bc8a04.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -32,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

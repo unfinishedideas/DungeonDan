@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bct62c0lhwdkj"]
 
-[ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://materials/trunk01.tres" id="1_g53wg"]
-[ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://materials/glowyYellow.tres" id="1_q7hd3"]
+[ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://assets/materials/trunk01.tres" id="1_g53wg"]
+[ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="1_q7hd3"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4qel"]
 gravity = Vector3(0, 9.8, 0)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cactmd4td5qde"]
 
-[ext_resource type="Material" uid="uid://dyg2jtrh5u5ov" path="res://materials/spawner.tres" id="1_5wvwk"]
+[ext_resource type="Material" uid="uid://dyg2jtrh5u5ov" path="res://assets/materials/spawner.tres" id="1_5wvwk"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_pob76"]
 

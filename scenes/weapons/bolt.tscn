@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/bolt.cs" id="1_ieid6"]
 [ext_resource type="PackedScene" uid="uid://bk44ovsj42k5i" path="res://meshes/arrow1.glb" id="1_r27ih"]
-[ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://materials/glowyYellow.tres" id="3_7gr54"]
+[ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="3_7gr54"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_00qvv"]
 emission_shape_offset = Vector3(0, 0, -1.235)

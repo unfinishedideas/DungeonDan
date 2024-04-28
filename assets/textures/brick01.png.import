@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccgjtvan1jex5"
-path.s3tc="res://.godot/imported/treetop01.png-cc47e2b65b20b28fc26eed19e25215cb.s3tc.ctex"
+uid="uid://bncgd7cor3uqm"
+path.s3tc="res://.godot/imported/brick01.png-9247e3ef4061c72c57d05fbc2cc3818a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://textures/treetop01.png"
-dest_files=["res://.godot/imported/treetop01.png-cc47e2b65b20b28fc26eed19e25215cb.s3tc.ctex"]
+source_file="res://assets/textures/brick01.png"
+dest_files=["res://.godot/imported/brick01.png-9247e3ef4061c72c57d05fbc2cc3818a.s3tc.ctex"]
 
 [params]
 

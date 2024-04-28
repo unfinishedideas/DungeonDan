@@ -16,7 +16,7 @@ public partial class main_menu : Control
 	public void _on_single_player_button_down()
 	{
 		GameManager.Players.Add(new PlayerInfo() { Id = 1, Name = "Player", Score = 0 });
-		var scene = ResourceLoader.Load<PackedScene>("res://scenes/test_world.tscn").Instantiate<Node>();
+		var scene = ResourceLoader.Load<PackedScene>("res://scenes/levels/test_world.tscn").Instantiate<Node>();
 		GetTree().Root.AddChild(scene);
 		Hide();
 	}
