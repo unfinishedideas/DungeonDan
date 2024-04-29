@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c3hm5n64bxe2d"]
+[gd_scene load_steps=18 format=3 uid="uid://c3hm5n64bxe2d"]
 
 [ext_resource type="Script" path="res://scripts/bolt.cs" id="1_ieid6"]
 [ext_resource type="PackedScene" uid="uid://bk44ovsj42k5i" path="res://meshes/arrow1.glb" id="1_r27ih"]
@@ -235,10 +235,28 @@ tracks/7/keys = {
 "values": [false]
 }
 
+[sub_resource type="Animation" id="Animation_l73kj"]
+resource_name = "queue_free"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bktxm"]
 _data = {
 "RESET": SubResource("Animation_88q44"),
-"destroy": SubResource("Animation_h7m6t")
+"destroy": SubResource("Animation_h7m6t"),
+"queue_free": SubResource("Animation_l73kj")
 }
 
 [node name="Bolt" type="Node3D"]
@@ -258,7 +276,7 @@ draw_pass_1 = SubResource("BoxMesh_41ol0")
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -0.02743, 0)
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0.0547224, -1.02242)
 target_position = Vector3(0, 0, 1)
 collide_with_areas = true
 
@@ -298,5 +316,14 @@ stream = ExtResource("4_483t2")
 bus = &"SFX"
 
 [node name="HissSFX" type="AudioStreamPlayer3D" parent="Sounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000234246, 0.00160319, -0.00162983)
 stream = ExtResource("5_u0rid")
 autoplay = true
+doppler_tracking = 1
+
+[node name="BoltLifeTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="BoltLifeTimer" to="." method="_on_bolt_life_timer_timeout"]

@@ -8,7 +8,8 @@ using System.Reflection.Metadata.Ecma335;
 public partial class bolt : Node3D
 {
     [Export]
-    public const float SPEED = -100.0f;
+    public const float SPEED = -80.0f;
+    //public const float SPEED = -100.0f;
     [Export]
     public float damage = 10f;
 
@@ -86,5 +87,10 @@ public partial class bolt : Node3D
     {
         _player.Play("destroy");
         destroyed = true;
+    }
+
+    public void _on_bolt_life_timer_timeout()
+    {
+        _player.Play("queue_free");
     }
 }
