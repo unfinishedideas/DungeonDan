@@ -59,27 +59,30 @@ public partial class enemy_blob : CharacterBody3D
 		// enumerate potential targets and get the cloest one
 		_currentTarget = null;
 		float closestDistance = float.MaxValue;
-        Godot.Collections.Array<Node3D> targets = _sensorArea.GetOverlappingBodies();
+		if (_sensorArea.Monitoring)
+		{
+			Godot.Collections.Array<Node3D> targets = _sensorArea.GetOverlappingBodies();
 		
-		foreach (var target in targets)
-		{
-			if (target.IsInGroup("players"))
+			foreach (var target in targets)
 			{
-				float distanceFromTarget = this.GlobalPosition.DistanceTo(target.GlobalPosition);
-				if (distanceFromTarget < closestDistance)
+				if (target.IsInGroup("players"))
 				{
-					closestDistance = distanceFromTarget;
-					_currentTarget = target;
+					float distanceFromTarget = this.GlobalPosition.DistanceTo(target.GlobalPosition);
+					if (distanceFromTarget < closestDistance)
+					{
+						closestDistance = distanceFromTarget;
+						_currentTarget = target;
+					}
 				}
-            }
-		}
-		if (_currentTarget == null) 
-		{
-			GD.Print(this.Name.ToString() + ": Target lost");
-		}
-		else
-		{
-			GD.Print(this.Name.ToString() + ": targeting: " + _currentTarget.Name.ToString());
+			}
+			if (_currentTarget == null) 
+			{
+				GD.Print(this.Name.ToString() + ": Target lost");
+			}
+			else
+			{
+				GD.Print(this.Name.ToString() + ": targeting: " + _currentTarget.Name.ToString());
+			}
 		}
     }
 

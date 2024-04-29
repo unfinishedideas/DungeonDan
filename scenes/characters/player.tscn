@@ -296,12 +296,16 @@ visible = false
 billboard = 1
 text = "Test"
 
-[node name="SFX" type="Node" parent="."]
+[node name="SFX" type="Node3D" parent="."]
 
-[node name="BoltFire3" type="AudioStreamPlayer3D" parent="SFX"]
+[node name="BoltFire" type="AudioStreamPlayer3D" parent="SFX"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.114507, 1.44576, -1.03806)
 stream = ExtResource("5_8cl5s")
+volume_db = -5.0
+max_db = 0.0
+bus = &"SFX"
 
-[node name="BoltFire" type="AudioStreamPlayer" parent="SFX"]
+[node name="BoltFireOld" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("5_8cl5s")
 volume_db = -5.0
 bus = &"SFX"

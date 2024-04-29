@@ -319,6 +319,7 @@ bus = &"SFX"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000234246, 0.00160319, -0.00162983)
 stream = ExtResource("5_u0rid")
 autoplay = true
+bus = &"SFX"
 doppler_tracking = 1
 
 [node name="BoltLifeTimer" type="Timer" parent="."]
