@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://c3hm5n64bxe2d"]
+[gd_scene load_steps=15 format=3 uid="uid://c3hm5n64bxe2d"]
 
 [ext_resource type="Script" path="res://scripts/bolt.cs" id="1_ieid6"]
 [ext_resource type="PackedScene" uid="uid://bk44ovsj42k5i" path="res://meshes/arrow1.glb" id="1_r27ih"]
@@ -41,17 +41,155 @@ emission_energy_multiplier = 11.29
 material = SubResource("StandardMaterial3D_8b0sy")
 size = Vector3(0.05, 0.05, 0.05)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sbho5"]
-emission_enabled = true
-emission = Color(0.0862745, 1, 0.466667, 1)
-emission_energy_multiplier = 7.15
-
-[sub_resource type="BoxMesh" id="BoxMesh_q00ff"]
-material = SubResource("StandardMaterial3D_sbho5")
-size = Vector3(0.19, 0.58, 1.98)
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_amcbj"]
 size = Vector3(0.125, 0.125, 1)
+
+[sub_resource type="Animation" id="Animation_h7m6t"]
+resource_name = "destroy"
+length = 5.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ImpactSphereMesh:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ImpactParticles:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sparkles:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("OmniLight3D:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("arrow1:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_88q44"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ImpactSphereMesh:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ImpactParticles:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sparkles:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OmniLight3D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("arrow1:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bktxm"]
+_data = {
+"RESET": SubResource("Animation_88q44"),
+"destroy": SubResource("Animation_h7m6t")
+}
 
 [node name="Bolt" type="Node3D"]
 script = ExtResource("1_ieid6")
@@ -74,15 +212,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0)
 target_position = Vector3(0, 0, 1)
 collide_with_areas = true
 
-[node name="ProjectileTimeout" type="Timer" parent="."]
-wait_time = 10.0
-one_shot = true
-autostart = true
-
-[node name="ProjectileHitTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
-
 [node name="Sparkles" type="GPUParticles3D" parent="."]
 material_override = ExtResource("3_7gr54")
 cast_shadow = 0
@@ -97,10 +226,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.154521, -1.18455)
 visible = false
 mesh = SubResource("BoxMesh_8g50c")
 
-[node name="TEMPBOX" type="MeshInstance3D" parent="."]
-visible = false
-mesh = SubResource("BoxMesh_q00ff")
-
 [node name="Area3D" type="Area3D" parent="." groups=["projectiles"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
@@ -110,5 +235,8 @@ shape = SubResource("BoxShape3D_amcbj")
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 light_color = Color(1, 1, 0, 1)
 
-[connection signal="timeout" from="ProjectileTimeout" to="." method="_on_projectile_timeout_timeout"]
-[connection signal="timeout" from="ProjectileHitTimer" to="." method="_on_projectile_hit_timer_timeout"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_bktxm")
+}
+autoplay = "RESET"

@@ -17,25 +17,17 @@ public partial class bolt : Node3D
 
     private Vector3 _velocity;
     private RayCast3D _ray;
-    private GpuParticles3D _hitParticles;
-    private GpuParticles3D _flyParticles;
-    private MeshInstance3D _mesh;
     private MeshInstance3D _impactSphereMesh;
-    private Timer _ProjectileHitTimer;
-    private OmniLight3D _light;
     private bool destroyed = false;
+    private AnimationPlayer _player;
 
 
     public override void _Ready()
     {
         _velocity = this.Transform.Basis.Z * SPEED;
         _ray = GetNode<RayCast3D>("RayCast3D");
-        _hitParticles = GetNode<GpuParticles3D>("ImpactParticles");
-        _flyParticles = GetNode<GpuParticles3D>("Sparkles");
-        _mesh = GetNode<MeshInstance3D>("arrow1");
         _impactSphereMesh = GetNode<MeshInstance3D>("ImpactSphereMesh");
-        _ProjectileHitTimer = GetNode<Timer>("ProjectileHitTimer");
-        _light = GetNode<OmniLight3D>("OmniLight3D");
+        _player = GetNode<AnimationPlayer>("AnimationPlayer");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -93,23 +85,7 @@ public partial class bolt : Node3D
 
     public void PlayHitEffects()
     {
-        _ProjectileHitTimer.Start();
+        _player.Play("destroy");
         destroyed = true;
-        _mesh.Visible = false;
-        _light.Visible = false;
-        _hitParticles.Emitting = true;
-        _flyParticles.Emitting = false;
-        _impactSphereMesh.Visible = true;
-    }
-
-    // Delete the bolt after a timeout 
-    public void _on_projectile_timeout_timeout()
-    {
-        QueueFree();
-    }
-
-    public void _on_projectile_hit_timer_timeout()
-    {
-        _impactSphereMesh.Visible = false;
     }
 }

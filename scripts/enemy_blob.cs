@@ -11,12 +11,14 @@ public partial class enemy_blob : CharacterBody3D
 
 	private Area3D _sensorArea;
 	private Node3D _currentTarget;
+	private AnimationPlayer _player;
 
     public override void _Ready()
     {
 		_sensorArea = GetNode<Area3D>("SensorArea");
 		_currentTarget = null;
 		CurrentHp = MaxHp;
+		_player = GetNode<AnimationPlayer>("AnimationPlayer");
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -94,7 +96,7 @@ public partial class enemy_blob : CharacterBody3D
 	public void Die()
 	{
 		GD.Print(this.Name.ToString() + ": has died!");
-		QueueFree();
+		_player.Play("die");
 	}
 
 	// signals
