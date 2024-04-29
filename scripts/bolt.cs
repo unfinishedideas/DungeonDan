@@ -21,7 +21,6 @@ public partial class bolt : Node3D
     private bool destroyed = false;
     private AnimationPlayer _player;
 
-
     public override void _Ready()
     {
         _velocity = this.Transform.Basis.Z * SPEED;

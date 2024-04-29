@@ -22,6 +22,7 @@ material = ExtResource("1_g53wg")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
+cast_shadow = 0
 process_material = SubResource("ParticleProcessMaterial_g4qel")
 draw_pass_1 = SubResource("SphereMesh_3pmae")
 

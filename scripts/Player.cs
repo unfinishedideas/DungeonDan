@@ -32,6 +32,7 @@ public partial class Player : CharacterBody3D
 	private AnimationPlayer _animPlayer;
 	private Marker3D _aimMarker;
 	private Label3D _nametag;
+	private AudioStreamPlayer _boltSFX;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -42,6 +43,7 @@ public partial class Player : CharacterBody3D
 		_boltSpawn = GetNode<RayCast3D>("camera/crossbow/BoltSpawn");
 		_projectileRaycast = GetNode<RayCast3D>("camera/ProjectileRaycast");
 		_aimMarker = GetNode<Marker3D>("camera/AimMarker");
+		_boltSFX = GetNode<AudioStreamPlayer>("SFX/BoltFire");
 		Bolt = GD.Load<PackedScene>("res://scenes/weapons/bolt.tscn");
 		if (GameManager.IsMultiplayerGame == true)
 		{
@@ -164,6 +166,7 @@ public partial class Player : CharacterBody3D
 		b.Position = _boltSpawn.GlobalPosition;
 		b.LookAtFromPosition(_boltSpawn.GlobalPosition, targetPos);
 		GetTree().Root.GetNode("World").AddChild(b);
+		_boltSFX.Play();
 	}
 
 	private void _on_animation_player_animation_finished(string anim_name)

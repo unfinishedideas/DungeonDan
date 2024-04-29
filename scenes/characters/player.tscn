@@ -1,9 +1,10 @@
-[gd_scene load_steps=23 format=3 uid="uid://bn1o0e0w6iimt"]
+[gd_scene load_steps=24 format=3 uid="uid://bn1o0e0w6iimt"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_1tq64"]
 [ext_resource type="PackedScene" uid="uid://iwlpamd20oko" path="res://addons/customizableCrosshair/crosshair/crosshair.tscn" id="2_kk2is"]
 [ext_resource type="Script" path="res://scripts/bolt.cs" id="3_6f0ks"]
 [ext_resource type="PackedScene" uid="uid://t08d6vcn7pw" path="res://meshes/blender/wpn_crossbow.blend" id="4_xi047"]
+[ext_resource type="AudioStream" uid="uid://4ci4b4lbd576" path="res://assets/audio/CrossbowShoot1.wav" id="5_8cl5s"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c8r8o"]
 resource_name = "Shaft"
@@ -294,5 +295,15 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.2
 visible = false
 billboard = 1
 text = "Test"
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="BoltFire3" type="AudioStreamPlayer3D" parent="SFX"]
+stream = ExtResource("5_8cl5s")
+
+[node name="BoltFire" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("5_8cl5s")
+volume_db = -5.0
+bus = &"SFX"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
