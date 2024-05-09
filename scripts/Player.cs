@@ -24,7 +24,7 @@ public partial class Player : CharacterBody3D
 	// public float Gravity = ProjectSettings.GetSetting("physics/3d/default_Gravity").AsSingle();
 
 	public Vector3 SyncPos = new Vector3(0,0,0);
-	public Vector3 SyncRot = new Vector3(0,0,0);
+	public Vector3 SyncRot = new Vector3(0,0,0);	// presently unused
 	private Camera3D _camera;
 	private RayCast3D _projectileRaycast;
 	private RayCast3D _boltSpawn;
@@ -33,8 +33,19 @@ public partial class Player : CharacterBody3D
 	private Label3D _nametag;
 	private AudioStreamPlayer3D _boltSFX;
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+		if (GameManager.IsMultiplayerGame == true)
+		{
+			_nametag = GetNode<Label3D>("nametag");
+			_nametag.Visible = true;
+			GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
+		}
+    }
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
 	{
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 		_camera = (Camera3D)GetNode("camera");
@@ -44,35 +55,31 @@ public partial class Player : CharacterBody3D
 		_aimMarker = GetNode<Marker3D>("camera/AimMarker");
 		_boltSFX = GetNode<AudioStreamPlayer3D>("SFX/BoltFire");
 		Bolt = GD.Load<PackedScene>("res://scenes/weapons/bolt.tscn");
-		if (GameManager.IsMultiplayerGame == true)
+
+		if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
 		{
-			_nametag = GetNode<Label3D>("nametag");
-			_nametag.Visible = true;
-			GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
+			_camera.Current = true;
 		}
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
-		// TODO: Currently there is a bug where the host has control over the camera of any player who hasn't moved yet
-		if(GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
-		{
-			_camera.Current = true;		// added to fix stealing cameras
-			if (@event is InputEventMouseMotion eventMouseMotion)
-			{
-				// Mouse look
-				this.RotateY(-eventMouseMotion.Relative.X * MouseSensitivity);
-				_camera.RotateX(-eventMouseMotion.Relative.Y * MouseSensitivity);
-				Vector3 cameraRot = _camera.RotationDegrees;
-				cameraRot.X = Mathf.DegToRad(Mathf.Clamp(cameraRot.X, -70, 70));
-				_camera.Rotation = cameraRot;
-			}
-			// Shooty
-			if (Input.IsActionJustPressed("shoot") && _animPlayer.CurrentAnimation != "shoot")
-			{
-				Rpc("PlayShootEffects");
-			}
-		}
+		if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() != Multiplayer.GetUniqueId())
+			return;
+        if (@event is InputEventMouseMotion eventMouseMotion)
+        {
+            // Mouse look
+            this.RotateY(-eventMouseMotion.Relative.X * MouseSensitivity);
+            _camera.RotateX(-eventMouseMotion.Relative.Y * MouseSensitivity);
+            Vector3 cameraRot = _camera.RotationDegrees;
+            cameraRot.X = Mathf.DegToRad(Mathf.Clamp(cameraRot.X, -70, 70));
+            _camera.Rotation = cameraRot;
+        }
+        // Shooty
+        if (Input.IsActionJustPressed("shoot") && _animPlayer.CurrentAnimation != "shoot")
+        {
+            Rpc("PlayShootEffects");
+        }
     }
 
     public override void _PhysicsProcess(double delta)
@@ -127,14 +134,13 @@ public partial class Player : CharacterBody3D
 
 			// Sync for multiplayer
 			SyncPos = GlobalPosition;
-			// TODO: SLERP ROTATION and also camera rotation for up down!
-			// SyncRot = Rotation;
-		}
-		// We're not the local player, lerp the position / rotation data
-		else
+            //SyncRot = Rotation;	// doesn't work properly yet, implement before serious multiplayer code
+        }
+        // We're not the local player, lerp the position / rotation data
+        else
 		{
 			GlobalPosition = GlobalPosition.Lerp(SyncPos, SyncWeight);
-			// Rotation = SyncRot.Lerp(Rotation.Normalized(), SyncWeight);
+			//Rotation = SyncRot.Lerp(Rotation.Normalized(), SyncWeight);
 		}
 	}
 
@@ -153,7 +159,6 @@ public partial class Player : CharacterBody3D
 		Vector3 targetPos = _aimMarker.GlobalPosition;
 		if (_projectileRaycast.IsColliding() && !collider.IsInGroup("enemy_sensor_area"))
 		{
-			GD.Print("ray casting bolt");
 			targetPos = _projectileRaycast.GetCollisionPoint();
         }
 

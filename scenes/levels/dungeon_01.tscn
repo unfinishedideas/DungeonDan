@@ -34,6 +34,12 @@ shadow_enabled = true
 [node name="Floors" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.03794)
 
+[node name="ground1" type="CSGBox3D" parent="Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15152, -0.520059, -3.38979)
+use_collision = true
+size = Vector3(78.105, 1, 34.464)
+material = ExtResource("3_7i8ke")
+
 [node name="Walls" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.03794)
 
@@ -45,9 +51,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -26.056, 2.03794)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Killzone"]
 shape = SubResource("WorldBoundaryShape3D_u0dfx")
-
-[node name="ground1" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15152, -0.520059, -1.35185)
-use_collision = true
-size = Vector3(78.105, 1, 34.464)
-material = ExtResource("3_7i8ke")
