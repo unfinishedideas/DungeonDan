@@ -31,41 +31,42 @@ public partial class Player : CharacterBody3D
 	private AnimationPlayer _animPlayer;
 	private Marker3D _aimMarker;
 	private Label3D _nametag;
-	private AudioStreamPlayer3D _boltSFX;
+    private AudioStreamPlayer3D _boltSFX;
 
     public override void _EnterTree()
     {
         base._EnterTree();
-		if (GameManager.IsMultiplayerGame == true)
-		{
-			_nametag = GetNode<Label3D>("nametag");
-			_nametag.Visible = true;
-			GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
-		}
+        if (GameManager.IsMultiplayerGame == true)
+        {
+            _nametag = GetNode<Label3D>("nametag");
+            _nametag.Visible = true;
+            GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
+        }
     }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
-	{
-		Input.MouseMode = Input.MouseModeEnum.Captured;
-		_camera = (Camera3D)GetNode("camera");
-		_animPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
-		_boltSpawn = GetNode<RayCast3D>("camera/crossbow/BoltSpawn");
-		_projectileRaycast = GetNode<RayCast3D>("camera/ProjectileRaycast");
-		_aimMarker = GetNode<Marker3D>("camera/AimMarker");
-		_boltSFX = GetNode<AudioStreamPlayer3D>("SFX/BoltFire");
-		Bolt = GD.Load<PackedScene>("res://scenes/weapons/bolt.tscn");
+    {
+        Input.MouseMode = Input.MouseModeEnum.Captured;
+        _camera = (Camera3D)GetNode("camera");
+        _animPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
+        _boltSpawn = GetNode<RayCast3D>("camera/crossbow/BoltSpawn");
+        _projectileRaycast = GetNode<RayCast3D>("camera/ProjectileRaycast");
+        _aimMarker = GetNode<Marker3D>("camera/AimMarker");
+        _boltSFX = GetNode<AudioStreamPlayer3D>("SFX/BoltFire");
+        Bolt = GD.Load<PackedScene>("res://scenes/weapons/bolt.tscn");
 
-		if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
-		{
-			_camera.Current = true;
-		}
+        if (IsCurrentPlayerMPAuth())
+        {
+            _camera.Current = true;
+        }
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
-		if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() != Multiplayer.GetUniqueId())
+		if (!IsCurrentPlayerMPAuth())	
 			return;
+
         if (@event is InputEventMouseMotion eventMouseMotion)
         {
             // Mouse look
@@ -81,6 +82,11 @@ public partial class Player : CharacterBody3D
             Rpc("PlayShootEffects");
         }
     }
+
+	private bool IsCurrentPlayerMPAuth()
+	{
+		return GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId();
+	}
 
     public override void _PhysicsProcess(double delta)
 	{
