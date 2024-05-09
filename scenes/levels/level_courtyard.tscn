@@ -12,31 +12,24 @@
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_wioxh"]
 
-[sub_resource type="Sky" id="Sky_8w4se"]
+[sub_resource type="Sky" id="Sky_svav6"]
 sky_material = SubResource("PhysicalSkyMaterial_wioxh")
 
 [sub_resource type="Environment" id="Environment_pkx3l"]
 background_mode = 2
-sky = SubResource("Sky_8w4se")
+sky = SubResource("Sky_svav6")
 tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_4e4ex"]
 
-[node name="World" type="Node3D"]
+[node name="World" type="Node"]
 script = ExtResource("1_5no54")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.356738, -0.118704, 0.926632, 0.920744, -0.212448, 0.327256, 0.158014, 0.969936, 0.185084, -20.9743, 9.88013, 0)
-shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_pkx3l")
 
 [node name="Player" parent="." instance=ExtResource("3_1yp8p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.30967, 0.28026, 26.7547)
 
-[node name="scenery" type="Node3D" parent="."]
+[node name="scenery" type="Node" parent="."]
 
 [node name="castle" type="Node3D" parent="scenery"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -211.146)
@@ -92,7 +85,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 69.775
 size = Vector3(160.205, 16.6709, 1)
 material = ExtResource("3_gh55q")
 
-[node name="Geometry" type="Node3D" parent="."]
+[node name="Geometry" type="Node" parent="."]
 
 [node name="area_start" type="Node3D" parent="Geometry"]
 
@@ -224,7 +217,7 @@ material = ExtResource("6_nqprq")
 [node name="torch" parent="Geometry/area_start" instance=ExtResource("8_rb3ed")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.881, -0.0821543, 27.0967)
 
-[node name="Lights" type="Node3D" parent="."]
+[node name="Lights" type="Node" parent="."]
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Lights"]
 transform = Transform3D(1, 0, 0, 0, 0.334383, 0.942437, 0, -0.942437, 0.334383, -8.09096, 12.1133, 28.8809)
@@ -233,6 +226,13 @@ light_energy = 17.292
 light_indirect_energy = 8.77
 spot_range = 19.075
 spot_angle = 24.7514
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_pkx3l")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(-0.356738, -0.118704, 0.926632, 0.920744, -0.212447, 0.327256, 0.158014, 0.969936, 0.185084, -20.9743, 9.88013, 0)
+shadow_enabled = true
 
 [node name="Killzone" parent="." instance=ExtResource("9_xfjns")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -26.056, 0)

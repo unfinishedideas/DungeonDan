@@ -266,12 +266,10 @@ shape = SubResource("CapsuleShape3D_f1kq6")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5049, 0)
 
 [node name="AimMarker" type="Marker3D" parent="camera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10000)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -500)
 
 [node name="ProjectileRaycast" type="RayCast3D" parent="camera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1000, 0, 0, -1.0857)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1000, 0, 0, -5.64052)
 target_position = Vector3(0, 0, -1)
 collide_with_areas = true
 

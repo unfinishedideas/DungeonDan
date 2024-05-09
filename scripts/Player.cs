@@ -148,19 +148,15 @@ public partial class Player : CharacterBody3D
 
 	private void ShootArrow()
 	{
-		Vector3 targetPos;
 		// TODO: Figure out how to ignore the enemy sensor area and still get raycasting
         var collider = (Node)_projectileRaycast.GetCollider();
+		Vector3 targetPos = _aimMarker.GlobalPosition;
 		if (_projectileRaycast.IsColliding() && !collider.IsInGroup("enemy_sensor_area"))
 		{
+			GD.Print("ray casting bolt");
 			targetPos = _projectileRaycast.GetCollisionPoint();
         }
-        else
-        {
-            targetPos = _aimMarker.GlobalPosition;
-        }
 
-	    targetPos = _aimMarker.GlobalPosition;
         Node3D b = Bolt.Instantiate<Node3D>();
 		b.Position = _boltSpawn.GlobalPosition;
 		b.LookAtFromPosition(_boltSpawn.GlobalPosition, targetPos);

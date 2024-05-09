@@ -70,13 +70,17 @@ public partial class bolt : Node3D
                         GD.Print("HIT ENEMY");
                         //EmitSignal(SignalName.BoltCollided, Damage);
                     }
+                    if (collider.IsInGroup("players"))
+                    {
+                        GD.Print("That's a player, dog");
+                    }
                     // move bolt back to the impact point
                     Transform3D boltTransform = this.Transform;
                     boltTransform.Origin = _ray.GetCollisionPoint();
                     this.GlobalTransform = boltTransform;
                     _impactSphereMesh.GlobalTransform = boltTransform;
                     // Hit object
-                    PlayHitEffects();                    
+                    PlayHitEffects();
                 }
             }
         }

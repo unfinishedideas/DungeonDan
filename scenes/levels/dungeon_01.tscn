@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://de1ikf3x1qj5m"]
+
+[ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_2jo1v"]
+[ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="1_bbdvm"]
+[ext_resource type="Material" uid="uid://dnewp25gnov6a" path="res://assets/materials/grass.tres" id="3_7i8ke"]
+[ext_resource type="PackedScene" uid="uid://cjt1mg3hshqfo" path="res://scenes/misc/killzone.tscn" id="3_73n65"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_t083f"]
+
+[sub_resource type="Sky" id="Sky_8w4se"]
+sky_material = SubResource("PhysicalSkyMaterial_t083f")
+
+[sub_resource type="Environment" id="Environment_2bjht"]
+background_mode = 2
+sky = SubResource("Sky_8w4se")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_u0dfx"]
+
+[node name="World" type="Node"]
+script = ExtResource("1_2jo1v")
+
+[node name="Player" parent="." instance=ExtResource("1_bbdvm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.30967, 0.28026, 3.52764)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2bjht")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(-0.356738, -0.118704, 0.926632, 0.920744, -0.212447, 0.327256, 0.158014, 0.969936, 0.185084, -20.9262, 10.4941, -0.215248)
+shadow_enabled = true
+
+[node name="Floors" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.03794)
+
+[node name="Walls" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.03794)
+
+[node name="Lights" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.03794)
+
+[node name="Killzone" parent="." instance=ExtResource("3_73n65")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -26.056, 2.03794)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Killzone"]
+shape = SubResource("WorldBoundaryShape3D_u0dfx")
+
+[node name="ground1" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15152, -0.520059, -1.35185)
+use_collision = true
+size = Vector3(78.105, 1, 34.464)
+material = ExtResource("3_7i8ke")
