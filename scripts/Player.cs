@@ -11,21 +11,20 @@ public partial class Player : CharacterBody3D
 	[Export]
 	public const float SprintMultiplier = 1.5f;
 	[Export]
-	public const float coyoteTime = 1.0f;
+	public const float CoyoteTime = 1.0f;
 	[Export]
     public float MouseSensitivity = 0.005f;
 	[Export]
-	public float sync_weight = 0.5f;
+	public float SyncWeight = 0.5f;
 	[Export]
 	public PackedScene Bolt;
 
-	private Vector3 syncPos = new Vector3(0,0,0);
-	private Vector3 syncRot = new Vector3(0,0,0);
+	public float Gravity = 20;
+	// Default: Get the Gravity from the project settings to be synced with RigidBody nodes.
+	// public float Gravity = ProjectSettings.GetSetting("physics/3d/default_Gravity").AsSingle();
 
-	// Get the gravity from the project settings to be synced with RigidBody nodes.
-	public float gravity = 20;
-	// public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-
+	public Vector3 SyncPos = new Vector3(0,0,0);
+	public Vector3 SyncRot = new Vector3(0,0,0);
 	private Camera3D _camera;
 	private RayCast3D _projectileRaycast;
 	private RayCast3D _boltSpawn;
@@ -83,9 +82,9 @@ public partial class Player : CharacterBody3D
 		{
 			Vector3 velocity = Velocity;
 
-			// Add the gravity.
+			// Add the Gravity.
 			if (!IsOnFloor())
-				velocity.Y -= gravity * (float)delta;
+				velocity.Y -= Gravity * (float)delta;
 
 			// Handle Jump.
 			if (Input.IsActionJustPressed("jump") && IsOnFloor())
@@ -127,15 +126,15 @@ public partial class Player : CharacterBody3D
 			MoveAndSlide();
 
 			// Sync for multiplayer
-			syncPos = GlobalPosition;
+			SyncPos = GlobalPosition;
 			// TODO: SLERP ROTATION and also camera rotation for up down!
-			// syncRot = Rotation;
+			// SyncRot = Rotation;
 		}
 		// We're not the local player, lerp the position / rotation data
 		else
 		{
-			GlobalPosition = GlobalPosition.Lerp(syncPos, sync_weight);
-			// Rotation = syncRot.Lerp(Rotation.Normalized(), sync_weight);
+			GlobalPosition = GlobalPosition.Lerp(SyncPos, SyncWeight);
+			// Rotation = SyncRot.Lerp(Rotation.Normalized(), SyncWeight);
 		}
 	}
 

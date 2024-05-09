@@ -13,8 +13,8 @@ public partial class SceneManager : Node
 	public override void _Ready()
 	{
 		int index = 0;
-
 		int max_spawn = GetTree().GetNodesInGroup("PlayerSpawnpoints").Count - 1;
+
 		foreach (var item in GameManager.Players)
 		{
 			Player currentPlayer = playerScene.Instantiate<Player>();

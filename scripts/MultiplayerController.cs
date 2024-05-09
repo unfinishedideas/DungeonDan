@@ -6,14 +6,14 @@ using System.Linq;
 public partial class MultiplayerController : Control
 {
 	[Export]
-	private int port = 8910;
+	private int _port = 8910;
 	[Export]
-	private string address = "127.0.0.1"; 
+	private string _address = "127.0.0.1"; 
 	[Export]
-	private int max_clients = 16;
+	private int _maxClients = 16;
 	
-	private ENetMultiplayerPeer peer;
-	private ENetConnection.CompressionMode compression_mode = ENetConnection.CompressionMode.Fastlz;
+	private ENetMultiplayerPeer _peer;
+	private ENetConnection.CompressionMode _compressionMode = ENetConnection.CompressionMode.Fastlz;
 
 	private bool hosting = false;
 
@@ -54,7 +54,7 @@ public partial class MultiplayerController : Control
     }
 
 	/// <summary>
-	/// runs when a player disconnects and runs on all peers
+	/// runs when a player disconnects and runs on all _peers
 	/// </summary>
 	/// <param name="id">id of the player that disconnected</param>
     private void PeerDisconnected(long id)
@@ -75,7 +75,7 @@ public partial class MultiplayerController : Control
     }
 
 	/// <summary>
-	/// runs when a player connects and runs on all peers
+	/// runs when a player connects and runs on all _peers
 	/// </summary>
 	/// <param name="id">id of the player that connected</param>
     private void PeerConnected(long id)
@@ -146,15 +146,15 @@ public partial class MultiplayerController : Control
 	/// </summary>
 	private void hostGame()
 	{
-		peer = new ENetMultiplayerPeer();
-		var error = peer.CreateServer(port, max_clients);
+		_peer = new ENetMultiplayerPeer();
+		var error = _peer.CreateServer(_port, _maxClients);
 		if (error != Error.Ok)
 		{
 			GD.Print("failed to host game! : " + error.ToString());
 			return;
 		}
-		peer.Host.Compress(compression_mode);
-		Multiplayer.MultiplayerPeer = peer;
+		_peer.Host.Compress(_compressionMode);
+		Multiplayer.MultiplayerPeer = _peer;
 		GD.Print("waiting for players!");
 	}
 
@@ -186,27 +186,27 @@ public partial class MultiplayerController : Control
 	/// </summary>
 	public void _on_join_button_down()
 	{
-		peer = new ENetMultiplayerPeer();
-		string entered_address = GetNode<LineEdit>("Panel/IpEntry").Text;
-		if (entered_address != null)
+		_peer = new ENetMultiplayerPeer();
+		string entered__address = GetNode<LineEdit>("Panel/IpEntry").Text;
+		if (entered__address != null)
 		{
-			address = entered_address;
+			_address = entered__address;
 		}
-		var error = peer.CreateClient(address, port);
+		var error = _peer.CreateClient(_address, _port);
 		if (error != Error.Ok)
 		{
 			GD.Print("failed to join game! : " + error.ToString());
 			return;
 		}
-		peer.Host.Compress(compression_mode);
+		_peer.Host.Compress(_compressionMode);
         GameManager.IsMultiplayerGame = true;
-        Multiplayer.MultiplayerPeer = peer;
+        Multiplayer.MultiplayerPeer = _peer;
 		GD.Print("joining game!");
 	}
 
 	public void _on_start_game_button_down()
 	{
-		Rpc("startGame"); // syncs a start game event for all peers
+		Rpc("startGame"); // syncs a start game event for all _peers
 	}
 
 	public void _on_back_button_down()

@@ -138,7 +138,7 @@ public partial class enemy_blob : CharacterBody3D
 			{
 				case "bolt":
 					bolt temp = new bolt();
-					damage = temp.damage;
+					damage = temp.Damage;
 					break;
 				default:
 					break;

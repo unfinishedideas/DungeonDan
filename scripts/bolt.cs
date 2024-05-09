@@ -8,23 +8,22 @@ using System.Reflection.Metadata.Ecma335;
 public partial class bolt : Node3D
 {
     [Export]
-    public const float SPEED = -80.0f;
-    //public const float SPEED = -100.0f;
+    public const float Speed = -80.0f; // original value 100
     [Export]
-    public float damage = 10f;
+    public float Damage = 10f;
 
-    private const float MIN_RAYCAST_DISTANCE = 0.05f;
-    //[Signal] public delegate void BoltCollidedEventHandler(float damage);
-
+    private const float MinRaycastDistance = 0.05f;
     private Vector3 _velocity;
     private RayCast3D _ray;
     private MeshInstance3D _impactSphereMesh;
-    private bool destroyed = false;
+    private bool _destroyed = false;
     private AnimationPlayer _player;
+
+    //[Signal] public delegate void BoltCollidedEventHandler(float damage);
 
     public override void _Ready()
     {
-        _velocity = this.Transform.Basis.Z * SPEED;
+        _velocity = this.Transform.Basis.Z * Speed;
         _ray = GetNode<RayCast3D>("RayCast3D");
         _impactSphereMesh = GetNode<MeshInstance3D>("ImpactSphereMesh");
         _player = GetNode<AnimationPlayer>("AnimationPlayer");
@@ -32,7 +31,7 @@ public partial class bolt : Node3D
 
     public override void _PhysicsProcess(double delta)
 	{
-        if (!destroyed)
+        if (!_destroyed)
         {
             // Move the bolt
             var distance = _velocity.Length() * delta;
@@ -46,15 +45,15 @@ public partial class bolt : Node3D
             // Also make the ray at least the min length
             Vector3 targetPos = _ray.TargetPosition;
             Transform3D rayTransform = _ray.Transform;
-            if (distance > MIN_RAYCAST_DISTANCE)
+            if (distance > MinRaycastDistance)
             {
                 targetPos.Z = -(float)distance;
                 rayTransform.Origin.Z = (float)distance;
             }
             else
             {
-                targetPos.Z = -MIN_RAYCAST_DISTANCE;
-                rayTransform.Origin.Z = MIN_RAYCAST_DISTANCE;
+                targetPos.Z = -MinRaycastDistance;
+                rayTransform.Origin.Z = MinRaycastDistance;
             }
             _ray.TargetPosition = targetPos;
             _ray.Transform = rayTransform;
@@ -69,7 +68,7 @@ public partial class bolt : Node3D
                     if (collider.IsInGroup("enemy_hitbox"))
                     {
                         GD.Print("HIT ENEMY");
-                        //EmitSignal(SignalName.BoltCollided, damage);
+                        //EmitSignal(SignalName.BoltCollided, Damage);
                     }
                     // move bolt back to the impact point
                     Transform3D boltTransform = this.Transform;
@@ -86,7 +85,7 @@ public partial class bolt : Node3D
     public void PlayHitEffects()
     {
         _player.Play("destroy");
-        destroyed = true;
+        _destroyed = true;
     }
 
     public void _on_bolt_life_timer_timeout()
