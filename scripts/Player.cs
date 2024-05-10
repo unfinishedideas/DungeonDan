@@ -5,24 +5,29 @@ using System.Linq;
 public partial class Player : CharacterBody3D
 {
     [Export]
-    public float MaxSpeed = 10.0f;
+    public float MaxSpeed = 7.0f;
     [Export]
     public float AccelerationSpeed = 1.0f;
     [Export]
+    public float SprintMultiplier = 1.5f;
+    [Export]
     public float Friction = 1.0f;
     [Export]
-    public float AirDeceleration = .005f;
-    [Export]
+
     public float JumpVelocity = 10.0f;
     [Export]
-    public float SprintMultiplier = 1.5f;
+    public float WindResistance = .005f;
     [Export]
     public float CoyoteTime = 1.0f;
     [Export]
+    public float AirControl = 0.2f;
+
     public float MouseSensitivity = 0.005f;
     [Export]
+
     public float SyncWeight = 0.5f;
     [Export]
+
     public PackedScene Bolt;
 
     public float Gravity = 20;
@@ -98,7 +103,7 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        // Am i the local player?
+        // Are we the local player?
         if(GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
         {
             Vector3 velocity = Velocity;
@@ -114,28 +119,40 @@ public partial class Player : CharacterBody3D
             // Get the input direction and handle the movement/deceleration.
             Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-
-            if (direction != Vector3.Zero && IsOnFloor())
+            float tempAirControl = IsOnFloor() switch
             {
-                float modifiedMaxSpeed = MaxSpeed;
-                if (Input.IsActionPressed("sprint")) 
-                {
-                    modifiedMaxSpeed *= SprintMultiplier;
-                }
+                true => 1.0f,
+                false => AirControl, 
+            };
+            float tempWindRes = IsOnFloor() switch
+            {
+                true => 1.0f,
+                false => WindResistance,
+            };
 
-                _currentSpeed = Mathf.MoveToward(_currentSpeed, modifiedMaxSpeed, AccelerationSpeed);
-                velocity.X = direction.X * _currentSpeed;
-                velocity.Z = direction.Z * _currentSpeed;
+            if (direction != Vector3.Zero)
+            {
+                if(IsOnFloor())
+                {
+                    float modifiedMaxSpeed = MaxSpeed;
+                    if (Input.IsActionPressed("sprint")) 
+                    {
+                        modifiedMaxSpeed *= SprintMultiplier;
+                    }
+                    _currentSpeed = Mathf.MoveToward(_currentSpeed, modifiedMaxSpeed, AccelerationSpeed);
+                }
+                else
+                {
+                    _currentSpeed = Mathf.MoveToward(_currentSpeed, 0, Friction * tempWindRes);
+                }
+                // eehhh this is messed up and it's late, we'll fix tomorrow
+                velocity.X = (direction.X * tempAirControl) * _currentSpeed;
+                velocity.Z = (direction.Z * tempAirControl) * _currentSpeed;
             }
             else
             {
-                float currentAir = IsOnFloor() switch
-                {
-                    true => 1.0f,
-                    false => AirDeceleration,
-                };
-                velocity.X = Mathf.MoveToward(Velocity.X, 0, Friction * currentAir); 
-                velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Friction * currentAir);
+                velocity.X = Mathf.MoveToward(Velocity.X, 0, Friction * tempWindRes); 
+                velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Friction * tempWindRes);
             }
 
             // Animate the Crossbow

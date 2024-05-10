@@ -28,7 +28,6 @@ script = ExtResource("1_5no54")
 
 [node name="Player" parent="." instance=ExtResource("3_1yp8p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.30967, 0.28026, 26.7547)
-AirDeceleration = 0.005
 
 [node name="scenery" type="Node" parent="."]
 
