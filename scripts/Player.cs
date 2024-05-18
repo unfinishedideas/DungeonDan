@@ -45,21 +45,16 @@ public partial class Player : CharacterBody3D
     private Marker3D _aimMarker;
     private Label3D _nametag;
     private AudioStreamPlayer3D _boltSFX;
-        
-    public override void _EnterTree()
-    {
-        base._EnterTree();
-            if (GameManager.IsMultiplayerGame == true)
-            {
-                _nametag = GetNode<Label3D>("nametag");
-                _nametag.Visible = true;
-                GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
-            }
-    }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        if (GameManager.IsMultiplayerGame == true)
+        {
+            _nametag = GetNode<Label3D>("nametag");
+            _nametag.Visible = true;
+            GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
+        }
         Input.MouseMode = Input.MouseModeEnum.Captured;
             _camera = (Camera3D)GetNode("camera");
             _animPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
@@ -106,6 +101,7 @@ public partial class Player : CharacterBody3D
         // Are we the local player?
         if(GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
         {
+            /*
             Vector3 velocity = Velocity;
 
             // Add the Gravity.
@@ -154,6 +150,28 @@ public partial class Player : CharacterBody3D
                 velocity.X = Mathf.MoveToward(Velocity.X, 0, Friction * tempWindRes); 
                 velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Friction * tempWindRes);
             }
+            */
+
+            Vector3 velocity = Velocity;
+            Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
+            Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+
+            // Add the Gravity.
+            if (!IsOnFloor())
+            {
+                velocity.Y -= Gravity * (float)delta;
+            }
+
+            // Handle Jump.
+            if (Input.IsActionJustPressed("jump") && IsOnFloor())
+            {
+                velocity.Y = JumpVelocity;
+            }
+
+            // maybe lerp some vector3s ?            
+
+
+
 
             // Animate the Crossbow
             if (_animPlayer.CurrentAnimation != "shoot")
