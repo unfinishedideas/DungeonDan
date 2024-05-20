@@ -9,11 +9,12 @@ public partial class Player : CharacterBody3D
     [Export]
     public float AccelerationSpeed = 1.0f;
     [Export]
+    public float DeccelerationSpeed = 1.0f;
+    [Export]
     public float SprintMultiplier = 1.5f;
     [Export]
     public float Friction = 1.0f;
     [Export]
-
     public float JumpVelocity = 10.0f;
     [Export]
     public float WindResistance = .005f;
@@ -45,6 +46,7 @@ public partial class Player : CharacterBody3D
     private Marker3D _aimMarker;
     private Label3D _nametag;
     private AudioStreamPlayer3D _boltSFX;
+    private Vector3 _prevDirection = Vector3.Zero;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -102,19 +104,6 @@ public partial class Player : CharacterBody3D
         if(GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
         {
             /*
-            Vector3 velocity = Velocity;
-
-            // Add the Gravity.
-            if (!IsOnFloor())
-                velocity.Y -= Gravity * (float)delta;
-
-            // Handle Jump.
-            if (Input.IsActionJustPressed("jump") && IsOnFloor())
-                velocity.Y = JumpVelocity;
-
-            // Get the input direction and handle the movement/deceleration.
-            Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
-            Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
             float tempAirControl = IsOnFloor() switch
             {
                 true => 1.0f,
@@ -152,6 +141,7 @@ public partial class Player : CharacterBody3D
             }
             */
 
+            // Movement code ---------------------------------------------------
             Vector3 velocity = Velocity;
             Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
@@ -168,12 +158,27 @@ public partial class Player : CharacterBody3D
                 velocity.Y = JumpVelocity;
             }
 
-            // maybe lerp some vector3s ?            
+            if (direction != Vector3.Zero)
+            {
+                _prevDirection = direction;
+                _currentSpeed += AccelerationSpeed; // lerp?
+                _currentSpeed = Mathf.Clamp(_currentSpeed, 0, MaxSpeed);
+                velocity.X = direction.X  * _currentSpeed;
+                velocity.Z = direction.Z  * _currentSpeed;
+            }
+            else
+            {
+                _currentSpeed -= DeccelerationSpeed;
+                _currentSpeed = Mathf.Clamp(_currentSpeed, 0, MaxSpeed);
+                velocity.X = _prevDirection.X  * _currentSpeed;
+                velocity.Z = _prevDirection.Z  * _currentSpeed;
+            }
+            GD.Print(_currentSpeed);
 
 
 
 
-            // Animate the Crossbow
+            // Animate the Crossbow --------------------------------------------
             if (_animPlayer.CurrentAnimation != "shoot")
             {
                 if (inputDir != Vector2.Zero && IsOnFloor())

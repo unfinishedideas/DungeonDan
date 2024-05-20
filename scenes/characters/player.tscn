@@ -135,6 +135,7 @@ properties/3/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 script = ExtResource("1_1tq64")
+WindResistance = 0.8
 Bolt = ExtResource("2_f2562")
 
 [node name="crosshair" parent="." instance=ExtResource("2_kk2is")]
