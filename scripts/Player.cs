@@ -1,27 +1,25 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 public partial class Player : CharacterBody3D
 {
-    [Export]
-    public float MaxSpeed = 7.0f;
-    [Export]
-    public float AccelerationSpeed = 1.0f;
-    [Export]
-    public float DeccelerationSpeed = 1.0f;
-    [Export]
-    public float SprintMultiplier = 1.5f;
-    [Export]
-    public float Friction = 1.0f;
-    [Export]
-    public float JumpVelocity = 10.0f;
-    [Export]
-    public float WindResistance = .005f;
-    [Export]
-    public float CoyoteTime = 1.0f;
-    [Export]
-    public float AirControl = 0.2f;
+    public const float MAX_SPEED = 32.0f;
+    public const float WALK_SPEED = 12f;
+    public const float STOP_SPEED = 10f;
+    public const float GRAVITY = 80f;
+    public const float ACCELERATE = 100f;
+    public const float AIR_ACCELERATE = 100f;
+    //public const float WATER_ACCELERATE = 0.15f;
+    public const float FRICTION = 60f;
+    //public const float WATER_FRICTION = 12f;
+    public const float JUMP_FORCE = 27f;
+    public const float AIR_CONTROL = 99f;
+    //public const float STEP_SIZE = 1.8f;
+    //public const float MAX_HANG = 0.2f;
+    //public const float PLAYER_HEIGHT = 3.6f;
+    //public const float CROUCH_HEIGHT = 2.0f;
 
     public float MouseSensitivity = 0.005f;
     [Export]
@@ -31,14 +29,13 @@ public partial class Player : CharacterBody3D
 
     public PackedScene Bolt;
 
-    public float Gravity = 20;
+    //public float Gravity = 20;
     // Default: Get the Gravity from the project settings to be synced with RigidBody nodes.
     // public float Gravity = ProjectSettings.GetSetting("physics/3d/default_Gravity").AsSingle();
 
-    public Vector3 SyncPos = new Vector3(0,0,0);
-    public Vector3 SyncRot = new Vector3(0,0,0);	// presently unused
+    public Vector3 SyncPos = new Vector3(0, 0, 0);
+    public Vector3 SyncRot = new Vector3(0, 0, 0);	// presently unused
 
-    private float _currentSpeed = 0f;
     private Camera3D _camera;
     private RayCast3D _projectileRaycast;
     private RayCast3D _boltSpawn;
@@ -46,11 +43,18 @@ public partial class Player : CharacterBody3D
     private Marker3D _aimMarker;
     private Label3D _nametag;
     private AudioStreamPlayer3D _boltSFX;
-    private Vector3 _prevDirection = Vector3.Zero;
+
+    private RichTextLabel _debugTextfield;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        _debugTextfield = GetNode<RichTextLabel>("debug_text");
+        if (GameManager.DebugMode == true)
+        {
+            _debugTextfield.Visible = true;
+        }
+
         if (GameManager.IsMultiplayerGame == true)
         {
             _nametag = GetNode<Label3D>("nametag");
@@ -58,34 +62,34 @@ public partial class Player : CharacterBody3D
             GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(int.Parse(Name));
         }
         Input.MouseMode = Input.MouseModeEnum.Captured;
-            _camera = (Camera3D)GetNode("camera");
-            _animPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
-            _boltSpawn = GetNode<RayCast3D>("camera/crossbow/BoltSpawn");
-            _projectileRaycast = GetNode<RayCast3D>("camera/ProjectileRaycast");
-            _aimMarker = GetNode<Marker3D>("camera/AimMarker");
-            _boltSFX = GetNode<AudioStreamPlayer3D>("SFX/BoltFire");
-            Bolt = GD.Load<PackedScene>("res://scenes/weapons/bolt.tscn");
+        _camera = (Camera3D)GetNode("camera");
+        _animPlayer = (AnimationPlayer)GetNode("AnimationPlayer");
+        _boltSpawn = GetNode<RayCast3D>("camera/crossbow/BoltSpawn");
+        _projectileRaycast = GetNode<RayCast3D>("camera/ProjectileRaycast");
+        _aimMarker = GetNode<Marker3D>("camera/AimMarker");
+        _boltSFX = GetNode<AudioStreamPlayer3D>("SFX/BoltFire");
+        Bolt = GD.Load<PackedScene>("res://scenes/weapons/bolt.tscn");
 
-            if (IsCurrentPlayerMPAuth())
-            {
-                _camera.Current = true;
-            }
+        if (IsCurrentPlayerMPAuth())
+        {
+            _camera.Current = true;
+        }
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (!IsCurrentPlayerMPAuth())	
+        if (!IsCurrentPlayerMPAuth())
             return;
-                
-                if (@event is InputEventMouseMotion eventMouseMotion)
-                {
-                    // Mouse look
-                    this.RotateY(-eventMouseMotion.Relative.X * MouseSensitivity);
-                        _camera.RotateX(-eventMouseMotion.Relative.Y * MouseSensitivity);
-                        Vector3 cameraRot = _camera.RotationDegrees;
-                        cameraRot.X = Mathf.DegToRad(Mathf.Clamp(cameraRot.X, -70, 70));
-                        _camera.Rotation = cameraRot;
-                }
+
+        if (@event is InputEventMouseMotion eventMouseMotion)
+        {
+            // Mouse look
+            this.RotateY(-eventMouseMotion.Relative.X * MouseSensitivity);
+            _camera.RotateX(-eventMouseMotion.Relative.Y * MouseSensitivity);
+            Vector3 cameraRot = _camera.RotationDegrees;
+            cameraRot.X = Mathf.DegToRad(Mathf.Clamp(cameraRot.X, -70, 70));
+            _camera.Rotation = cameraRot;
+        }
         // Shooty
         if (Input.IsActionJustPressed("shoot") && _animPlayer.CurrentAnimation != "shoot")
         {
@@ -98,85 +102,58 @@ public partial class Player : CharacterBody3D
         return GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId();
     }
 
+    private Vector3 _GroundMove(double delta, Vector3 direction)
+    {
+        Vector3 velocity = Velocity;
+
+        // Handle Jump.
+        if (Input.IsActionJustPressed("jump"))
+        {
+            velocity.Y = JUMP_FORCE;
+        }
+        if (direction != Vector3.Zero)
+        {
+            velocity.X = Mathf.MoveToward(velocity.X, direction.X * WALK_SPEED, (float)delta * ACCELERATE);
+            velocity.Z = Mathf.MoveToward(velocity.Z, direction.Z * WALK_SPEED, (float)delta * ACCELERATE);
+        }
+        else
+        {
+            velocity.X = Mathf.MoveToward(velocity.X, 0, (float)delta * FRICTION);
+            velocity.Z = Mathf.MoveToward(velocity.Z, 0, (float)delta * FRICTION);
+        }
+
+        return velocity;
+    }
+
+    private Vector3 _AirMove(double delta, Vector3 direction)
+    {
+        Vector3 velocity = Velocity;
+
+        // Add the Gravity.
+        velocity.Y -= GRAVITY * (float)delta;
+
+        if (direction != Vector3.Zero)
+        {
+            velocity.X = Mathf.MoveToward(velocity.X, direction.X * WALK_SPEED, (float)delta * AIR_CONTROL);
+            velocity.Z = Mathf.MoveToward(velocity.Z, direction.Z * WALK_SPEED, (float)delta * AIR_CONTROL);
+        }
+        return velocity;
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         // Are we the local player?
-        if(GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
+        if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
         {
-            /*
-            float tempAirControl = IsOnFloor() switch
-            {
-                true => 1.0f,
-                false => AirControl, 
-            };
-            float tempWindRes = IsOnFloor() switch
-            {
-                true => 1.0f,
-                false => WindResistance,
-            };
-
-            if (direction != Vector3.Zero)
-            {
-                if(IsOnFloor())
-                {
-                    float modifiedMaxSpeed = MaxSpeed;
-                    if (Input.IsActionPressed("sprint")) 
-                    {
-                        modifiedMaxSpeed *= SprintMultiplier;
-                    }
-                    _currentSpeed = Mathf.MoveToward(_currentSpeed, modifiedMaxSpeed, AccelerationSpeed);
-                }
-                else
-                {
-                    _currentSpeed = Mathf.MoveToward(_currentSpeed, 0, Friction * tempWindRes);
-                }
-                // eehhh this is messed up and it's late, we'll fix tomorrow
-                velocity.X = (direction.X * tempAirControl) * _currentSpeed;
-                velocity.Z = (direction.Z * tempAirControl) * _currentSpeed;
-            }
-            else
-            {
-                velocity.X = Mathf.MoveToward(Velocity.X, 0, Friction * tempWindRes); 
-                velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Friction * tempWindRes);
-            }
-            */
+            _debugTextfield.Text = "DEBUG";
 
             // Movement code ---------------------------------------------------
-            Vector3 velocity = Velocity;
             Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+            Vector3 velocity = IsOnFloor() ? _GroundMove(delta, direction) : _AirMove(delta, direction);
 
-            // Add the Gravity.
-            if (!IsOnFloor())
-            {
-                velocity.Y -= Gravity * (float)delta;
-            }
-
-            // Handle Jump.
-            if (Input.IsActionJustPressed("jump") && IsOnFloor())
-            {
-                velocity.Y = JumpVelocity;
-            }
-
-            if (direction != Vector3.Zero)
-            {
-                _prevDirection = direction;
-                _currentSpeed += AccelerationSpeed; // lerp?
-                _currentSpeed = Mathf.Clamp(_currentSpeed, 0, MaxSpeed);
-                velocity.X = direction.X  * _currentSpeed;
-                velocity.Z = direction.Z  * _currentSpeed;
-            }
-            else
-            {
-                _currentSpeed -= DeccelerationSpeed;
-                _currentSpeed = Mathf.Clamp(_currentSpeed, 0, MaxSpeed);
-                velocity.X = _prevDirection.X  * _currentSpeed;
-                velocity.Z = _prevDirection.Z  * _currentSpeed;
-            }
-            GD.Print(_currentSpeed);
-
-
-
+            _debugTextfield.Text += $"\nVelocity: {Velocity}";
+            _debugTextfield.Text += $"\nDirection: {direction}";
 
             // Animate the Crossbow --------------------------------------------
             if (_animPlayer.CurrentAnimation != "shoot")

@@ -4,12 +4,14 @@
 [ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="1_q7hd3"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4qel"]
+emission_shape = 1
+emission_sphere_radius = 0.05
 gravity = Vector3(0, 9.8, 0)
 
 [sub_resource type="SphereMesh" id="SphereMesh_3pmae"]
 material = ExtResource("1_q7hd3")
-radius = 0.1
-height = 0.2
+radius = 0.05
+height = 0.1
 
 [node name="torch" type="Node3D"]
 

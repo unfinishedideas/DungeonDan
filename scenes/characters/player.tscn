@@ -135,7 +135,6 @@ properties/3/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 script = ExtResource("1_1tq64")
-WindResistance = 0.8
 Bolt = ExtResource("2_f2562")
 
 [node name="crosshair" parent="." instance=ExtResource("2_kk2is")]
@@ -196,5 +195,12 @@ bus = &"SFX"
 stream = ExtResource("5_8cl5s")
 volume_db = -5.0
 bus = &"SFX"
+
+[node name="debug_text" type="RichTextLabel" parent="."]
+visible = false
+offset_top = -1.0
+offset_right = 628.0
+offset_bottom = 425.0
+text = "DEBUG STUFF GOES HERE"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
