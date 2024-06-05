@@ -43,16 +43,25 @@ public partial class Player : CharacterBody3D
     private Marker3D _aimMarker;
     private Label3D _nametag;
     private AudioStreamPlayer3D _boltSFX;
+    private float _currentHP;
 
-    private Label _debugTextfield;
+    // UI nodes
+    private Control _gui;
+    private Label _debugLabel;
+    private Label _hpLabel;
+
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _debugTextfield = GetNode<Label>("debug_text");
+        _gui = GetNode<Control>("%gui");
+        _debugLabel = _gui.GetNode<Label>("%debug_label");
+        _hpLabel = _gui.GetNode<Label>("%hp_label");
+        _currentHP = 100f;
+
         if (OS.IsDebugBuild() == true)
         {
-            _debugTextfield.Visible = true;
+            _debugLabel.Visible = true;
         }
 
         if (GameManager.IsMultiplayerGame == true)
@@ -76,7 +85,7 @@ public partial class Player : CharacterBody3D
         }
     }
 
-    public override void _UnhandledInput(InputEvent @event)
+    public override void _Input(InputEvent @event)
     {
         if (!IsCurrentPlayerMPAuth())
             return;
@@ -147,14 +156,14 @@ public partial class Player : CharacterBody3D
         // Are we the local player?
         if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
         {
-            _debugTextfield.Text = $"{Multiplayer.GetUniqueId()}";
+            _debugLabel.Text = $"{Multiplayer.GetUniqueId()}";
             // Movement code ---------------------------------------------------
             Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
             Vector3 velocity = IsOnFloor() ? _GroundMove(delta, direction) : _AirMove(delta, direction);
 
-            _debugTextfield.Text += $"\nVelocity: {Velocity}";
-            _debugTextfield.Text += $"\nDirection: {direction}";
+            _debugLabel.Text += $"\nVelocity: {Velocity}";
+            _debugLabel.Text += $"\nDirection: {direction}";
 
             // Animate the Crossbow --------------------------------------------
             if (_animPlayer.CurrentAnimation != "shoot")
@@ -172,6 +181,9 @@ public partial class Player : CharacterBody3D
             // Move the character
             Velocity = velocity;
             MoveAndSlide();
+
+            // Update HP
+            _hpLabel.Text = $"{_currentHP:###}";
 
             // Sync for multiplayer
             SyncPos = GlobalPosition;

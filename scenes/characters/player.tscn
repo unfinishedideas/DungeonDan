@@ -1,10 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://bn1o0e0w6iimt"]
+[gd_scene load_steps=14 format=3 uid="uid://bn1o0e0w6iimt"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_1tq64"]
 [ext_resource type="PackedScene" uid="uid://c3hm5n64bxe2d" path="res://scenes/weapons/bolt.tscn" id="2_f2562"]
-[ext_resource type="PackedScene" uid="uid://iwlpamd20oko" path="res://addons/customizableCrosshair/crosshair/crosshair.tscn" id="2_kk2is"]
 [ext_resource type="PackedScene" uid="uid://t08d6vcn7pw" path="res://meshes/blender/wpn_crossbow.blend" id="4_xi047"]
 [ext_resource type="AudioStream" uid="uid://4ci4b4lbd576" path="res://assets/audio/CrossbowShoot1.wav" id="5_8cl5s"]
+[ext_resource type="PackedScene" uid="uid://c7ktxtovcvt22" path="res://scenes/ui/gui.tscn" id="6_n2ka3"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_rmayn"]
 
@@ -133,15 +133,9 @@ properties/3/path = NodePath(".:rotation")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
-[sub_resource type="LabelSettings" id="LabelSettings_sbxos"]
-font_size = 12
-shadow_color = Color(0, 0, 0, 1)
-
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 script = ExtResource("1_1tq64")
 Bolt = ExtResource("2_f2562")
-
-[node name="crosshair" parent="." instance=ExtResource("2_kk2is")]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -200,14 +194,9 @@ stream = ExtResource("5_8cl5s")
 volume_db = -5.0
 bus = &"SFX"
 
-[node name="debug_text" type="Label" parent="."]
-offset_left = 1478.0
-offset_top = 950.0
-offset_right = 1917.0
-offset_bottom = 1075.0
-text = "DEBUG TEXT GOES HERE"
-label_settings = SubResource("LabelSettings_sbxos")
-horizontal_alignment = 2
-vertical_alignment = 2
+[node name="ui" type="Node" parent="."]
+
+[node name="gui" parent="ui" instance=ExtResource("6_n2ka3")]
+unique_name_in_owner = true
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
