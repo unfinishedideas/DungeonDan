@@ -78,7 +78,9 @@ sprint={
 
 [layer_names]
 
-3d_render/layer_20="Layer 20"
+3d_physics/layer_2="Player"
+3d_physics/layer_3="Projectiles"
+3d_physics/layer_4="Enemies"
 3d_physics/layer_32="Sensor Area"
 
 [physics]
