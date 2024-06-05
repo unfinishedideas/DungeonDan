@@ -1,6 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bxau1uefiu637"]
+[gd_scene load_steps=13 format=3 uid="uid://bxau1uefiu637"]
 
 [ext_resource type="Script" path="res://scripts/enemy_blob.cs" id="1_dgwge"]
+[ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_utltq"]
+[ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HitboxComponent.tscn" id="3_xnl0s"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_08y2i"]
 
@@ -192,9 +194,11 @@ properties/1/path = NodePath("AnimationPlayer:current_animation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="EnemyBlob" type="CharacterBody3D"]
+[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hitboxComponent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
 script = ExtResource("1_dgwge")
+_healthComponent = NodePath("Components/HealthComponent")
+_hitboxComponent = NodePath("")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_08y2i")
@@ -231,7 +235,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.826696, 0.0270035)
 target_position = Vector3(0, 0, 5)
 debug_shape_custom_color = Color(0.405109, 0.238576, 1, 1)
 
+[node name="Components" type="Node" parent="."]
+
+[node name="HitboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_xnl0s")]
+_healthComponent = NodePath("../HealthComponent")
+
+[node name="HitboxCollider" type="CollisionShape3D" parent="Components/HitboxComponent"]
+shape = SubResource("BoxShape3D_rhxi8")
+
+[node name="HealthComponent" parent="Components" instance=ExtResource("2_utltq")]
+
 [connection signal="body_entered" from="SensorArea" to="." method="_on_sensor_range_body_entered"]
 [connection signal="body_exited" from="SensorArea" to="." method="_on_sensor_area_body_exited"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="DeathSignal" from="Components/HealthComponent" to="." method="_on_health_component_death_signal"]

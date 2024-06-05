@@ -6,9 +6,12 @@ public partial class enemy_blob : CharacterBody3D
 {
     [Export]
     public float Speed = 5.0f;
+
+    // Components
     [Export]
-    public float MaxHp = 40f;
-    public float CurrentHp;
+    private HealthComponent _healthComponent;
+    [Export]
+    private HitboxComponent _hitboxComponent;
 
     private Area3D _sensorArea;
     private Node3D _currentTarget;
@@ -21,7 +24,6 @@ public partial class enemy_blob : CharacterBody3D
     {
         _sensorArea = GetNode<Area3D>("SensorArea");
         _currentTarget = null;
-        CurrentHp = MaxHp;
         _player = GetNode<AnimationPlayer>("AnimationPlayer");
         _navAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
         _sightRay = GetNode<RayCast3D>("SightRay");
@@ -104,23 +106,13 @@ public partial class enemy_blob : CharacterBody3D
         _navAgent.TargetPosition = target.GlobalPosition;
     }
 
-    public void applyDamage(float damage)
-    {
-        GD.Print("TAKING DAMAGE: " + damage.ToString());
-        CurrentHp -= damage;
-        if (CurrentHp <= 0)
-        {
-            Die();
-        }
-    }
-
     public void Die()
     {
         GD.Print(this.Name.ToString() + ": has died!");
         _player.Play("die");
     }
 
-    // signals
+    // signals ----------------------------------------------------------------
     public void _on_sensor_range_body_entered(Node3D body)
     {
         if (body.IsInGroup("players"))
@@ -177,8 +169,12 @@ public partial class enemy_blob : CharacterBody3D
                 default:
                     break;
             }
-            applyDamage(damage);
+            _healthComponent.Damage(new Attack(damage, 0f));
         }
     }
 
+    public void _on_health_component_death_signal()
+    {
+        Die();
+    }
 }
