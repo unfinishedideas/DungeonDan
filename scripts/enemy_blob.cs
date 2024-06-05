@@ -1,18 +1,21 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class enemy_blob : CharacterBody3D
 {
 	[Export]
-	public float Speed = 1.0f;
+	public float Speed = 5.0f;
 	[Export]
 	public float MaxHp = 40f;
 	public float CurrentHp;
 
 	private Area3D _sensorArea;
 	private Node3D _currentTarget;
+    private List<Node3D> _targetList = new List<Node3D>();
 	private AnimationPlayer _player;
     private NavigationAgent3D _navAgent;
+    private RayCast3D _sightRay;
 
     public override void _Ready()
     {
@@ -21,6 +24,7 @@ public partial class enemy_blob : CharacterBody3D
 		CurrentHp = MaxHp;
 		_player = GetNode<AnimationPlayer>("AnimationPlayer");
         _navAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
+        _sightRay = GetNode<RayCast3D>("SightRay");
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -30,14 +34,17 @@ public partial class enemy_blob : CharacterBody3D
 	{
 		Vector3 velocity = Velocity;
 
-		// Add the gravity. Nah :)
-		//if (!IsOnFloor())
-		//	velocity.Y -= gravity * (float)delta;
-
-		// If we are targeting a player, and they haven't disconnected, move toward them
+		// If we are targeting a player, and they haven't disconnected, nav toward them
 		if (IsInstanceValid(_currentTarget) && _currentTarget != null)
         {
-            UpdateTargetLocation(_currentTarget);
+            if (IsTargetInLineOfSight(_currentTarget))
+            {
+                UpdateTargetLocation(_currentTarget);
+            }
+            else
+            {
+                UpdateCurrentTarget();
+            }
         }
         Vector3 destination = _navAgent.GetNextPathPosition();
         Vector3 local_destination = destination - GlobalPosition;
@@ -59,36 +66,51 @@ public partial class enemy_blob : CharacterBody3D
         MoveAndSlide();
     }
 
-	private void determineTarget()
+	private void UpdateCurrentTarget()
 	{
 		// enumerate potential targets and get the cloest one
 		_currentTarget = null;
 		float closestDistance = float.MaxValue;
-		if (_sensorArea.Monitoring)
+
+        if (_sensorArea.Monitoring)
+        {
+            foreach(Node3D target in _targetList)
+            {
+                float distanceFromTarget = this.GlobalPosition.DistanceTo(target.GlobalPosition);
+                // Target the closest player that is in line of sight
+                if (IsTargetInLineOfSight(target) && distanceFromTarget < closestDistance)
+                {
+                    closestDistance = distanceFromTarget;
+                    _currentTarget = target;
+                }
+            }
+        }
+		if (_currentTarget == null) 
 		{
-			Godot.Collections.Array<Node3D> targets = _sensorArea.GetOverlappingBodies();
-		
-			foreach (var target in targets)
-			{
-				if (target.IsInGroup("players"))
-				{
-					float distanceFromTarget = this.GlobalPosition.DistanceTo(target.GlobalPosition);
-					if (distanceFromTarget < closestDistance)
-					{
-						closestDistance = distanceFromTarget;
-						_currentTarget = target;
-					}
-				}
-			}
-			if (_currentTarget == null) 
-			{
-				GD.Print(this.Name.ToString() + ": Target lost");
-			}
-			else
-			{
-				GD.Print(this.Name.ToString() + ": targeting: " + _currentTarget.Name.ToString());
-			}
+			GD.Print(this.Name.ToString() + ": Target lost");
 		}
+		else
+		{
+			GD.Print(this.Name.ToString() + ": targeting: " + _currentTarget.Name.ToString());
+		}
+    }
+
+    private bool IsTargetInLineOfSight(Node3D target)
+    {
+        Vector3 local_destination = target.GlobalPosition - GlobalPosition;
+        Vector3 direction = local_destination.Normalized();
+        _sightRay.TargetPosition = direction;
+        if (_sightRay.IsColliding())
+        {
+            GD.Print("Colliding!");
+            //return true;
+        }
+        else
+        {
+            GD.Print("Not Colliding!");
+            //return false;
+        }
+        return true;
     }
 
     private void UpdateTargetLocation(Node3D target)
@@ -117,8 +139,11 @@ public partial class enemy_blob : CharacterBody3D
 	{
         if (body.IsInGroup("players"))
         {
-			GD.Print(this.Name.ToString() + ": FOUND A PLAYER: " + body.Name.ToString());
-			determineTarget();
+            if (!_targetList.Contains(body))
+            {
+                _targetList.Add(body);
+                UpdateCurrentTarget();
+            }
 		}
 	}
 
@@ -126,10 +151,23 @@ public partial class enemy_blob : CharacterBody3D
 	{
 		if (body.IsInGroup("players"))
 		{
-            GD.Print(this.Name.ToString() + ": FOUND A PLAYER: " + body.Name.ToString());
-            determineTarget();
+            if (_targetList.Contains(body))
+            {
+                _targetList.Remove(body);
+                UpdateCurrentTarget();
+            }
 		}
 	}
+
+    // used for debugging purposes
+    private void PrintTargetList()
+    {
+        GD.Print("Current target list:");
+        foreach (Node3D target in _targetList)
+        {
+            GD.Print($"{target.Name}");
+        }
+    }
 
     public void _on_hitbox_body_entered(Node3D body)
 	{
