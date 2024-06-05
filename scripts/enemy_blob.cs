@@ -4,7 +4,7 @@ using System;
 public partial class enemy_blob : CharacterBody3D
 {
 	[Export]
-	public const float Speed = 1.0f;
+	public float Speed = 1.0f;
 	[Export]
 	public float MaxHp = 40f;
 	public float CurrentHp;
@@ -12,6 +12,7 @@ public partial class enemy_blob : CharacterBody3D
 	private Area3D _sensorArea;
 	private Node3D _currentTarget;
 	private AnimationPlayer _player;
+    private NavigationAgent3D _navAgent;
 
     public override void _Ready()
     {
@@ -19,6 +20,7 @@ public partial class enemy_blob : CharacterBody3D
 		_currentTarget = null;
 		CurrentHp = MaxHp;
 		_player = GetNode<AnimationPlayer>("AnimationPlayer");
+        _navAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -34,24 +36,27 @@ public partial class enemy_blob : CharacterBody3D
 
 		// If we are targeting a player, and they haven't disconnected, move toward them
 		if (IsInstanceValid(_currentTarget) && _currentTarget != null)
-		{
-			Vector3 direction = _currentTarget.GlobalPosition - this.GlobalPosition;
-			if (direction != Vector3.Zero)
-			{
-				velocity.X = direction.X * Speed;
-				velocity.Y = direction.Y * Speed;
-				velocity.Z = direction.Z * Speed;
-			}
-			else
-			{
-				velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-				velocity.Y = Mathf.MoveToward(Velocity.Y, 0, Speed);
-				velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
-			}
+        {
+            UpdateTargetLocation(_currentTarget);
+        }
+        Vector3 destination = _navAgent.GetNextPathPosition();
+        Vector3 local_destination = destination - GlobalPosition;
+        Vector3 direction = local_destination.Normalized();
+        if (direction != Vector3.Zero)
+        {
+            velocity.X = direction.X * Speed;
+            velocity.Y = direction.Y * Speed;
+            velocity.Z = direction.Z * Speed;
+        }
+        else
+        {
+            velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+            velocity.Y = Mathf.MoveToward(Velocity.Y, 0, Speed);
+            velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+        }
 
-			Velocity = velocity;
-			MoveAndSlide();
-		}
+        Velocity = velocity;
+        MoveAndSlide();
     }
 
 	private void determineTarget()
@@ -84,6 +89,11 @@ public partial class enemy_blob : CharacterBody3D
 				GD.Print(this.Name.ToString() + ": targeting: " + _currentTarget.Name.ToString());
 			}
 		}
+    }
+
+    private void UpdateTargetLocation(Node3D target)
+    {
+        _navAgent.TargetPosition = target.GlobalPosition;
     }
 
 	public void applyDamage(float damage)

@@ -10,7 +10,7 @@ albedo_color = Color(0.631373, 0, 0.0588235, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_esdvy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xueoj"]
-radius = 1.0
+radius = 2.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rhxi8"]
 
@@ -221,6 +221,10 @@ libraries = {
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_fkicl")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+debug_enabled = true
+debug_path_custom_color = Color(0.804967, 0.0628221, 0.216745, 1)
 
 [connection signal="body_entered" from="SensorArea" to="." method="_on_sensor_range_body_entered"]
 [connection signal="body_exited" from="SensorArea" to="." method="_on_sensor_area_body_exited"]

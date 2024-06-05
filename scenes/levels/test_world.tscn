@@ -9,12 +9,12 @@
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5w772"]
 ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 
-[sub_resource type="Sky" id="Sky_6oxbw"]
+[sub_resource type="Sky" id="Sky_fgrsg"]
 sky_material = SubResource("ProceduralSkyMaterial_5w772")
 
 [sub_resource type="Environment" id="Environment_uqe24"]
 background_mode = 2
-sky = SubResource("Sky_6oxbw")
+sky = SubResource("Sky_fgrsg")
 tonemap_mode = 2
 glow_enabled = true
 
