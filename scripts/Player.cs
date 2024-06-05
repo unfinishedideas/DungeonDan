@@ -44,12 +44,12 @@ public partial class Player : CharacterBody3D
     private Label3D _nametag;
     private AudioStreamPlayer3D _boltSFX;
 
-    private RichTextLabel _debugTextfield;
+    private Label _debugTextfield;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        _debugTextfield = GetNode<RichTextLabel>("debug_text");
+        _debugTextfield = GetNode<Label>("debug_text");
         if (OS.IsDebugBuild() == true)
         {
             _debugTextfield.Visible = true;
@@ -147,7 +147,7 @@ public partial class Player : CharacterBody3D
         // Are we the local player?
         if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
         {
-            _debugTextfield.Text = "DEBUG";
+            _debugTextfield.Text = $"{Multiplayer.GetUniqueId()}";
             // Movement code ---------------------------------------------------
             Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();

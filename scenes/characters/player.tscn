@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bn1o0e0w6iimt"]
+[gd_scene load_steps=15 format=3 uid="uid://bn1o0e0w6iimt"]
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_1tq64"]
 [ext_resource type="PackedScene" uid="uid://c3hm5n64bxe2d" path="res://scenes/weapons/bolt.tscn" id="2_f2562"]
@@ -133,6 +133,10 @@ properties/3/path = NodePath(".:rotation")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
+[sub_resource type="LabelSettings" id="LabelSettings_sbxos"]
+font_size = 12
+shadow_color = Color(0, 0, 0, 1)
+
 [node name="Player" type="CharacterBody3D" groups=["players"]]
 script = ExtResource("1_1tq64")
 Bolt = ExtResource("2_f2562")
@@ -196,11 +200,14 @@ stream = ExtResource("5_8cl5s")
 volume_db = -5.0
 bus = &"SFX"
 
-[node name="debug_text" type="RichTextLabel" parent="."]
-visible = false
-offset_top = -1.0
-offset_right = 628.0
-offset_bottom = 425.0
-text = "DEBUG STUFF GOES HERE"
+[node name="debug_text" type="Label" parent="."]
+offset_left = 1478.0
+offset_top = 950.0
+offset_right = 1917.0
+offset_bottom = 1075.0
+text = "DEBUG TEXT GOES HERE"
+label_settings = SubResource("LabelSettings_sbxos")
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
