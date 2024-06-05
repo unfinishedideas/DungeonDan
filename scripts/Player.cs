@@ -8,13 +8,14 @@ public partial class Player : CharacterBody3D
     public const float MAX_SPEED = 32.0f;
     public const float WALK_SPEED = 12f;
     //public const float STOP_SPEED = 10f;
-    public const float GRAVITY = 80f;
+    public float GRAVITY = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
     public const float ACCELERATE = 100f;
     //public const float AIR_ACCELERATE = 100f;
     //public const float WATER_ACCELERATE = 0.15f;
-    public const float FRICTION = 60f;
+    public const float FRICTION = 80f;
     //public const float WATER_FRICTION = 12f;
-    public const float JUMP_FORCE = 27f;
+    [Export]
+    public float JUMP_FORCE = 14f;
     public const float AIR_CONTROL = .8f;
     //public const float STEP_SIZE = 1.8f;
     //public const float MAX_HANG = 0.2f;
@@ -22,11 +23,10 @@ public partial class Player : CharacterBody3D
     //public const float CROUCH_HEIGHT = 2.0f;
 
     public float MouseSensitivity = 0.005f;
-    [Export]
 
+    [Export]
     public float SyncWeight = 0.5f;
     [Export]
-
     public PackedScene Bolt;
 
     //public float Gravity = 20;
@@ -50,7 +50,7 @@ public partial class Player : CharacterBody3D
     public override void _Ready()
     {
         _debugTextfield = GetNode<RichTextLabel>("debug_text");
-        if (GameManager.DebugMode == true)
+        if (OS.IsDebugBuild() == true)
         {
             _debugTextfield.Visible = true;
         }
@@ -148,7 +148,6 @@ public partial class Player : CharacterBody3D
         if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
         {
             _debugTextfield.Text = "DEBUG";
-
             // Movement code ---------------------------------------------------
             Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
             Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
