@@ -7,15 +7,15 @@ public partial class Player : CharacterBody3D
 {
     public const float MAX_SPEED = 32.0f;
     public const float WALK_SPEED = 12f;
-    public const float STOP_SPEED = 10f;
+    //public const float STOP_SPEED = 10f;
     public const float GRAVITY = 80f;
     public const float ACCELERATE = 100f;
-    public const float AIR_ACCELERATE = 100f;
+    //public const float AIR_ACCELERATE = 100f;
     //public const float WATER_ACCELERATE = 0.15f;
     public const float FRICTION = 60f;
     //public const float WATER_FRICTION = 12f;
     public const float JUMP_FORCE = 27f;
-    public const float AIR_CONTROL = 99f;
+    public const float AIR_CONTROL = .8f;
     //public const float STEP_SIZE = 1.8f;
     //public const float MAX_HANG = 0.2f;
     //public const float PLAYER_HEIGHT = 3.6f;
@@ -121,7 +121,6 @@ public partial class Player : CharacterBody3D
             velocity.X = Mathf.MoveToward(velocity.X, 0, (float)delta * FRICTION);
             velocity.Z = Mathf.MoveToward(velocity.Z, 0, (float)delta * FRICTION);
         }
-
         return velocity;
     }
 
@@ -131,11 +130,14 @@ public partial class Player : CharacterBody3D
 
         // Add the Gravity.
         velocity.Y -= GRAVITY * (float)delta;
-
+        // Give the player limited Air Control
         if (direction != Vector3.Zero)
         {
-            velocity.X = Mathf.MoveToward(velocity.X, direction.X * WALK_SPEED, (float)delta * AIR_CONTROL);
-            velocity.Z = Mathf.MoveToward(velocity.Z, direction.Z * WALK_SPEED, (float)delta * AIR_CONTROL);
+            // something about this still feels off   
+            velocity.X = Mathf.Clamp(velocity.X + direction.X * AIR_CONTROL, -WALK_SPEED, WALK_SPEED);
+            velocity.Z = Mathf.Clamp(velocity.Z + direction.Z * AIR_CONTROL, -WALK_SPEED, WALK_SPEED);
+            //velocity.X = Mathf.MoveToward(velocity.X, direction.X * WALK_SPEED * AIR_CONTROL, (float)delta * AIR_ACCELERATE);
+            //velocity.Z = Mathf.MoveToward(velocity.Z, direction.Z * WALK_SPEED * AIR_CONTROL, (float)delta * AIR_ACCELERATE);
         }
         return velocity;
     }
