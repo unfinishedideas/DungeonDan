@@ -32,11 +32,10 @@ script = ExtResource("1_q8avc")
 environment = SubResource("Environment_l2fg1")
 
 [node name="Player" parent="." instance=ExtResource("3_nuuen")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.51584, 2, 21.3563)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.51584, 3.4668, 21.3563)
 
 [node name="EnemyBlob" parent="." instance=ExtResource("4_04mj7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.362394, 2.8382, -22.8668)
-Speed = 5.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.369388, 2.84643, -22.8664)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
@@ -51,6 +50,11 @@ navigation_mesh = SubResource("NavigationMesh_3jmqg")
 transform = Transform3D(0.915438, -0.402459, 0, 0.402459, 0.915438, 0, 0, 0, 1, 60.3711, 19.348, 0)
 use_collision = true
 size = Vector3(100, 1, 2.51)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.453276, 3.26815, -19.7461)
+use_collision = true
+size = Vector3(7.8941, 3.11377, 1)
 
 [node name="Killzone" parent="." instance=ExtResource("5_mb8ir")]
 

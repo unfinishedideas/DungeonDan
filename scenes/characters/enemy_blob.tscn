@@ -227,8 +227,8 @@ debug_enabled = true
 debug_path_custom_color = Color(0.804967, 0.0628221, 0.216745, 1)
 
 [node name="SightRay" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.517552)
-target_position = Vector3(0, 0, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.826696, 0.0270035)
+target_position = Vector3(0, 0, 5)
 debug_shape_custom_color = Color(0.405109, 0.238576, 1, 1)
 
 [connection signal="body_entered" from="SensorArea" to="." method="_on_sensor_range_body_entered"]

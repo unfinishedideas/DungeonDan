@@ -4,25 +4,25 @@ using System.Collections.Generic;
 
 public partial class enemy_blob : CharacterBody3D
 {
-	[Export]
-	public float Speed = 5.0f;
-	[Export]
-	public float MaxHp = 40f;
-	public float CurrentHp;
+    [Export]
+    public float Speed = 5.0f;
+    [Export]
+    public float MaxHp = 40f;
+    public float CurrentHp;
 
-	private Area3D _sensorArea;
-	private Node3D _currentTarget;
+    private Area3D _sensorArea;
+    private Node3D _currentTarget;
     private List<Node3D> _targetList = new List<Node3D>();
-	private AnimationPlayer _player;
+    private AnimationPlayer _player;
     private NavigationAgent3D _navAgent;
     private RayCast3D _sightRay;
 
     public override void _Ready()
     {
-		_sensorArea = GetNode<Area3D>("SensorArea");
-		_currentTarget = null;
-		CurrentHp = MaxHp;
-		_player = GetNode<AnimationPlayer>("AnimationPlayer");
+        _sensorArea = GetNode<Area3D>("SensorArea");
+        _currentTarget = null;
+        CurrentHp = MaxHp;
+        _player = GetNode<AnimationPlayer>("AnimationPlayer");
         _navAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
         _sightRay = GetNode<RayCast3D>("SightRay");
     }
@@ -31,19 +31,16 @@ public partial class enemy_blob : CharacterBody3D
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
     public override void _PhysicsProcess(double delta)
-	{
-		Vector3 velocity = Velocity;
+    {
+        Vector3 velocity = Velocity;
 
-		// If we are targeting a player, and they haven't disconnected, nav toward them
-		if (IsInstanceValid(_currentTarget) && _currentTarget != null)
+        // If we are targeting a player, and they haven't disconnected, nav toward them
+        if (_targetList.Count != 0)
         {
-            if (IsTargetInLineOfSight(_currentTarget))
+            UpdateCurrentTarget();
+            if (IsInstanceValid(_currentTarget) && _currentTarget != null)
             {
                 UpdateTargetLocation(_currentTarget);
-            }
-            else
-            {
-                UpdateCurrentTarget();
             }
         }
         Vector3 destination = _navAgent.GetNextPathPosition();
@@ -66,11 +63,11 @@ public partial class enemy_blob : CharacterBody3D
         MoveAndSlide();
     }
 
-	private void UpdateCurrentTarget()
-	{
-		// enumerate potential targets and get the cloest one
-		_currentTarget = null;
-		float closestDistance = float.MaxValue;
+    private void UpdateCurrentTarget()
+    {
+        // enumerate potential targets and get the cloest one
+        _currentTarget = null;
+        float closestDistance = float.MaxValue;
 
         if (_sensorArea.Monitoring)
         {
@@ -85,32 +82,21 @@ public partial class enemy_blob : CharacterBody3D
                 }
             }
         }
-		if (_currentTarget == null) 
-		{
-			GD.Print(this.Name.ToString() + ": Target lost");
-		}
-		else
-		{
-			GD.Print(this.Name.ToString() + ": targeting: " + _currentTarget.Name.ToString());
-		}
     }
 
     private bool IsTargetInLineOfSight(Node3D target)
     {
         Vector3 local_destination = target.GlobalPosition - GlobalPosition;
         Vector3 direction = local_destination.Normalized();
-        _sightRay.TargetPosition = direction;
-        if (_sightRay.IsColliding())
+        float distanceFromTarget = this.GlobalPosition.DistanceTo(target.GlobalPosition);
+        _sightRay.TargetPosition = direction * distanceFromTarget; 
+
+        GodotObject collided_object = _sightRay.GetCollider();
+        if (collided_object == target)
         {
-            GD.Print("Colliding!");
-            //return true;
+            return true;
         }
-        else
-        {
-            GD.Print("Not Colliding!");
-            //return false;
-        }
-        return true;
+        return false;
     }
 
     private void UpdateTargetLocation(Node3D target)
@@ -118,25 +104,25 @@ public partial class enemy_blob : CharacterBody3D
         _navAgent.TargetPosition = target.GlobalPosition;
     }
 
-	public void applyDamage(float damage)
-	{
-		GD.Print("TAKING DAMAGE: " + damage.ToString());
-		CurrentHp -= damage;
-		if (CurrentHp <= 0)
-		{
-			Die();
-		}
+    public void applyDamage(float damage)
+    {
+        GD.Print("TAKING DAMAGE: " + damage.ToString());
+        CurrentHp -= damage;
+        if (CurrentHp <= 0)
+        {
+            Die();
+        }
     }
 
-	public void Die()
-	{
-		GD.Print(this.Name.ToString() + ": has died!");
-		_player.Play("die");
-	}
+    public void Die()
+    {
+        GD.Print(this.Name.ToString() + ": has died!");
+        _player.Play("die");
+    }
 
-	// signals
-	public void _on_sensor_range_body_entered(Node3D body)
-	{
+    // signals
+    public void _on_sensor_range_body_entered(Node3D body)
+    {
         if (body.IsInGroup("players"))
         {
             if (!_targetList.Contains(body))
@@ -144,20 +130,20 @@ public partial class enemy_blob : CharacterBody3D
                 _targetList.Add(body);
                 UpdateCurrentTarget();
             }
-		}
-	}
+        }
+    }
 
-	public void _on_sensor_area_body_exited(Node3D body)
-	{
-		if (body.IsInGroup("players"))
-		{
+    public void _on_sensor_area_body_exited(Node3D body)
+    {
+        if (body.IsInGroup("players"))
+        {
             if (_targetList.Contains(body))
             {
                 _targetList.Remove(body);
                 UpdateCurrentTarget();
             }
-		}
-	}
+        }
+    }
 
     // used for debugging purposes
     private void PrintTargetList()
@@ -170,29 +156,29 @@ public partial class enemy_blob : CharacterBody3D
     }
 
     public void _on_hitbox_body_entered(Node3D body)
-	{
-		if (body.IsInGroup("players"))
-		{
-			GD.Print("You should get hurt here");
-		}
-	}
+    {
+        if (body.IsInGroup("players"))
+        {
+            GD.Print("You should get hurt here");
+        }
+    }
 
-	public void _on_hitbox_area_entered(Area3D area)
-	{
-		if (area.IsInGroup("projectiles"))
-		{
-			float damage = 0f;
-			switch(area.GetOwner<Node3D>().GetType().ToString())
-			{
-				case "bolt":
-					bolt temp = new bolt();
-					damage = temp.Damage;
-					break;
-				default:
-					break;
-			}
-			applyDamage(damage);
-		}
-	}
-	
+    public void _on_hitbox_area_entered(Area3D area)
+    {
+        if (area.IsInGroup("projectiles"))
+        {
+            float damage = 0f;
+            switch(area.GetOwner<Node3D>().GetType().ToString())
+            {
+                case "bolt":
+                    bolt temp = new bolt();
+                    damage = temp.Damage;
+                    break;
+                default:
+                    break;
+            }
+            applyDamage(damage);
+        }
+    }
+
 }
