@@ -263,7 +263,6 @@ _data = {
 script = ExtResource("1_adank")
 _impactSphereMesh = NodePath("ImpactSphereMesh")
 _player = NodePath("AnimationPlayer")
-FlightTime = 10.0
 _ray = NodePath("RayCast3D")
 
 [node name="ImpactParticles" type="GPUParticles3D" parent="."]

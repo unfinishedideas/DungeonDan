@@ -16,13 +16,11 @@ public partial class Bolt : Projectile
 
     public void _on_flight_time_expired()
     {
-        GD.Print("flight time expired");
         _player.Play("queue_free");
     }
 
     public void _on_hit_something()
     {
-        GD.Print("hit something");
         _impactSphereMesh.GlobalTransform = this.Transform;
         PlayHitEffects();
     }

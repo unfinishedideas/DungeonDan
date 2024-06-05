@@ -208,6 +208,7 @@ shape = SubResource("SphereShape3D_esdvy")
 
 [node name="SensorArea" type="Area3D" parent="." groups=["enemy_sensor_area"]]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -0.0117397, -9.53674e-07, -0.0142946)
+collision_layer = 2147483648
 
 [node name="SensorCollider" type="CollisionShape3D" parent="SensorArea"]
 shape = SubResource("SphereShape3D_xueoj")

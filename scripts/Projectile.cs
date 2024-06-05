@@ -45,66 +45,41 @@ public partial class Projectile : Node3D
     {
         if (!_destroyed)
         {
-            // Move the bolt
-            var distance = _velocity.Length() * delta;
-            Vector3 delta_velocity = new Vector3(_velocity.X * (float)delta, _velocity.Y * (float)delta, _velocity.Z * (float)delta);
-
-            this.Transform = this.Transform.Translated(delta_velocity);
-
-            // Change the ray start position to the bullets's previous position
-            // NOTE: The ray is backwards, so if it is hitting multiple targets, we
-            // get the target closest to the bullet start position.
-            // Also make the ray at least the min length
-            Vector3 targetPos = _ray.TargetPosition;
-            Transform3D rayTransform = _ray.Transform;
-            if (distance > MinRaycastDistance)
-            {
-                targetPos.Z = -(float)distance;
-                rayTransform.Origin.Z = (float)distance;
-            }
-            else
-            {
-                targetPos.Z = -MinRaycastDistance;
-                rayTransform.Origin.Z = MinRaycastDistance;
-            }
-            _ray.TargetPosition = targetPos;
-            _ray.Transform = rayTransform;
-
-            // Check if bolt hit something
-            // update this!
-            _ray.ForceRaycastUpdate();
-            if (_ray.IsColliding())
-            {
-                var collider = (Node)_ray.GetCollider();
-                if (!collider.IsInGroup("enemy_sensor_area"))
-                {
-                    if (collider.IsInGroup("enemy_hitbox"))
-                    {
-                        GD.Print("HIT ENEMY");
-                    }
-                    if (collider.IsInGroup("players"))
-                    {
-                        GD.Print("That's a player, dog");
-                    }
-                    // move bolt back to the impact point
-                    Transform3D boltTransform = this.Transform;
-                    boltTransform.Origin = _ray.GetCollisionPoint();
-                    this.GlobalTransform = boltTransform;
-                    EmitSignal(SignalName.HitSomething);
-                    _destroyed = true;
-                }
-            }
+            MoveBolt(delta);
         }
     }
 
-    public void _on_area_3d_body_entered(Node3D body)
+    public void MoveBolt(double delta)
     {
-        HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("Components/HitboxComponent");
-        if (hitbox != null)
-        {
-            hitbox.Damage(Attack);
-        }
+        // Move the bolt
+        var distance = _velocity.Length() * delta;
+        Vector3 delta_velocity = new Vector3(_velocity.X * (float)delta, _velocity.Y * (float)delta, _velocity.Z * (float)delta);
 
+        this.Transform = this.Transform.Translated(delta_velocity);
+
+        // Change the ray start position to the bullets's previous position
+        // NOTE: The ray is backwards, so if it is hitting multiple targets, we
+        // get the target closest to the bullet start position.
+        // Also make the ray at least the min length
+        Vector3 targetPos = _ray.TargetPosition;
+        Transform3D rayTransform = _ray.Transform;
+        if (distance > MinRaycastDistance)
+        {
+            targetPos.Z = -(float)distance;
+            rayTransform.Origin.Z = (float)distance;
+        }
+        else
+        {
+            targetPos.Z = -MinRaycastDistance;
+            rayTransform.Origin.Z = MinRaycastDistance;
+        }
+        _ray.TargetPosition = targetPos;
+        _ray.Transform = rayTransform;
+        _ray.ForceRaycastUpdate();
+        if (_ray.IsColliding())
+        {
+            EmitSignal(SignalName.HitSomething);
+        }
     }
 
     public void ExpireFlightTime()
@@ -113,5 +88,20 @@ public partial class Projectile : Node3D
         EmitSignal(SignalName.FlightTimeExpired);
     }
 
+    // Signals ----------------------------------------------------------------
+    public void _on_area_3d_body_entered(Node3D body)
+    {
+        EmitSignal(SignalName.HitSomething);
+
+        Transform3D projectileTransform = this.Transform;
+        projectileTransform.Origin = _ray.GetCollisionPoint();
+        this.GlobalTransform = projectileTransform;
+
+        HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("Components/HitboxComponent");
+        if (hitbox != null)
+        {
+            hitbox.Damage(Attack);
+        }
+    }
 }
 
