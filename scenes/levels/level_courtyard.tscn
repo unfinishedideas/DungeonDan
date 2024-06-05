@@ -7,7 +7,7 @@
 [ext_resource type="Material" uid="uid://dj4vk08dhmymw" path="res://assets/materials/wall01.tres" id="3_nxdmr"]
 [ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://assets/materials/trunk01.tres" id="5_bh4pt"]
 [ext_resource type="Material" uid="uid://l3c86y3h6ba8" path="res://assets/materials/treetop01.tres" id="6_nqprq"]
-[ext_resource type="PackedScene" uid="uid://bct62c0lhwdkj" path="res://scenes/scenery/torch.tscn" id="8_rb3ed"]
+[ext_resource type="PackedScene" uid="uid://bct62c0lhwdkj" path="res://scenes/scenery/standing_torch.tscn" id="8_rb3ed"]
 [ext_resource type="PackedScene" uid="uid://cjt1mg3hshqfo" path="res://scenes/misc/killzone.tscn" id="9_xfjns"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_wioxh"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bct62c0lhwdkj"]
 
-[ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://assets/materials/trunk01.tres" id="1_g53wg"]
-[ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="1_q7hd3"]
+[ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://assets/materials/trunk01.tres" id="1_syuu8"]
+[ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="2_pnsfr"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4qel"]
 emission_shape = 1
@@ -9,18 +9,18 @@ emission_sphere_radius = 0.05
 gravity = Vector3(0, 9.8, 0)
 
 [sub_resource type="SphereMesh" id="SphereMesh_3pmae"]
-material = ExtResource("1_q7hd3")
+material = ExtResource("2_pnsfr")
 radius = 0.05
 height = 0.1
 
-[node name="torch" type="Node3D"]
+[node name="standing_torch" type="Node3D"]
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
 use_collision = true
 radius = 0.043
 height = 1.77
-material = ExtResource("1_g53wg")
+material = ExtResource("1_syuu8")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
