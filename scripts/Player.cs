@@ -77,7 +77,7 @@ public partial class Player : CharacterBody3D
         _projectileRaycast = GetNode<RayCast3D>("camera/ProjectileRaycast");
         _aimMarker = GetNode<Marker3D>("camera/AimMarker");
         _boltSFX = GetNode<AudioStreamPlayer3D>("SFX/BoltFire");
-        Bolt = GD.Load<PackedScene>("res://scenes/weapons/bolt.tscn");
+        Bolt = GD.Load<PackedScene>("res://scenes/weapons/Bolt.tscn");
 
         if (IsCurrentPlayerMPAuth())
         {

@@ -9,9 +9,7 @@ public class Attack
    [Export]
    public float KnockbackForce = 5f;
 
-   public Attack()
-   {
-   }
+   public Attack(){}
 
    public Attack(float damage, float knockback)
    {

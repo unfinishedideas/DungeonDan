@@ -3,7 +3,6 @@ using System;
 
 public partial class HealthComponent : Node
 {
-
     [Export]
     public float MaxHealth = 100;
     private float _health;

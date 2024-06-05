@@ -1,132 +1,48 @@
 using Godot;
 using System;
 
-
-public partial class Bolt : Projectile
-{
-    [Export]
-    private MeshInstance3D _impactSphereMesh;
-    [Export]
-    private AnimationPlayer _player;
-
-    public void PlayHitEffects()
-    {
-        _player = GetNode<AnimationPlayer>("AnimationPlayer");
-        _player.Play("destroy");
-    }
-
-    public void _on_flight_time_expired()
-    {
-        GD.Print("flight time expired");
-        _player.Play("queue_free");
-    }
-
-    public void _on_hit_something()
-    {
-        GD.Print("hit something");
-        _impactSphereMesh.GlobalTransform = this.Transform;
-        PlayHitEffects();
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
 // Some reference from here: https://github.com/ImmersiveRPG/ExampleRaycastBullets/blob/master/project/src/Bullet/Bullet.gd
 // https://www.youtube.com/watch?v=joMBVo_ZwKI
 
-public partial class bolt : Node3D
+public partial class Projectile : Node3D
 {
     [Export]
-    public const float Speed = -80.0f; // original value 100
+    public float Speed = -80.0f;
     [Export]
     public float Damage = 10f;
     [Export]
     public float Knockback = 5f;
-    public Attack Attack;
+    [Export]
+    public float FlightTime = 10f;
+    [Export]
+    private RayCast3D _ray;
 
+    [Signal]
+    public delegate void FlightTimeExpiredEventHandler();
+    [Signal]
+    public delegate void HitSomethingEventHandler();
+
+    public Attack Attack;
+    private Timer FlightTimer;
     private const float MinRaycastDistance = 0.05f;
     private Vector3 _velocity;
-    private RayCast3D _ray;
     private bool _destroyed = false;
-    private MeshInstance3D _impactSphereMesh;
-    private AnimationPlayer _player;
-
-    //[Signal] public delegate void BoltCollidedEventHandler(float damage);
 
     public override void _Ready()
     {
+        FlightTimer = new Timer();
+        AddChild(FlightTimer);
+        FlightTimer.WaitTime = FlightTime;
+        FlightTimer.OneShot = true;
+        FlightTimer.Timeout += () => ExpireFlightTime();
+        FlightTimer.Start();
+
         Attack = new Attack(Damage, Knockback);
         _velocity = this.Transform.Basis.Z * Speed;
-        _ray = GetNode<RayCast3D>("RayCast3D");
-        _impactSphereMesh = GetNode<MeshInstance3D>("ImpactSphereMesh");
-        _player = GetNode<AnimationPlayer>("AnimationPlayer");
     }
 
     public override void _PhysicsProcess(double delta)
-	{
+    {
         if (!_destroyed)
         {
             // Move the bolt
@@ -155,6 +71,7 @@ public partial class bolt : Node3D
             _ray.Transform = rayTransform;
 
             // Check if bolt hit something
+            // update this!
             _ray.ForceRaycastUpdate();
             if (_ray.IsColliding())
             {
@@ -164,7 +81,6 @@ public partial class bolt : Node3D
                     if (collider.IsInGroup("enemy_hitbox"))
                     {
                         GD.Print("HIT ENEMY");
-                        //EmitSignal(SignalName.BoltCollided, Damage);
                     }
                     if (collider.IsInGroup("players"))
                     {
@@ -174,35 +90,28 @@ public partial class bolt : Node3D
                     Transform3D boltTransform = this.Transform;
                     boltTransform.Origin = _ray.GetCollisionPoint();
                     this.GlobalTransform = boltTransform;
-                    _impactSphereMesh.GlobalTransform = boltTransform;
-                    // Hit object
-                    PlayHitEffects();
+                    EmitSignal(SignalName.HitSomething);
+                    _destroyed = true;
                 }
             }
         }
     }
 
-    public void PlayHitEffects()
-    {
-        _player.Play("destroy");
-        _destroyed = true;
-    }
-
-    public void _on_bolt_life_timer_timeout()
-    {
-        _player.Play("queue_free");
-    }
-
     public void _on_area_3d_body_entered(Node3D body)
     {
-        GD.Print($"{body}");
         HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("Components/HitboxComponent");
-
         if (hitbox != null)
         {
             hitbox.Damage(Attack);
         }
+
+    }
+
+    public void ExpireFlightTime()
+    {
+        _destroyed = true;
+        EmitSignal(SignalName.FlightTimeExpired);
     }
 
 }
-*/
+

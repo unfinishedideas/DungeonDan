@@ -194,11 +194,10 @@ properties/1/path = NodePath("AnimationPlayer:current_animation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hitboxComponent")]
+[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
 script = ExtResource("1_dgwge")
 _healthComponent = NodePath("Components/HealthComponent")
-_hitboxComponent = NodePath("")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_08y2i")
@@ -217,6 +216,7 @@ shape = SubResource("SphereShape3D_xueoj")
 
 [node name="HitboxCollider" type="CollisionShape3D" parent="Hitbox"]
 shape = SubResource("BoxShape3D_rhxi8")
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -238,12 +238,14 @@ debug_shape_custom_color = Color(0.405109, 0.238576, 1, 1)
 [node name="Components" type="Node" parent="."]
 
 [node name="HitboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_xnl0s")]
+unique_name_in_owner = true
 _healthComponent = NodePath("../HealthComponent")
 
 [node name="HitboxCollider" type="CollisionShape3D" parent="Components/HitboxComponent"]
 shape = SubResource("BoxShape3D_rhxi8")
 
 [node name="HealthComponent" parent="Components" instance=ExtResource("2_utltq")]
+unique_name_in_owner = true
 
 [connection signal="body_entered" from="SensorArea" to="." method="_on_sensor_range_body_entered"]
 [connection signal="body_exited" from="SensorArea" to="." method="_on_sensor_area_body_exited"]

@@ -112,6 +112,16 @@ public partial class enemy_blob : CharacterBody3D
         _player.Play("die");
     }
 
+    // used for debugging purposes
+    private void PrintTargetList()
+    {
+        GD.Print("Current target list:");
+        foreach (Node3D target in _targetList)
+        {
+            GD.Print($"{target.Name}");
+        }
+    }
+
     // signals ----------------------------------------------------------------
     public void _on_sensor_range_body_entered(Node3D body)
     {
@@ -137,16 +147,6 @@ public partial class enemy_blob : CharacterBody3D
         }
     }
 
-    // used for debugging purposes
-    private void PrintTargetList()
-    {
-        GD.Print("Current target list:");
-        foreach (Node3D target in _targetList)
-        {
-            GD.Print($"{target.Name}");
-        }
-    }
-
     public void _on_hitbox_body_entered(Node3D body)
     {
         if (body.IsInGroup("players"))
@@ -162,8 +162,8 @@ public partial class enemy_blob : CharacterBody3D
             float damage = 0f;
             switch(area.GetOwner<Node3D>().GetType().ToString())
             {
-                case "bolt":
-                    bolt temp = new bolt();
+                case "Bolt":
+                    Bolt temp = new Bolt();
                     damage = temp.Damage;
                     break;
                 default:
