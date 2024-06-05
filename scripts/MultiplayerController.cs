@@ -106,7 +106,7 @@ public partial class MultiplayerController : Control
 		{
 			GD.Print(item.Name + " is playing");
 		}
-		var scene = ResourceLoader.Load<PackedScene>("res://scenes/levels/test_world.tscn").Instantiate<Node>();
+		var scene = ResourceLoader.Load<PackedScene>("res://scenes/levels/test_world_mp.tscn").Instantiate<Node>();
 		GetTree().Root.AddChild(scene);
 		Hide();
 	}
