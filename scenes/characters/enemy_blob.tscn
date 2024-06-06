@@ -245,3 +245,5 @@ debug_path_custom_color = Color(0.804967, 0.0628221, 0.216745, 1)
 [connection signal="body_entered" from="Components/HitboxComponent" to="." method="_on_hitbox_component_body_entered"]
 [connection signal="DeathSignal" from="Components/HealthComponent" to="." method="_on_health_component_death_signal"]
 [connection signal="TookDamage" from="Components/HealthComponent" to="." method="_on_health_component_took_damage"]
+[connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
+[connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]

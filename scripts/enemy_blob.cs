@@ -53,7 +53,6 @@ public partial class enemy_blob : CharacterBody3D
     public void MoveTowardTarget()
     {
         Vector3 velocity = Velocity;
-        _direction = _sensorAreaComponent.Direction;
         if (_direction != Vector3.Zero)
         {
             velocity.X = _direction.X * Speed;
@@ -125,5 +124,15 @@ public partial class enemy_blob : CharacterBody3D
         {
             hitbox.Damage(Attack1);
         }
+    }
+
+    public void _on_sensor_area_component_update_direction(Vector3 newDirection)
+    {
+        _direction = newDirection;
+    }
+
+    public void _on_sensor_area_component_nav_target_reached()
+    {
+        _direction = Vector3.Zero;
     }
 }
