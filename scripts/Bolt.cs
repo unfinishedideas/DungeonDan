@@ -19,9 +19,9 @@ public partial class Bolt : Projectile
         _player.Play("queue_free");
     }
 
-    public void _on_hit_something()
+    public void _on_hit_something_signal()
     {
-        _impactSphereMesh.GlobalTransform = this.Transform;
+        _impactSphereMesh.GlobalTransform = this.GlobalTransform;
         PlayHitEffects();
     }
 }

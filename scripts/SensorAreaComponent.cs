@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public partial class SensorAreaComponent : Area3D
 {
-
     [Export]
     public NavigationAgent3D _navAgent;
     [Export]
@@ -22,30 +21,6 @@ public partial class SensorAreaComponent : Area3D
         this.BodyExited += (Node3D body) => CustomBodyExited(body);
         Direction = Vector3.Zero;
 	}
-
-    public void CustomBodyEntered(Node3D body)
-    {
-        if (body.IsInGroup("players"))
-        {
-            if (!_targetList.Contains(body))
-            {
-                _targetList.Add(body);
-                UpdateCurrentTarget();
-            }
-        }
-    }
-
-    public void CustomBodyExited(Node3D body)
-    {
-        if (body.IsInGroup("players"))
-        {
-            if (_targetList.Contains(body))
-            {
-                _targetList.Remove(body);
-                UpdateCurrentTarget();
-            }
-        }
-    }
 
 	public override void _Process(double delta)
     {
@@ -112,6 +87,31 @@ public partial class SensorAreaComponent : Area3D
         foreach (Node3D target in _targetList)
         {
             GD.Print($"{target.Name}");
+        }
+    }
+
+    // Signals ----------------------------------------------------------------
+    public void CustomBodyEntered(Node3D body)
+    {
+        if (body.IsInGroup("players"))
+        {
+            if (!_targetList.Contains(body))
+            {
+                _targetList.Add(body);
+                UpdateCurrentTarget();
+            }
+        }
+    }
+
+    public void CustomBodyExited(Node3D body)
+    {
+        if (body.IsInGroup("players"))
+        {
+            if (_targetList.Contains(body))
+            {
+                _targetList.Remove(body);
+                UpdateCurrentTarget();
+            }
         }
     }
 }

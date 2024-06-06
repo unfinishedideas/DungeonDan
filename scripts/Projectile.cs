@@ -20,7 +20,7 @@ public partial class Projectile : Node3D
     [Signal]
     public delegate void FlightTimeExpiredEventHandler();
     [Signal]
-    public delegate void HitSomethingEventHandler();
+    public delegate void HitSomethingSignalEventHandler();
 
     public Attack Attack;
     private Timer FlightTimer;
@@ -78,34 +78,40 @@ public partial class Projectile : Node3D
         _ray.ForceRaycastUpdate();
         if (_ray.IsColliding())
         {
-            EmitSignal(SignalName.HitSomething);
-            _destroyed = true;
+            HitSomething();
         }
+    }
+
+    private void HitSomething(Node3D body = null)
+    {
+        _destroyed = true;
+
+        // Move the projectile to where it collided
+        Transform3D projectileTransform = this.Transform;
+        projectileTransform.Origin = _ray.GetCollisionPoint();
+        this.GlobalTransform = projectileTransform;
+        if (body != null)
+        {
+            // Determine if it is a hitbox note: component must have unique name selectable
+            HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
+            if (hitbox != null)
+            {
+                hitbox.Damage(Attack);
+            }
+        }
+        EmitSignal(SignalName.HitSomethingSignal);
     }
 
     public void ExpireFlightTime()
     {
         _destroyed = true;
-        FlightTimer.Timeout -= () => ExpireFlightTime();
         EmitSignal(SignalName.FlightTimeExpired);
     }
 
     // Signals ----------------------------------------------------------------
     public void _on_area_3d_body_entered(Node3D body)
     {
-        EmitSignal(SignalName.HitSomething);
-
-        // Move the projectile to where it collided
-        Transform3D projectileTransform = this.Transform;
-        projectileTransform.Origin = _ray.GetCollisionPoint();
-        this.GlobalTransform = projectileTransform;
-
-        // Determine if it is a hitbox note: component must have unique name selectable
-        HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
-        if (hitbox != null)
-        {
-            hitbox.Damage(Attack);
-        }
+        HitSomething(body);
     }
 }
 
