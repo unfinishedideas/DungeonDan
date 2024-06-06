@@ -7,7 +7,7 @@
 [sub_resource type="SphereMesh" id="SphereMesh_08y2i"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_87anl"]
-albedo_color = Color(0.631373, 0, 0.0588235, 1)
+albedo_color = Color(0.6, 0, 0.0599999, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_esdvy"]
 
@@ -254,3 +254,4 @@ unique_name_in_owner = true
 [connection signal="body_exited" from="SensorArea" to="." method="_on_sensor_area_body_exited"]
 [connection signal="body_entered" from="Components/HitboxComponent" to="." method="_on_hitbox_component_body_entered"]
 [connection signal="DeathSignal" from="Components/HealthComponent" to="." method="_on_health_component_death_signal"]
+[connection signal="TookDamage" from="Components/HealthComponent" to="." method="_on_health_component_took_damage"]

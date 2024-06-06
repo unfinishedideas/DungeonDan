@@ -21,9 +21,11 @@ public partial class enemy_blob : CharacterBody3D
     private AnimationPlayer _player;
     private NavigationAgent3D _navAgent;
     private RayCast3D _sightRay;
+    private MeshInstance3D _mesh;
 
     public override void _Ready()
     {
+        _mesh =  GetNode<MeshInstance3D>("MeshInstance3D");
         _sensorArea = GetNode<Area3D>("SensorArea");
         _currentTarget = null;
         _player = GetNode<AnimationPlayer>("AnimationPlayer");
@@ -124,6 +126,21 @@ public partial class enemy_blob : CharacterBody3D
         }
     }
 
+    // Darkens the blob's color as it takes damage
+    private void UpdateBlobColor()
+    {
+        float value = _healthComponent.Health / _healthComponent.MaxHealth;
+        Material meshMaterial  = _mesh.GetSurfaceOverrideMaterial(0);
+        if (meshMaterial is StandardMaterial3D)
+        {
+            StandardMaterial3D meshSMaterial = (StandardMaterial3D)meshMaterial;
+            Color newColor = meshSMaterial.AlbedoColor;
+            newColor.V = value;
+            meshSMaterial.AlbedoColor = newColor;
+            _mesh.SetSurfaceOverrideMaterial(0, meshSMaterial);
+        }
+    }
+
     // signals ----------------------------------------------------------------
     public void _on_sensor_range_body_entered(Node3D body)
     {
@@ -152,6 +169,12 @@ public partial class enemy_blob : CharacterBody3D
     public void _on_health_component_death_signal()
     {
         Die();
+    }
+
+    public void _on_health_component_took_damage()
+    {
+        GD.Print("Took damage!");
+        UpdateBlobColor();
     }
 
     public void _on_hitbox_component_body_entered(Node3D body)

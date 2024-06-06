@@ -9,6 +9,8 @@ public partial class HealthComponent : Node
 
     [Signal]
     public delegate void DeathSignalEventHandler();
+    [Signal]
+    public delegate void TookDamageEventHandler();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -18,6 +20,7 @@ public partial class HealthComponent : Node
 
     public void Damage(Attack attack)
     {
+        EmitSignal(SignalName.TookDamage);
         Health -= attack.Damage;
 
         if (Health <= 0)
