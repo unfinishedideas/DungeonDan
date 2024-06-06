@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://iyo1dmlgvbw"]
+
+[ext_resource type="Texture2D" uid="uid://kv2fa135wlgc" path="res://assets/textures/floor_metal_01.png" id="1_cn4sh"]
+
+[resource]
+albedo_texture = ExtResource("1_cn4sh")
+uv1_triplanar = true
+texture_filter = 0

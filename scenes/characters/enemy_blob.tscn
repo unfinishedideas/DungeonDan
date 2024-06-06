@@ -193,6 +193,7 @@ properties/1/spawn = true
 properties/1/replication_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cdn7i"]
+radius = 0.55
 
 [node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
