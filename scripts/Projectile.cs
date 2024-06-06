@@ -79,6 +79,7 @@ public partial class Projectile : Node3D
         if (_ray.IsColliding())
         {
             EmitSignal(SignalName.HitSomething);
+            _destroyed = true;
         }
     }
 
