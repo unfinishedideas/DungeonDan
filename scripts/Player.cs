@@ -95,7 +95,7 @@ public partial class Player : CharacterBody3D
     {
         if(Input.MouseMode == Input.MouseModeEnum.Captured)
         {
-            Input.MouseMode = Input.MouseModeEnum.Confined;
+            Input.MouseMode = Input.MouseModeEnum.Visible;
             _inGameControl = false;
         }
         else
@@ -294,7 +294,6 @@ public partial class Player : CharacterBody3D
 
     public void _on_pause_menu_quit_game()
     {
-        GD.Print("quit");
         EmitSignal(SignalName.Quit);
     }
 }

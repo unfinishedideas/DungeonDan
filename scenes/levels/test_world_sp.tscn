@@ -60,3 +60,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -26.056, 2.03794)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Killzone"]
 shape = SubResource("WorldBoundaryShape3D_oet4k")
+
+[connection signal="Quit" from="Player" to="." method="_on_player_quit"]

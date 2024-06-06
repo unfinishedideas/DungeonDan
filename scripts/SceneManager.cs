@@ -21,6 +21,7 @@ public partial class SceneManager : Node
 			currentPlayer.Name = item.Id.ToString();
 			currentPlayer.SetUpPlayer(item.Name);
 			AddChild(currentPlayer);
+            currentPlayer.Quit += _on_player_quit;
 
 			if (GameManager.IsMultiplayerGame == true)
 			{
