@@ -93,11 +93,13 @@ public partial class Projectile : Node3D
     {
         EmitSignal(SignalName.HitSomething);
 
+        // Move the projectile to where it collided
         Transform3D projectileTransform = this.Transform;
         projectileTransform.Origin = _ray.GetCollisionPoint();
         this.GlobalTransform = projectileTransform;
 
-        HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("Components/HitboxComponent");
+        // Determine if it is a hitbox note: component must have unique name selectable
+        HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
         if (hitbox != null)
         {
             hitbox.Damage(Attack);

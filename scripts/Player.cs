@@ -43,7 +43,7 @@ public partial class Player : CharacterBody3D
     private Marker3D _aimMarker;
     private Label3D _nametag;
     private AudioStreamPlayer3D _boltSFX;
-    private float _currentHP;
+    private HealthComponent _healthComponent;
 
     // UI nodes
     private Control _gui;
@@ -57,7 +57,7 @@ public partial class Player : CharacterBody3D
         _gui = GetNode<Control>("%gui");
         _debugLabel = _gui.GetNode<Label>("%debug_label");
         _hpLabel = _gui.GetNode<Label>("%hp_label");
-        _currentHP = 100f;
+        _healthComponent = GetNode<HealthComponent>("%HealthComponent");
 
         if (OS.IsDebugBuild() == true)
         {
@@ -182,8 +182,8 @@ public partial class Player : CharacterBody3D
             Velocity = velocity;
             MoveAndSlide();
 
-            // Update HP
-            _hpLabel.Text = $"{_currentHP:###}";
+            // Update HUD
+            _hpLabel.Text = $"{_healthComponent.Health:###}";
 
             // Sync for multiplayer
             SyncPos = GlobalPosition;

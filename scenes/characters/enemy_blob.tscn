@@ -14,8 +14,6 @@ albedo_color = Color(0.631373, 0, 0.0588235, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_xueoj"]
 radius = 2.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_rhxi8"]
-
 [sub_resource type="Animation" id="Animation_ccbuh"]
 length = 0.001
 tracks/0/type = "value"
@@ -39,7 +37,7 @@ tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [false]
 }
 tracks/2/type = "value"
@@ -69,7 +67,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Hitbox:monitoring")
+tracks/4/path = NodePath("Components/HitboxComponent:monitoring")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -81,7 +79,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Hitbox:monitorable")
+tracks/5/path = NodePath("Components/HitboxComponent:monitorable")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -114,7 +112,7 @@ tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [true]
 }
 tracks/2/type = "value"
@@ -141,22 +139,24 @@ tracks/3/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/4/type = "value"
+tracks/4/type = "method"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Hitbox:monitoring")
+tracks/4/path = NodePath(".")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(1),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Hitbox:monitorable")
+tracks/5/path = NodePath("Components/HitboxComponent:monitoring")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -165,19 +165,17 @@ tracks/5/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/6/type = "method"
+tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath(".")
+tracks/6/path = NodePath("Components/HitboxComponent:monitorable")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"queue_free"
-}]
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7b2ay"]
@@ -193,6 +191,8 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath("AnimationPlayer:current_animation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cdn7i"]
 
 [node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
@@ -216,12 +216,6 @@ collision_mask = 3
 [node name="SensorCollider" type="CollisionShape3D" parent="SensorArea"]
 shape = SubResource("SphereShape3D_xueoj")
 
-[node name="Hitbox" type="Area3D" parent="." groups=["enemy_hitbox"]]
-
-[node name="HitboxCollider" type="CollisionShape3D" parent="Hitbox"]
-shape = SubResource("BoxShape3D_rhxi8")
-disabled = true
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_7b2ay")
@@ -240,20 +234,22 @@ target_position = Vector3(0, 0, 5)
 collision_mask = 3
 debug_shape_custom_color = Color(0.405109, 0.238576, 1, 1)
 
-[node name="Components" type="Node" parent="."]
+[node name="Components" type="Node3D" parent="."]
 
 [node name="HitboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_xnl0s")]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+collision_layer = 8
+collision_mask = 14
 _healthComponent = NodePath("../HealthComponent")
 
-[node name="HitboxCollider" type="CollisionShape3D" parent="Components/HitboxComponent"]
-shape = SubResource("BoxShape3D_rhxi8")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
+shape = SubResource("SphereShape3D_cdn7i")
 
 [node name="HealthComponent" parent="Components" instance=ExtResource("2_utltq")]
 unique_name_in_owner = true
 
 [connection signal="body_entered" from="SensorArea" to="." method="_on_sensor_range_body_entered"]
 [connection signal="body_exited" from="SensorArea" to="." method="_on_sensor_area_body_exited"]
-[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
-[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="Components/HitboxComponent" to="." method="_on_hitbox_component_body_entered"]
 [connection signal="DeathSignal" from="Components/HealthComponent" to="." method="_on_health_component_death_signal"]

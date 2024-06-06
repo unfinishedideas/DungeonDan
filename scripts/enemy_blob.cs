@@ -13,6 +13,8 @@ public partial class enemy_blob : CharacterBody3D
     [Export]
     private HitboxComponent _hitboxComponent;
 
+    public Attack Attack1 = new Attack(10f, 0f);
+
     private Area3D _sensorArea;
     private Node3D _currentTarget;
     private List<Node3D> _targetList = new List<Node3D>();
@@ -147,34 +149,18 @@ public partial class enemy_blob : CharacterBody3D
         }
     }
 
-    public void _on_hitbox_body_entered(Node3D body)
-    {
-        if (body.IsInGroup("players"))
-        {
-            GD.Print("You should get hurt here");
-        }
-    }
-
-    public void _on_hitbox_area_entered(Area3D area)
-    {
-        if (area.IsInGroup("projectiles"))
-        {
-            float damage = 0f;
-            switch(area.GetOwner<Node3D>().GetType().ToString())
-            {
-                case "Bolt":
-                    Bolt temp = new Bolt();
-                    damage = temp.Damage;
-                    break;
-                default:
-                    break;
-            }
-            _healthComponent.Damage(new Attack(damage, 0f));
-        }
-    }
-
     public void _on_health_component_death_signal()
     {
         Die();
+    }
+
+    public void _on_hitbox_component_body_entered(Node3D body)
+    {
+        GD.Print($"OnHitboxComponentBodyEntered: {body}");
+        HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
+        if (hitbox != null)
+        {
+            hitbox.Damage(Attack1);
+        }
     }
 }
