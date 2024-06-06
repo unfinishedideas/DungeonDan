@@ -22,6 +22,7 @@ public partial class enemy_blob : CharacterBody3D
     private NavigationAgent3D _navAgent;
     private RayCast3D _sightRay;
     private MeshInstance3D _mesh;
+    private Label3D _hpLabel;
 
     public override void _Ready()
     {
@@ -31,6 +32,7 @@ public partial class enemy_blob : CharacterBody3D
         _player = GetNode<AnimationPlayer>("AnimationPlayer");
         _navAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
         _sightRay = GetNode<RayCast3D>("SightRay");
+        _hpLabel = GetNode<Label3D>("%HPLabel");
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -38,6 +40,7 @@ public partial class enemy_blob : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
+        _hpLabel.Text = _healthComponent.Health.ToString();
         Vector3 velocity = Velocity;
 
         // If we are targeting a player, and they haven't disconnected, nav toward them
@@ -135,7 +138,7 @@ public partial class enemy_blob : CharacterBody3D
         {
             StandardMaterial3D meshSMaterial = (StandardMaterial3D)meshMaterial;
             Color newColor = meshSMaterial.AlbedoColor;
-            newColor.V = value;
+            newColor.V = value / 2;
             meshSMaterial.AlbedoColor = newColor;
             _mesh.SetSurfaceOverrideMaterial(0, meshSMaterial);
         }
@@ -173,13 +176,11 @@ public partial class enemy_blob : CharacterBody3D
 
     public void _on_health_component_took_damage()
     {
-        GD.Print("Took damage!");
         UpdateBlobColor();
     }
 
     public void _on_hitbox_component_body_entered(Node3D body)
     {
-        GD.Print($"OnHitboxComponentBodyEntered: {body}");
         HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
         if (hitbox != null)
         {

@@ -5,6 +5,7 @@ public partial class HealthComponent : Node
 {
     [Export]
     public float MaxHealth = 100;
+    [Export]
     public float Health;
 
     [Signal]

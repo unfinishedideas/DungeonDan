@@ -8,6 +8,8 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_87anl"]
 albedo_color = Color(0.6, 0, 0.0599999, 1)
+emission = Color(0.6, 0, 0.0599999, 1)
+emission_energy_multiplier = 0.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_esdvy"]
 
@@ -83,6 +85,18 @@ tracks/5/path = NodePath("Components/HitboxComponent:monitorable")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("MeshInstance3D:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -177,6 +191,18 @@ tracks/6/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("MeshInstance3D:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7b2ay"]
 _data = {
@@ -191,6 +217,9 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath("AnimationPlayer:current_animation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath("Components/HealthComponent:Health")
+properties/2/spawn = true
+properties/2/replication_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cdn7i"]
 radius = 0.55
@@ -205,6 +234,12 @@ _healthComponent = NodePath("Components/HealthComponent")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_08y2i")
 surface_material_override/0 = SubResource("StandardMaterial3D_87anl")
+
+[node name="HPLabel" type="Label3D" parent="MeshInstance3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.638456, 0)
+billboard = 1
+text = "hp"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_esdvy")
@@ -241,7 +276,7 @@ debug_shape_custom_color = Color(0.405109, 0.238576, 1, 1)
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 collision_layer = 8
-collision_mask = 14
+collision_mask = 6
 _healthComponent = NodePath("../HealthComponent")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
