@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://de1ikf3x1qj5m"]
+[gd_scene load_steps=14 format=3 uid="uid://de1ikf3x1qj5m"]
 
 [ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_2jo1v"]
 [ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="1_bbdvm"]
@@ -7,6 +7,7 @@
 [ext_resource type="Material" uid="uid://cnqqgp7vgqmvr" path="res://assets/materials/brick01.tres" id="4_kkbfp"]
 [ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://assets/materials/trunk01.tres" id="5_v817o"]
 [ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="6_g28hf"]
+[ext_resource type="PackedScene" uid="uid://bxau1uefiu637" path="res://scenes/characters/enemy_blob.tscn" id="8_ugbbw"]
 
 [sub_resource type="Environment" id="Environment_kl7pc"]
 background_mode = 1
@@ -14,6 +15,10 @@ ambient_light_color = Color(0.448067, 0.448067, 0.448067, 1)
 ambient_light_energy = 0.01
 sdfgi_enabled = true
 sdfgi_read_sky_light = false
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_rf0kk"]
+vertices = PackedVector3Array(-24.2811, 0.479941, -13.0839, -22.2811, 0.479941, -13.0839, -22.2811, 0.479941, -18.0839, -21.0311, 0.479941, -4.33385, -21.0311, 0.479941, -10.8339, -24.5311, 0.479941, -11.0839, -45.5311, 0.479941, -6.08385, -45.5311, 0.479941, -4.33385, -46.7811, 0.479941, -18.0839, -46.7811, 0.479941, -6.33385, -45.5311, 0.479941, -6.08385, -24.2811, 0.479941, -13.0839, -22.2811, 0.479941, -18.0839, -45.5311, 0.479941, -6.08385, -24.5311, 0.479941, -11.0839, -24.2811, 0.479941, -13.0839, -46.7811, 7.72994, -18.0839, -46.7811, 7.72994, 15.4161, 30.4689, 7.72994, 15.4161, 30.4689, 7.72994, -18.0839, -22.2811, 0.479941, -13.0839, 0.468941, 0.479941, -13.0839, 0.468941, 0.479941, -18.0839, -22.2811, 0.479941, -18.0839, 2.71894, 0.479941, 13.6661, 0.468941, 0.479941, 13.9161, 0.468941, 0.479941, 15.4161, 30.4689, 0.479941, 15.4161, 0.468941, 0.479941, -18.0839, 0.468941, 0.479941, -13.0839, 2.71894, 0.479941, -12.8339, 30.4689, 0.479941, -18.0839, 2.71894, 0.479941, -12.8339, 2.71894, 0.479941, 13.6661, 30.4689, 0.479941, 15.4161, 30.4689, 0.479941, -18.0839, -19.0311, 0.479941, -2.08385, -20.7811, 0.479941, -2.08385, -20.7811, 0.479941, 2.16615, -18.7811, 0.479941, 2.41615, -18.7811, 0.479941, 2.41615, -18.7811, 0.479941, 4.16615, 0.468941, 0.479941, 11.6661, -18.7811, 0.479941, -4.08385, -19.0311, 0.479941, -2.08385, -18.7811, 0.479941, 2.41615, 0.468941, 0.479941, 11.6661, 0.468941, 0.479941, -10.8339, -21.0311, 0.479941, -10.8339, -21.0311, 0.479941, -4.33385, -18.7811, 0.479941, -4.08385, 0.468941, 0.479941, -10.8339, -18.7811, 0.479941, 4.16615, -20.5311, 0.479941, 4.41615, -20.2811, 0.479941, 11.6661, 0.468941, 0.479941, 11.6661, -20.7811, 0.479941, 2.16615, -20.7811, 0.479941, -2.08385, -45.5311, 0.479941, -2.08385, -45.5311, 0.479941, 2.16615, -22.2811, 0.479941, 15.4161, -22.2811, 0.479941, 13.9161, -24.2811, 0.479941, 13.9161, -46.7811, 0.479941, 15.4161, -24.5311, 0.479941, 11.9161, -20.2811, 0.479941, 11.6661, -20.5311, 0.479941, 4.41615, -45.5311, 0.479941, 4.41615, -45.5311, 0.479941, 5.91615, -45.5311, 0.479941, 5.91615, -46.7811, 0.479941, 6.16615, -46.7811, 0.479941, 15.4161, -24.2811, 0.479941, 13.9161, -24.5311, 0.479941, 11.9161, -22.2811, 0.479941, 15.4161, 0.468941, 0.479941, 15.4161, 0.468941, 0.479941, 13.9161, -22.2811, 0.479941, 13.9161)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 5), PackedInt32Array(5, 3, 6), PackedInt32Array(6, 3, 7), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 11), PackedInt32Array(11, 8, 12), PackedInt32Array(15, 14, 13), PackedInt32Array(19, 18, 16), PackedInt32Array(16, 18, 17), PackedInt32Array(23, 22, 20), PackedInt32Array(20, 22, 21), PackedInt32Array(25, 24, 26), PackedInt32Array(26, 24, 27), PackedInt32Array(29, 28, 30), PackedInt32Array(30, 28, 31), PackedInt32Array(33, 32, 34), PackedInt32Array(34, 32, 35), PackedInt32Array(37, 36, 38), PackedInt32Array(38, 36, 39), PackedInt32Array(42, 41, 40), PackedInt32Array(44, 43, 45), PackedInt32Array(45, 43, 47), PackedInt32Array(45, 47, 46), PackedInt32Array(49, 48, 50), PackedInt32Array(50, 48, 51), PackedInt32Array(53, 52, 54), PackedInt32Array(54, 52, 55), PackedInt32Array(59, 58, 56), PackedInt32Array(56, 58, 57), PackedInt32Array(61, 60, 62), PackedInt32Array(62, 60, 63), PackedInt32Array(65, 64, 66), PackedInt32Array(66, 64, 68), PackedInt32Array(66, 68, 67), PackedInt32Array(70, 69, 71), PackedInt32Array(71, 69, 73), PackedInt32Array(71, 73, 72), PackedInt32Array(77, 76, 74), PackedInt32Array(74, 76, 75)]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4qel"]
 emission_shape = 1
@@ -25,7 +30,7 @@ material = ExtResource("6_g28hf")
 radius = 0.05
 height = 0.1
 
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_u0dfx"]
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_jgaqd"]
 
 [node name="World" type="Node"]
 script = ExtResource("1_2jo1v")
@@ -36,55 +41,60 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -43.78
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_kl7pc")
 
-[node name="Floors" type="Node3D" parent="."]
+[node name="Geometry" type="Node3D" parent="."]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="Geometry"]
+navigation_mesh = SubResource("NavigationMesh_rf0kk")
+
+[node name="Floors" type="Node3D" parent="Geometry/NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.03794)
 
-[node name="ground_01" type="CSGBox3D" parent="Floors"]
+[node name="ground_01" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Floors"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15152, -0.520059, -3.38979)
 use_collision = true
 size = Vector3(78.105, 1, 34.464)
 material = ExtResource("3_iblul")
 
-[node name="ceiling_01" type="CSGBox3D" parent="Floors"]
+[node name="ceiling_01" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Floors"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15152, 6.74493, -3.38979)
 use_collision = true
 size = Vector3(78.105, 1, 34.464)
 material = ExtResource("3_iblul")
 
-[node name="Walls" type="Node3D" parent="."]
+[node name="Walls" type="Node3D" parent="Geometry/NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.03794)
 
-[node name="wall_01" type="CSGBox3D" parent="Walls"]
+[node name="wall_01" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.7811, 3.05022, -2.08771)
 use_collision = true
 size = Vector3(1, 6.67, 11.405)
 material = ExtResource("4_kkbfp")
 
-[node name="wall_02" type="CSGBox3D" parent="Walls"]
+[node name="wall_02" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -32.8802, 3.05022, -5.30928)
 use_collision = true
 size = Vector3(1, 6.67, 27.07)
 material = ExtResource("4_kkbfp")
 
-[node name="wall_03" type="CSGBox3D" parent="Walls"]
+[node name="wall_03" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -32.8802, 3.05022, 1.22386)
 use_collision = true
 size = Vector3(1, 6.67, 27.07)
 material = ExtResource("4_kkbfp")
 
-[node name="wall_04" type="CSGBox3D" parent="Walls"]
+[node name="wall_04" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5247, 3.05022, -1.6948)
 use_collision = true
 size = Vector3(1, 6.67, 25.7)
 material = ExtResource("4_kkbfp")
 
-[node name="wall_05" type="CSGBox3D" parent="Walls"]
+[node name="wall_05" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -11.174, 3.05022, -13.9687)
 use_collision = true
 size = Vector3(1, 6.67, 25.7)
 material = ExtResource("4_kkbfp")
 
-[node name="wall_06" type="CSGBox3D" parent="Walls"]
+[node name="wall_06" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -11.174, 3.05022, 10.6641)
 use_collision = true
 size = Vector3(1, 6.67, 25.7)
@@ -93,118 +103,170 @@ material = ExtResource("4_kkbfp")
 [node name="Lights" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.592903, 0.0794015, 2.08754)
 
-[node name="standing_torch_01" type="Node3D" parent="Lights"]
+[node name="Torches" type="Node3D" parent="Lights"]
+
+[node name="standing_torch_01" type="Node3D" parent="Lights/Torches"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5859, -0.0794015, -4.65605)
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/standing_torch_01"]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_01"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
 use_collision = true
 radius = 0.043
 height = 1.77
 material = ExtResource("5_v817o")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/standing_torch_01"]
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_01"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
 cast_shadow = 0
 process_material = SubResource("ParticleProcessMaterial_g4qel")
 draw_pass_1 = SubResource("SphereMesh_3pmae")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/standing_torch_01"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_01"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
 light_color = Color(0.822914, 0.578524, 0.325986, 1)
 light_energy = 5.0
 
-[node name="standing_torch_04" type="Node3D" parent="Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0143604, -0.0794015, -12.3787)
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/standing_torch_04"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("5_v817o")
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/standing_torch_04"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
-cast_shadow = 0
-process_material = SubResource("ParticleProcessMaterial_g4qel")
-draw_pass_1 = SubResource("SphereMesh_3pmae")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/standing_torch_04"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
-light_color = Color(0.822914, 0.578524, 0.325986, 1)
-light_energy = 5.0
-
-[node name="standing_torch_05" type="Node3D" parent="Lights"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0143604, -0.0794015, 9.09214)
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/standing_torch_05"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("5_v817o")
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/standing_torch_05"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
-cast_shadow = 0
-process_material = SubResource("ParticleProcessMaterial_g4qel")
-draw_pass_1 = SubResource("SphereMesh_3pmae")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/standing_torch_05"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
-light_color = Color(0.822914, 0.578524, 0.325986, 1)
-light_energy = 5.0
-
-[node name="standing_torch_02" type="Node3D" parent="Lights"]
+[node name="standing_torch_02" type="Node3D" parent="Lights/Torches"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5859, -0.0794015, 0.605586)
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/standing_torch_02"]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_02"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
 use_collision = true
 radius = 0.043
 height = 1.77
 material = ExtResource("5_v817o")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/standing_torch_02"]
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_02"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
 cast_shadow = 0
 process_material = SubResource("ParticleProcessMaterial_g4qel")
 draw_pass_1 = SubResource("SphereMesh_3pmae")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/standing_torch_02"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_02"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
 light_color = Color(0.822914, 0.578524, 0.325986, 1)
 light_energy = 5.0
 
-[node name="standing_torch_03" type="Node3D" parent="Lights"]
+[node name="standing_torch_03" type="Node3D" parent="Lights/Torches"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.4305, -0.0794015, -2.28352)
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/standing_torch_03"]
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_03"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
 use_collision = true
 radius = 0.043
 height = 1.77
 material = ExtResource("5_v817o")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/standing_torch_03"]
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_03"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
 cast_shadow = 0
 process_material = SubResource("ParticleProcessMaterial_g4qel")
 draw_pass_1 = SubResource("SphereMesh_3pmae")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/standing_torch_03"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_03"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
 light_color = Color(0.822914, 0.578524, 0.325986, 1)
 light_energy = 5.0
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights"]
+[node name="standing_torch_04" type="Node3D" parent="Lights/Torches"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0143604, -0.0794015, -12.3787)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_04"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
+use_collision = true
+radius = 0.043
+height = 1.77
+material = ExtResource("5_v817o")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_04"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
+cast_shadow = 0
+process_material = SubResource("ParticleProcessMaterial_g4qel")
+draw_pass_1 = SubResource("SphereMesh_3pmae")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_04"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
+light_color = Color(0.822914, 0.578524, 0.325986, 1)
+light_energy = 5.0
+
+[node name="standing_torch_05" type="Node3D" parent="Lights/Torches"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0143604, -0.0794015, 9.09214)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_05"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
+use_collision = true
+radius = 0.043
+height = 1.77
+material = ExtResource("5_v817o")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_05"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
+cast_shadow = 0
+process_material = SubResource("ParticleProcessMaterial_g4qel")
+draw_pass_1 = SubResource("SphereMesh_3pmae")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_05"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
+light_color = Color(0.822914, 0.578524, 0.325986, 1)
+light_energy = 5.0
+
+[node name="standing_torch_06" type="Node3D" parent="Lights/Torches"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.8318, -0.0794015, 10.3686)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_06"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
+use_collision = true
+radius = 0.043
+height = 1.77
+material = ExtResource("5_v817o")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_06"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
+cast_shadow = 0
+process_material = SubResource("ParticleProcessMaterial_g4qel")
+draw_pass_1 = SubResource("SphereMesh_3pmae")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_06"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
+light_color = Color(0.822914, 0.578524, 0.325986, 1)
+light_energy = 5.0
+
+[node name="standing_torch_07" type="Node3D" parent="Lights/Torches"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.8318, -0.0794015, -13.9681)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_07"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
+use_collision = true
+radius = 0.043
+height = 1.77
+material = ExtResource("5_v817o")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_07"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
+cast_shadow = 0
+process_material = SubResource("ParticleProcessMaterial_g4qel")
+draw_pass_1 = SubResource("SphereMesh_3pmae")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_07"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
+light_color = Color(0.822914, 0.578524, 0.325986, 1)
+light_energy = 5.0
+
+[node name="Omnis" type="Node3D" parent="Lights"]
+
+[node name="OmniLight3D_01" type="OmniLight3D" parent="Lights/Omnis"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.1902, 3.66298, -2.07482)
 light_color = Color(0.949266, 0.671187, 0.353374, 1)
-omni_range = 62.514
+omni_range = 50.0
+omni_attenuation = 2.73208
+
+[node name="Enemies" type="Node3D" parent="."]
 
 [node name="Killzone" parent="." instance=ExtResource("3_73n65")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -26.056, 2.03794)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.8382, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Killzone"]
-shape = SubResource("WorldBoundaryShape3D_u0dfx")
+shape = SubResource("WorldBoundaryShape3D_jgaqd")
+
+[node name="EnemyBlob" parent="." instance=ExtResource("8_ugbbw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2068, 0.525936, -6.54056)
