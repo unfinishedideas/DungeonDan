@@ -270,3 +270,5 @@ shape = SubResource("WorldBoundaryShape3D_jgaqd")
 
 [node name="EnemyBlob" parent="." instance=ExtResource("8_ugbbw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2068, 0.525936, -6.54056)
+
+[connection signal="Quit" from="Player" to="." method="_on_player_quit"]

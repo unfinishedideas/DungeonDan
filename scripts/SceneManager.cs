@@ -43,12 +43,9 @@ public partial class SceneManager : Node
 		}
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		if (Input.IsActionPressed("quit"))
-		{
-			GetTree().Quit();
-		}
-	}
+    // Signals ----------------------------------------------------------------
+    public void _on_player_quit()
+    {
+        GetTree().Quit();
+    }
 }

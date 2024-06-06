@@ -28,6 +28,11 @@ public partial class Player : CharacterBody3D
     public float SyncWeight = 0.5f;
     [Export]
     public PackedScene Bolt;
+    [Export]
+    public Control PauseMenu;
+
+    [Signal]
+    public delegate void QuitEventHandler();
 
     //public float Gravity = 20;
     // Default: Get the Gravity from the project settings to be synced with RigidBody nodes.
@@ -44,6 +49,7 @@ public partial class Player : CharacterBody3D
     private Label3D _nametag;
     private AudioStreamPlayer3D _boltSFX;
     private HealthComponent _healthComponent;
+    private bool _inGameControl = true;
 
     // UI nodes
     private Control _gui;
@@ -85,30 +91,85 @@ public partial class Player : CharacterBody3D
         }
     }
 
+    private void ToggleMouseMode()
+    {
+        if(Input.MouseMode == Input.MouseModeEnum.Captured)
+        {
+            Input.MouseMode = Input.MouseModeEnum.Confined;
+            _inGameControl = false;
+        }
+        else
+        {
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+            _inGameControl = true;
+        }
+    }
+
     public override void _Input(InputEvent @event)
     {
         if (!IsCurrentPlayerMPAuth())
             return;
-
-        if (@event is InputEventMouseMotion eventMouseMotion)
+        if (_inGameControl == true)
         {
-            // Mouse look
-            this.RotateY(-eventMouseMotion.Relative.X * MouseSensitivity);
-            _camera.RotateX(-eventMouseMotion.Relative.Y * MouseSensitivity);
-            Vector3 cameraRot = _camera.RotationDegrees;
-            cameraRot.X = Mathf.DegToRad(Mathf.Clamp(cameraRot.X, -70, 70));
-            _camera.Rotation = cameraRot;
+            if (@event is InputEventMouseMotion eventMouseMotion)
+            {
+                // Mouse look
+                this.RotateY(-eventMouseMotion.Relative.X * MouseSensitivity);
+                _camera.RotateX(-eventMouseMotion.Relative.Y * MouseSensitivity);
+                Vector3 cameraRot = _camera.RotationDegrees;
+                cameraRot.X = Mathf.DegToRad(Mathf.Clamp(cameraRot.X, -70, 70));
+                _camera.Rotation = cameraRot;
+            }
+            // Shooty
+            if (Input.IsActionJustPressed("shoot") && _animPlayer.CurrentAnimation != "shoot")
+            {
+                Rpc("PlayShootEffects");
+            }
         }
-        // Shooty
-        if (Input.IsActionJustPressed("shoot") && _animPlayer.CurrentAnimation != "shoot")
+
+        // Menu toggle
+        if (Input.IsActionJustPressed("menu_toggle"))
         {
-            Rpc("PlayShootEffects");
+            TogglePauseMenu();
+        }
+
+        // Quit shortcut
+        if (Input.IsActionJustPressed("quit"))
+        {
+            EmitSignal(SignalName.Quit);
         }
     }
 
     private bool IsCurrentPlayerMPAuth()
     {
         return GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId();
+    }
+
+    private void GetControlInput(double delta)
+    {
+            // Movement code ---------------------------------------------------
+            Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
+            Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+            Vector3 velocity = IsOnFloor() ? _GroundMove(delta, direction) : _AirMove(delta, direction);
+
+            _debugLabel.Text += $"\nVelocity: {Velocity}";
+            _debugLabel.Text += $"\nDirection: {direction}";
+
+            // Animate the Crossbow --------------------------------------------
+            if (_animPlayer.CurrentAnimation != "shoot")
+            {
+                if (inputDir != Vector2.Zero && IsOnFloor())
+                {
+                    _animPlayer.Play("move");
+                }
+                else
+                {
+                    _animPlayer.Play("idle");
+                }
+            }
+            // Move the character
+            Velocity = velocity;
+            MoveAndSlide();
     }
 
     private Vector3 _GroundMove(double delta, Vector3 direction)
@@ -157,31 +218,10 @@ public partial class Player : CharacterBody3D
         if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
         {
             _debugLabel.Text = $"{Multiplayer.GetUniqueId()}";
-            // Movement code ---------------------------------------------------
-            Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
-            Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-            Vector3 velocity = IsOnFloor() ? _GroundMove(delta, direction) : _AirMove(delta, direction);
-
-            _debugLabel.Text += $"\nVelocity: {Velocity}";
-            _debugLabel.Text += $"\nDirection: {direction}";
-
-            // Animate the Crossbow --------------------------------------------
-            if (_animPlayer.CurrentAnimation != "shoot")
+            if (_inGameControl == true)
             {
-                if (inputDir != Vector2.Zero && IsOnFloor())
-                {
-                    _animPlayer.Play("move");
-                }
-                else
-                {
-                    _animPlayer.Play("idle");
-                }
+                GetControlInput(delta);
             }
-
-            // Move the character
-            Velocity = velocity;
-            MoveAndSlide();
-
             // Update HUD
             _hpLabel.Text = $"{_healthComponent.Health:###}";
 
@@ -237,5 +277,24 @@ public partial class Player : CharacterBody3D
             name = "Incorgnito" + this.Name.ToString();
         }
         GetNode<Label3D>("nametag").Text = name;
+    }
+
+    public void TogglePauseMenu()
+    {
+        ToggleMouseMode();
+        _gui.Visible = !_gui.Visible;
+        PauseMenu.Visible = !PauseMenu.Visible;
+    }
+
+    // Signals ----------------------------------------------------------------
+    public void _on_pause_menu_resume_game()
+    {
+        TogglePauseMenu();
+    }
+
+    public void _on_pause_menu_quit_game()
+    {
+        GD.Print("quit");
+        EmitSignal(SignalName.Quit);
     }
 }
