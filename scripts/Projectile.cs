@@ -86,6 +86,7 @@ public partial class Projectile : Node3D
     public void ExpireFlightTime()
     {
         _destroyed = true;
+        FlightTimer.Timeout -= () => ExpireFlightTime();
         EmitSignal(SignalName.FlightTimeExpired);
     }
 

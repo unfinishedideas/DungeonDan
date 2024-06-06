@@ -12,27 +12,22 @@ public partial class enemy_blob : CharacterBody3D
     private HealthComponent _healthComponent;
     [Export]
     private HitboxComponent _hitboxComponent;
+    [Export]
+    private SensorAreaComponent _sensorAreaComponent;
 
     public Attack Attack1 = new Attack(10f, 0f);
 
-    private Area3D _sensorArea;
-    private Node3D _currentTarget;
-    private List<Node3D> _targetList = new List<Node3D>();
     private AnimationPlayer _player;
-    private NavigationAgent3D _navAgent;
-    private RayCast3D _sightRay;
     private MeshInstance3D _mesh;
     private Label3D _hpLabel;
+    private Vector3 _direction;
 
     public override void _Ready()
     {
         _mesh =  GetNode<MeshInstance3D>("MeshInstance3D");
-        _sensorArea = GetNode<Area3D>("SensorArea");
-        _currentTarget = null;
         _player = GetNode<AnimationPlayer>("AnimationPlayer");
-        _navAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
-        _sightRay = GetNode<RayCast3D>("SightRay");
         _hpLabel = GetNode<Label3D>("%HPLabel");
+        _direction = Vector3.Zero;
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -42,24 +37,12 @@ public partial class enemy_blob : CharacterBody3D
     {
         _hpLabel.Text = _healthComponent.Health.ToString();
         Vector3 velocity = Velocity;
-
-        // If we are targeting a player, and they haven't disconnected, nav toward them
-        if (_targetList.Count != 0)
+        _direction = _sensorAreaComponent.Direction;
+        if (_direction != Vector3.Zero)
         {
-            UpdateCurrentTarget();
-            if (IsInstanceValid(_currentTarget) && _currentTarget != null)
-            {
-                UpdateTargetLocation(_currentTarget);
-            }
-        }
-        Vector3 destination = _navAgent.GetNextPathPosition();
-        Vector3 local_destination = destination - GlobalPosition;
-        Vector3 direction = local_destination.Normalized();
-        if (direction != Vector3.Zero)
-        {
-            velocity.X = direction.X * Speed;
-            velocity.Y = direction.Y * Speed;
-            velocity.Z = direction.Z * Speed;
+            velocity.X = _direction.X * Speed;
+            velocity.Y = _direction.Y * Speed;
+            velocity.Z = _direction.Z * Speed;
         }
         else
         {
@@ -72,61 +55,10 @@ public partial class enemy_blob : CharacterBody3D
         MoveAndSlide();
     }
 
-    private void UpdateCurrentTarget()
-    {
-        // enumerate potential targets and get the cloest one
-        _currentTarget = null;
-        float closestDistance = float.MaxValue;
-
-        if (_sensorArea.Monitoring)
-        {
-            foreach(Node3D target in _targetList)
-            {
-                float distanceFromTarget = this.GlobalPosition.DistanceTo(target.GlobalPosition);
-                // Target the closest player that is in line of sight
-                if (IsTargetInLineOfSight(target) && distanceFromTarget < closestDistance)
-                {
-                    closestDistance = distanceFromTarget;
-                    _currentTarget = target;
-                }
-            }
-        }
-    }
-
-    private bool IsTargetInLineOfSight(Node3D target)
-    {
-        Vector3 local_destination = target.GlobalPosition - GlobalPosition;
-        Vector3 direction = local_destination.Normalized();
-        float distanceFromTarget = this.GlobalPosition.DistanceTo(target.GlobalPosition);
-        _sightRay.TargetPosition = direction * distanceFromTarget; 
-
-        GodotObject collided_object = _sightRay.GetCollider();
-        if (collided_object == target)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    private void UpdateTargetLocation(Node3D target)
-    {
-        _navAgent.TargetPosition = target.GlobalPosition;
-    }
-
     public void Die()
     {
         GD.Print(this.Name.ToString() + ": has died!");
         _player.Play("die");
-    }
-
-    // used for debugging purposes
-    private void PrintTargetList()
-    {
-        GD.Print("Current target list:");
-        foreach (Node3D target in _targetList)
-        {
-            GD.Print($"{target.Name}");
-        }
     }
 
     // Darkens the blob's color as it takes damage
@@ -145,30 +77,6 @@ public partial class enemy_blob : CharacterBody3D
     }
 
     // signals ----------------------------------------------------------------
-    public void _on_sensor_range_body_entered(Node3D body)
-    {
-        if (body.IsInGroup("players"))
-        {
-            if (!_targetList.Contains(body))
-            {
-                _targetList.Add(body);
-                UpdateCurrentTarget();
-            }
-        }
-    }
-
-    public void _on_sensor_area_body_exited(Node3D body)
-    {
-        if (body.IsInGroup("players"))
-        {
-            if (_targetList.Contains(body))
-            {
-                _targetList.Remove(body);
-                UpdateCurrentTarget();
-            }
-        }
-    }
-
     public void _on_health_component_death_signal()
     {
         Die();
