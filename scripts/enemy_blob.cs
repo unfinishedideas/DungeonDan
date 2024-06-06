@@ -14,6 +14,8 @@ public partial class enemy_blob : CharacterBody3D
     private HitboxComponent _hitboxComponent;
     [Export]
     private SensorAreaComponent _sensorAreaComponent;
+    [Export]
+    private float JumpForce = 14f;
 
     public Attack Attack1 = new Attack(10f, 0f);
 
@@ -21,6 +23,8 @@ public partial class enemy_blob : CharacterBody3D
     private MeshInstance3D _mesh;
     private Label3D _hpLabel;
     private Vector3 _direction;
+    private Vector3 _prevGlobalPosition;
+    private Timer _stuckTimer;
 
     public override void _Ready()
     {
@@ -28,6 +32,13 @@ public partial class enemy_blob : CharacterBody3D
         _player = GetNode<AnimationPlayer>("AnimationPlayer");
         _hpLabel = GetNode<Label3D>("%HPLabel");
         _direction = Vector3.Zero;
+        _prevGlobalPosition = this.GlobalPosition;
+
+        _stuckTimer = new Timer();
+        AddChild(_stuckTimer);
+        _stuckTimer.WaitTime = 1f;
+        _stuckTimer.OneShot = true;
+        _stuckTimer.Timeout += () => StuckTimerExpire();
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -56,6 +67,21 @@ public partial class enemy_blob : CharacterBody3D
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
         }
 
+        float distanceTravelled = _prevGlobalPosition.DistanceTo(this.GlobalPosition);
+        if (_direction != Vector3.Zero && distanceTravelled <= 0.001 && _stuckTimer.IsStopped())
+        {
+            _stuckTimer.Start();
+        }
+        _prevGlobalPosition = this.GlobalPosition;
+        Velocity = velocity;
+        MoveAndSlide();
+    }
+
+    public void StuckTimerExpire()
+    {
+        // try to jump over the obstacle
+        Vector3 velocity = Velocity;
+        velocity.Y = JumpForce;
         Velocity = velocity;
         MoveAndSlide();
     }
