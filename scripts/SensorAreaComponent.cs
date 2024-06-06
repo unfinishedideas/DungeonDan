@@ -12,10 +12,6 @@ public partial class SensorAreaComponent : Area3D
 
     public Vector3 Direction;
 
-    //[Signal]
-    //public delegate void TargetUpdatedEventHandler();
-    //EmitSignal(SignalName.TargetUpdated);
-
     private Node3D _currentTarget;
     private List<Node3D> _targetList = new List<Node3D>();
 
@@ -51,7 +47,6 @@ public partial class SensorAreaComponent : Area3D
         }
     }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
     {
         // If we are targeting a player, and they haven't disconnected, nav toward them

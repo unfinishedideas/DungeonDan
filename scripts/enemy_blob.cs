@@ -36,6 +36,11 @@ public partial class enemy_blob : CharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         _hpLabel.Text = _healthComponent.Health.ToString();
+        MoveTowardTarget();
+    }
+
+    public void MoveTowardTarget()
+    {
         Vector3 velocity = Velocity;
         _direction = _sensorAreaComponent.Direction;
         if (_direction != Vector3.Zero)
