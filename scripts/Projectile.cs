@@ -22,7 +22,7 @@ public partial class Projectile : Node3D
     [Signal]
     public delegate void HitSomethingSignalEventHandler();
 
-    public Attack Attack;
+    public Attack ProjectileAttack;
     private Timer FlightTimer;
     private const float MinRaycastDistance = 0.05f;
     private Vector3 _velocity;
@@ -37,7 +37,7 @@ public partial class Projectile : Node3D
         FlightTimer.Timeout += () => ExpireFlightTime();
         FlightTimer.Start();
 
-        Attack = new Attack(Damage, Knockback);
+        ProjectileAttack = new Attack(Damage, Knockback);
         _velocity = this.Transform.Basis.Z * Speed;
     }
 
@@ -51,10 +51,8 @@ public partial class Projectile : Node3D
 
     public void MoveBolt(double delta)
     {
-        // Move the bolt
         var distance = _velocity.Length() * delta;
         Vector3 delta_velocity = new Vector3(_velocity.X * (float)delta, _velocity.Y * (float)delta, _velocity.Z * (float)delta);
-
         this.Transform = this.Transform.Translated(delta_velocity);
 
         // Change the ray start position to the bullets's previous position
@@ -77,28 +75,31 @@ public partial class Projectile : Node3D
         _ray.Transform = rayTransform;
         _ray.ForceRaycastUpdate();
         if (_ray.IsColliding())
-        {
+        {   
             HitSomething();
         }
     }
 
     private void HitSomething(Node3D body = null)
     {
-        _destroyed = true;
+        var collider = _ray.GetCollider();
 
         // Move the projectile to where it collided
         Transform3D projectileTransform = this.Transform;
         projectileTransform.Origin = _ray.GetCollisionPoint();
         this.GlobalTransform = projectileTransform;
-        if (body != null)
+
+        // Determine if it has a hitbox. note: component must have unique name selectable
+        if (collider.GetClass() == "Area3D")
         {
-            // Determine if it is a hitbox note: component must have unique name selectable
-            HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
+            Area3D colliderArea3D = (Area3D)collider;
+            HitboxComponent hitbox = colliderArea3D.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
             if (hitbox != null)
             {
-                hitbox.Damage(Attack);
+                hitbox.Damage(ProjectileAttack);
             }
         }
+        _destroyed = true;
         EmitSignal(SignalName.HitSomethingSignal);
     }
 
@@ -106,12 +107,6 @@ public partial class Projectile : Node3D
     {
         _destroyed = true;
         EmitSignal(SignalName.FlightTimeExpired);
-    }
-
-    // Signals ----------------------------------------------------------------
-    public void _on_area_3d_body_entered(Node3D body)
-    {
-        HitSomething(body);
     }
 }
 
