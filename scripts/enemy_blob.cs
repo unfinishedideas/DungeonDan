@@ -16,6 +16,8 @@ public partial class enemy_blob : CharacterBody3D
     private SensorAreaComponent _sensorAreaComponent;
     [Export]
     private float JumpForce = 14f;
+    [Export]
+    private float BounceBackForce = 200f;
 
     public Attack Attack1 = new Attack(10f, 0f);
 
@@ -76,15 +78,6 @@ public partial class enemy_blob : CharacterBody3D
         MoveAndSlide();
     }
 
-    public void StuckTimerExpire()
-    {
-        // try to jump over the obstacle
-        Vector3 velocity = Velocity;
-        velocity.Y = JumpForce;
-        Velocity = velocity;
-        MoveAndSlide();
-    }
-
     public void Die()
     {
         GD.Print(this.Name.ToString() + ": has died!");
@@ -106,6 +99,29 @@ public partial class enemy_blob : CharacterBody3D
         }
     }
 
+    // try to jump over small obstacles
+    public void StuckTimerExpire()
+    {
+        Vector3 velocity = Velocity;
+        velocity.Y = JumpForce;
+        Velocity = velocity;
+        MoveAndSlide();
+    }
+
+    // Bounce back when hitting an enemy
+    private void BounceBack()
+    {
+        Vector3 backDirection = new Vector3(_direction.X * -1, _direction.Y, _direction.Z * -1);
+
+        Vector3 velocity = Velocity;
+        velocity.X = backDirection.X * BounceBackForce;
+        //velocity.Y = backDirection.Y * BounceBackForce;
+        velocity.Z = backDirection.Z * BounceBackForce;
+        Velocity = velocity;
+
+        MoveAndSlide();
+    }
+
     // signals ----------------------------------------------------------------
     public void _on_health_component_death_signal()
     {
@@ -122,6 +138,7 @@ public partial class enemy_blob : CharacterBody3D
         HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
         if (hitbox != null)
         {
+            BounceBack();
             hitbox.Damage(Attack1);
         }
     }
