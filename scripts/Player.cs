@@ -91,17 +91,28 @@ public partial class Player : CharacterBody3D
         }
     }
 
-    private void ToggleMouseMode()
+    public override void _PhysicsProcess(double delta)
     {
-        if(Input.MouseMode == Input.MouseModeEnum.Captured)
+        // Are we the local player?
+        if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
         {
-            Input.MouseMode = Input.MouseModeEnum.Visible;
-            _inGameControl = false;
+            _debugLabel.Text = $"{Multiplayer.GetUniqueId()}";
+            if (_inGameControl == true)
+            {
+                GetControlInput(delta);
+            }
+            // Update HUD
+            _hpLabel.Text = $"{_healthComponent.Health:###}";
+
+            // Sync for multiplayer
+            SyncPos = GlobalPosition;
+            //SyncRot = Rotation;	// doesn't work properly yet, implement before serious multiplayer code
         }
+        // We're not the local player, lerp the position / rotation data
         else
         {
-            Input.MouseMode = Input.MouseModeEnum.Captured;
-            _inGameControl = true;
+            GlobalPosition = GlobalPosition.Lerp(SyncPos, SyncWeight);
+            //Rotation = SyncRot.Lerp(Rotation.Normalized(), SyncWeight);
         }
     }
 
@@ -147,29 +158,29 @@ public partial class Player : CharacterBody3D
 
     private void GetControlInput(double delta)
     {
-            // Movement code ---------------------------------------------------
-            Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
-            Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-            Vector3 velocity = IsOnFloor() ? _GroundMove(delta, direction) : _AirMove(delta, direction);
+        // Movement code ---------------------------------------------------
+        Vector2 inputDir = Input.GetVector("strafe_left", "strafe_right", "forward", "back");
+        Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
+        Vector3 velocity = IsOnFloor() ? _GroundMove(delta, direction) : _AirMove(delta, direction);
 
-            _debugLabel.Text += $"\nVelocity: {Velocity}";
-            _debugLabel.Text += $"\nDirection: {direction}";
+        _debugLabel.Text += $"\nVelocity: {Velocity}";
+        _debugLabel.Text += $"\nDirection: {direction}";
 
-            // Animate the Crossbow --------------------------------------------
-            if (_animPlayer.CurrentAnimation != "shoot")
+        // Animate the Crossbow --------------------------------------------
+        if (_animPlayer.CurrentAnimation != "shoot")
+        {
+            if (inputDir != Vector2.Zero && IsOnFloor())
             {
-                if (inputDir != Vector2.Zero && IsOnFloor())
-                {
-                    _animPlayer.Play("move");
-                }
-                else
-                {
-                    _animPlayer.Play("idle");
-                }
+                _animPlayer.Play("move");
             }
-            // Move the character
-            Velocity = velocity;
-            MoveAndSlide();
+            else
+            {
+                _animPlayer.Play("idle");
+            }
+        }
+        // Move the character
+        Velocity = velocity;
+        MoveAndSlide();
     }
 
     private Vector3 _GroundMove(double delta, Vector3 direction)
@@ -212,28 +223,17 @@ public partial class Player : CharacterBody3D
         return velocity;
     }
 
-    public override void _PhysicsProcess(double delta)
+    private void ToggleMouseMode()
     {
-        // Are we the local player?
-        if (GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId())
+        if(Input.MouseMode == Input.MouseModeEnum.Captured)
         {
-            _debugLabel.Text = $"{Multiplayer.GetUniqueId()}";
-            if (_inGameControl == true)
-            {
-                GetControlInput(delta);
-            }
-            // Update HUD
-            _hpLabel.Text = $"{_healthComponent.Health:###}";
-
-            // Sync for multiplayer
-            SyncPos = GlobalPosition;
-            //SyncRot = Rotation;	// doesn't work properly yet, implement before serious multiplayer code
+            Input.MouseMode = Input.MouseModeEnum.Visible;
+            _inGameControl = false;
         }
-        // We're not the local player, lerp the position / rotation data
         else
         {
-            GlobalPosition = GlobalPosition.Lerp(SyncPos, SyncWeight);
-            //Rotation = SyncRot.Lerp(Rotation.Normalized(), SyncWeight);
+            Input.MouseMode = Input.MouseModeEnum.Captured;
+            _inGameControl = true;
         }
     }
 

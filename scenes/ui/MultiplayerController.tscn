@@ -54,9 +54,9 @@ text = "Start Game"
 [node name="Back" type="Button" parent="Panel"]
 layout_mode = 0
 offset_left = 13.0
-offset_top = 256.0
+offset_top = 249.0
 offset_right = 248.0
-offset_bottom = 317.0
+offset_bottom = 310.0
 text = "Back"
 
 [node name="NameEntry" type="LineEdit" parent="Panel"]
@@ -101,10 +101,10 @@ text = "status_text"
 
 [node name="ReportingText" type="Label" parent="Panel"]
 layout_mode = 0
-offset_left = 274.0
-offset_top = 280.0
-offset_right = 314.0
-offset_bottom = 303.0
+offset_left = 17.0
+offset_top = 316.0
+offset_right = 128.0
+offset_bottom = 339.0
 text = "reporting_text"
 
 [node name="Version Number" parent="." instance=ExtResource("2_jt3at")]
