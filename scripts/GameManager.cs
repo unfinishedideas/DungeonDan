@@ -6,4 +6,10 @@ public partial class GameManager : Node
 {
 	public static List<PlayerInfo> Players = new List<PlayerInfo>();
 	public static bool IsMultiplayerGame = false;
+
+    public static void ClearStatus()
+    {
+        Players.Clear();
+        IsMultiplayerGame = false;
+    }
 }
