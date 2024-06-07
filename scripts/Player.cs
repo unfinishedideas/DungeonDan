@@ -151,11 +151,6 @@ public partial class Player : CharacterBody3D
         }
     }
 
-    private bool IsCurrentPlayerMPAuth()
-    {
-        return GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId();
-    }
-
     private void GetControlInput(double delta)
     {
         // Movement code ---------------------------------------------------
@@ -235,6 +230,11 @@ public partial class Player : CharacterBody3D
             Input.MouseMode = Input.MouseModeEnum.Captured;
             _inGameControl = true;
         }
+    }
+
+    private bool IsCurrentPlayerMPAuth()
+    {
+        return GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId();
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]

@@ -15,7 +15,7 @@ public partial class enemy_blob : CharacterBody3D
     [Export]
     private SensorAreaComponent _sensorAreaComponent;
     [Export]
-    private float JumpForce = 14f;
+    private float JumpForce = 10f;
     [Export]
     private float BounceBackForce = 200f;
 
@@ -27,6 +27,7 @@ public partial class enemy_blob : CharacterBody3D
     private Vector3 _direction;
     private Vector3 _prevGlobalPosition;
     private Timer _stuckTimer;
+    public float GRAVITY = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
     public override void _Ready()
     {
@@ -49,22 +50,20 @@ public partial class enemy_blob : CharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         _hpLabel.Text = _healthComponent.Health.ToString();
-        MoveTowardTarget();
+        MoveTowardTarget(delta);
     }
 
-    public void MoveTowardTarget()
+    public void MoveTowardTarget(double delta)
     {
         Vector3 velocity = Velocity;
         if (_direction != Vector3.Zero)
         {
             velocity.X = _direction.X * Speed;
-            velocity.Y = _direction.Y * Speed;
             velocity.Z = _direction.Z * Speed;
         }
         else
         {
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-            velocity.Y = Mathf.MoveToward(Velocity.Y, 0, Speed);
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
         }
 
@@ -74,6 +73,7 @@ public partial class enemy_blob : CharacterBody3D
             _stuckTimer.Start();
         }
         _prevGlobalPosition = this.GlobalPosition;
+        velocity.Y -= GRAVITY * (float)delta;
         Velocity = velocity;
         MoveAndSlide();
     }
@@ -115,7 +115,6 @@ public partial class enemy_blob : CharacterBody3D
 
         Vector3 velocity = Velocity;
         velocity.X = backDirection.X * BounceBackForce;
-        //velocity.Y = backDirection.Y * BounceBackForce;
         velocity.Z = backDirection.Z * BounceBackForce;
         Velocity = velocity;
 
