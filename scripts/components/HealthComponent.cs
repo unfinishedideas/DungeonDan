@@ -12,6 +12,8 @@ public partial class HealthComponent : Node
     public delegate void DeathSignalEventHandler();
     [Signal]
     public delegate void TookDamageEventHandler();
+    [Signal]
+    public delegate void HealedDamageEventHandler();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -26,7 +28,14 @@ public partial class HealthComponent : Node
 
         if (Health <= 0)
         {
+            Health = 0;
             EmitSignal(SignalName.DeathSignal);
         }
+    }
+
+    public void Heal(float amount)
+    {
+        EmitSignal(SignalName.HealedDamage);
+        Health = Mathf.Clamp(Health+=amount, 0, MaxHealth);
     }
 }

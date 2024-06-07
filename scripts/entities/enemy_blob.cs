@@ -11,7 +11,7 @@ public partial class enemy_blob : CharacterBody3D
     [Export]
     private HealthComponent _healthComponent;
     [Export]
-    private HitboxComponent _hitboxComponent;
+    private HurtboxComponent _hurtboxComponent;
     [Export]
     private SensorAreaComponent _sensorAreaComponent;
     [Export]
@@ -135,13 +135,13 @@ public partial class enemy_blob : CharacterBody3D
         UpdateBlobColor();
     }
 
-    public void _on_hitbox_component_body_entered(Node3D body)
+    public void _on_hurtbox_component_body_entered(Node3D body)
     {
-        HitboxComponent hitbox = body.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
-        if (hitbox != null)
+        HurtboxComponent hurtbox = body.GetNodeOrNull<HurtboxComponent>("%HurtboxComponent");
+        if (hurtbox != null)
         {
             BounceBack();
-            hitbox.Damage(Attack1);
+            hurtbox.Damage(Attack1);
         }
     }
 

@@ -89,14 +89,14 @@ public partial class Projectile : Node3D
         projectileTransform.Origin = _ray.GetCollisionPoint();
         this.GlobalTransform = projectileTransform;
 
-        // Determine if it has a hitbox. note: component must have unique name selectable
+        // Determine if it has a hurtbox. note: component must have unique name selectable
         if (collider.GetClass() == "Area3D")
         {
             Area3D colliderArea3D = (Area3D)collider;
-            HitboxComponent hitbox = colliderArea3D.GetNodeOrNull<HitboxComponent>("%HitboxComponent");
-            if (hitbox != null)
+            HurtboxComponent hurtbox = colliderArea3D.GetNodeOrNull<HurtboxComponent>("%HurtboxComponent");
+            if (hurtbox != null)
             {
-                hitbox.Damage(ProjectileAttack);
+                hurtbox.Damage(ProjectileAttack);
             }
         }
         _destroyed = true;

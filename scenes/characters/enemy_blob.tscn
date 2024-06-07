@@ -44,7 +44,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Components/HitboxComponent:monitoring")
+tracks/2/path = NodePath("Components/HurtboxComponent:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -56,7 +56,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Components/HitboxComponent:monitorable")
+tracks/3/path = NodePath("Components/HurtboxComponent:monitorable")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -121,7 +121,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Components/HitboxComponent:monitoring")
+tracks/3/path = NodePath("Components/HurtboxComponent:monitoring")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -133,7 +133,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Components/HitboxComponent:monitorable")
+tracks/4/path = NodePath("Components/HurtboxComponent:monitorable")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -178,13 +178,12 @@ radius = 0.55
 [sub_resource type="SphereShape3D" id="SphereShape3D_6gah4"]
 radius = 25.0
 
-[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hitboxComponent", "_sensorAreaComponent")]
+[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_sensorAreaComponent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
 collision_layer = 8
 collision_mask = 15
 script = ExtResource("1_dgwge")
 _healthComponent = NodePath("Components/HealthComponent")
-_hitboxComponent = NodePath("Components/HitboxComponent")
 _sensorAreaComponent = NodePath("Components/SensorAreaComponent")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -210,14 +209,14 @@ replication_config = SubResource("SceneReplicationConfig_fkicl")
 
 [node name="Components" type="Node3D" parent="."]
 
-[node name="HitboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_xnl0s")]
+[node name="HurtboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_xnl0s")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 collision_layer = 8
 collision_mask = 6
 _healthComponent = NodePath("../HealthComponent")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HurtboxComponent"]
 shape = SubResource("SphereShape3D_cdn7i")
 
 [node name="HealthComponent" parent="Components" instance=ExtResource("2_utltq")]
@@ -245,7 +244,8 @@ debug_path_custom_color = Color(0.804967, 0.0628221, 0.216745, 1)
 
 [node name="VelocityComponent" parent="Components" instance=ExtResource("5_l7nht")]
 
-[connection signal="body_entered" from="Components/HitboxComponent" to="." method="_on_hitbox_component_body_entered"]
+[connection signal="area_entered" from="Components/HurtboxComponent" to="." method="_on_hurtbox_component_area_entered"]
+[connection signal="body_entered" from="Components/HurtboxComponent" to="." method="_on_hurtbox_component_body_entered"]
 [connection signal="DeathSignal" from="Components/HealthComponent" to="." method="_on_health_component_death_signal"]
 [connection signal="TookDamage" from="Components/HealthComponent" to="." method="_on_health_component_took_damage"]
 [connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
