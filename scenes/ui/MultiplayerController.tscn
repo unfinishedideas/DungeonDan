@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c1vyyrm8rkdqk"]
 
-[ext_resource type="Script" path="res://scripts/MultiplayerController.cs" id="1_syn4i"]
+[ext_resource type="Script" path="res://scripts/ui/MultiplayerController.cs" id="1_syn4i"]
 [ext_resource type="PackedScene" uid="uid://o8673033ltch" path="res://scenes/ui/version_number.tscn" id="2_jt3at"]
 
 [node name="Multiplayer Controller" type="Control"]

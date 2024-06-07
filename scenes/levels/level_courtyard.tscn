@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://b4tfpmea3tpia"]
 
-[ext_resource type="Script" path="res://scripts/SceneManager.cs" id="1_5no54"]
+[ext_resource type="Script" path="res://scripts/game_logic/SceneManager.cs" id="1_5no54"]
 [ext_resource type="Material" uid="uid://dnewp25gnov6a" path="res://assets/materials/grass.tres" id="2_sbdka"]
 [ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="3_1yp8p"]
 [ext_resource type="Material" uid="uid://cnqqgp7vgqmvr" path="res://assets/materials/brick01.tres" id="3_gh55q"]

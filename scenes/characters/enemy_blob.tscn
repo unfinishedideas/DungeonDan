@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://bxau1uefiu637"]
+[gd_scene load_steps=15 format=3 uid="uid://bxau1uefiu637"]
 
-[ext_resource type="Script" path="res://scripts/enemy_blob.cs" id="1_dgwge"]
+[ext_resource type="Script" path="res://scripts/entities/enemy_blob.cs" id="1_dgwge"]
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_utltq"]
 [ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HitboxComponent.tscn" id="3_xnl0s"]
-[ext_resource type="Script" path="res://scripts/SensorAreaComponent.cs" id="4_2ybs4"]
+[ext_resource type="Script" path="res://scripts/components/SensorAreaComponent.cs" id="4_2ybs4"]
+[ext_resource type="PackedScene" uid="uid://runqb2gm7djg" path="res://scenes/components/VelocityComponent.tscn" id="5_l7nht"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_08y2i"]
 
@@ -241,6 +242,8 @@ debug_shape_custom_color = Color(0.405109, 0.238576, 1, 1)
 [node name="NavAgent3D" type="NavigationAgent3D" parent="Components/SensorAreaComponent"]
 debug_enabled = true
 debug_path_custom_color = Color(0.804967, 0.0628221, 0.216745, 1)
+
+[node name="VelocityComponent" parent="Components" instance=ExtResource("5_l7nht")]
 
 [connection signal="body_entered" from="Components/HitboxComponent" to="." method="_on_hitbox_component_body_entered"]
 [connection signal="DeathSignal" from="Components/HealthComponent" to="." method="_on_health_component_death_signal"]

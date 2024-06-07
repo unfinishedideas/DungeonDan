@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://bn1o0e0w6iimt"]
 
-[ext_resource type="Script" path="res://scripts/Player.cs" id="1_1tq64"]
+[ext_resource type="Script" path="res://scripts/entities/Player.cs" id="1_1tq64"]
 [ext_resource type="PackedScene" uid="uid://c3hm5n64bxe2d" path="res://scenes/weapons/Bolt.tscn" id="2_2abhe"]
 [ext_resource type="PackedScene" uid="uid://ch1561utwylxu" path="res://scenes/ui/PauseMenu.tscn" id="3_e8aap"]
 [ext_resource type="PackedScene" uid="uid://t08d6vcn7pw" path="res://meshes/blender/wpn_crossbow.blend" id="4_xi047"]
