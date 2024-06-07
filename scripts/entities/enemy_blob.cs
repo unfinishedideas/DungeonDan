@@ -15,6 +15,9 @@ public partial class enemy_blob : CharacterBody3D
     [Export]
     private SensorAreaComponent _sensorAreaComponent;
     [Export]
+    private VelocityComponent _velocityComponent;
+
+    [Export]
     private float JumpForce = 10f;
     [Export]
     private float BounceBackForce = 200f;
