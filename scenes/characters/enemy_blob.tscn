@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_utltq"]
 [ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HurtboxComponent.tscn" id="3_nn3wp"]
 [ext_resource type="PackedScene" uid="uid://momic4mvi375" path="res://scenes/components/HitboxComponent.tscn" id="3_xnl0s"]
-[ext_resource type="Script" path="res://scripts/components/SensorAreaComponent.cs" id="4_2ybs4"]
 [ext_resource type="PackedScene" uid="uid://runqb2gm7djg" path="res://scenes/components/VelocityComponent.tscn" id="5_l7nht"]
+[ext_resource type="PackedScene" uid="uid://ch7igm2qlltoj" path="res://scenes/components/SensorAreaComponent.tscn" id="6_ekasl"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_08y2i"]
 
@@ -178,16 +178,17 @@ radius = 0.6
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cdn7i"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_6gah4"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_fum7j"]
 radius = 25.0
 
-[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_sensorAreaComponent")]
+[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hurtboxComponent", "_velocityComponent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
 collision_layer = 8
 collision_mask = 15
 script = ExtResource("1_dgwge")
 _healthComponent = NodePath("Components/HealthComponent")
-_sensorAreaComponent = NodePath("Components/SensorAreaComponent")
+_hurtboxComponent = NodePath("Components/HurtboxComponent")
+_velocityComponent = NodePath("Components/VelocityComponent")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_08y2i")
@@ -213,6 +214,7 @@ replication_config = SubResource("SceneReplicationConfig_fkicl")
 [node name="Components" type="Node3D" parent="."]
 
 [node name="HitboxComponent" parent="Components" instance=ExtResource("3_xnl0s")]
+unique_name_in_owner = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
 shape = SubResource("SphereShape3D_xt6vh")
@@ -230,31 +232,16 @@ shape = SubResource("SphereShape3D_cdn7i")
 [node name="HealthComponent" parent="Components" instance=ExtResource("2_utltq")]
 unique_name_in_owner = true
 
-[node name="SensorAreaComponent" type="Area3D" parent="Components" node_paths=PackedStringArray("_navAgent", "_sightRay")]
-collision_layer = 2147483648
-collision_mask = 2
-script = ExtResource("4_2ybs4")
-_navAgent = NodePath("NavAgent3D")
-_sightRay = NodePath("SightRay")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/SensorAreaComponent"]
-shape = SubResource("SphereShape3D_6gah4")
-
-[node name="SightRay" type="RayCast3D" parent="Components/SensorAreaComponent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.826696, 0.0270035)
-target_position = Vector3(0, 0, 5)
-collision_mask = 3
-debug_shape_custom_color = Color(0.405109, 0.238576, 1, 1)
-
-[node name="NavAgent3D" type="NavigationAgent3D" parent="Components/SensorAreaComponent"]
-debug_enabled = true
-debug_path_custom_color = Color(0.804967, 0.0628221, 0.216745, 1)
-
 [node name="VelocityComponent" parent="Components" instance=ExtResource("5_l7nht")]
+
+[node name="SensorAreaComponent" parent="." instance=ExtResource("6_ekasl")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SensorAreaComponent"]
+shape = SubResource("SphereShape3D_fum7j")
 
 [connection signal="area_entered" from="Components/HurtboxComponent" to="." method="_on_hurtbox_component_area_entered"]
 [connection signal="body_entered" from="Components/HurtboxComponent" to="." method="_on_hurtbox_component_body_entered"]
 [connection signal="DeathSignal" from="Components/HealthComponent" to="." method="_on_health_component_death_signal"]
 [connection signal="TookDamage" from="Components/HealthComponent" to="." method="_on_health_component_took_damage"]
-[connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
-[connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]
+[connection signal="NavTargetReached" from="SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
+[connection signal="UpdateDirection" from="SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]

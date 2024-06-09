@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://ch7igm2qlltoj"]
+
+[ext_resource type="Script" path="res://scripts/components/SensorAreaComponent.cs" id="1_rcbrs"]
+
+[node name="SensorAreaComponent" type="Area3D"]
+collision_layer = 2147483648
+collision_mask = 2
+script = ExtResource("1_rcbrs")
+
+[node name="NavAgent3D" type="NavigationAgent3D" parent="."]
+debug_enabled = true
+
+[node name="SightRay" type="RayCast3D" parent="."]
+collision_mask = 3

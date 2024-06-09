@@ -4,9 +4,7 @@ using System.Collections.Generic;
 
 public partial class SensorAreaComponent : Area3D
 {
-    [Export]
     public NavigationAgent3D _navAgent;
-    [Export]
     public RayCast3D _sightRay;
 
     private Vector3 _direction;
@@ -22,6 +20,8 @@ public partial class SensorAreaComponent : Area3D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        _navAgent = GetNode<NavigationAgent3D>("NavAgent3D");
+        _sightRay = GetNode<RayCast3D>("SightRay");
         this.BodyEntered += (Node3D body) => CustomBodyEntered(body);
         this.BodyExited += (Node3D body) => CustomBodyExited(body);
         _direction = Vector3.Zero;
