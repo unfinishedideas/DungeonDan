@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://bxau1uefiu637"]
+[gd_scene load_steps=17 format=3 uid="uid://bxau1uefiu637"]
 
 [ext_resource type="Script" path="res://scripts/entities/enemy_blob.cs" id="1_dgwge"]
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_utltq"]
-[ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HitboxComponent.tscn" id="3_xnl0s"]
+[ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HurtboxComponent.tscn" id="3_nn3wp"]
+[ext_resource type="PackedScene" uid="uid://momic4mvi375" path="res://scenes/components/HitboxComponent.tscn" id="3_xnl0s"]
 [ext_resource type="Script" path="res://scripts/components/SensorAreaComponent.cs" id="4_2ybs4"]
 [ext_resource type="PackedScene" uid="uid://runqb2gm7djg" path="res://scenes/components/VelocityComponent.tscn" id="5_l7nht"]
 
@@ -172,8 +173,10 @@ properties/2/path = NodePath("Components/HealthComponent:Health")
 properties/2/spawn = true
 properties/2/replication_mode = 1
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_xt6vh"]
+radius = 0.6
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_cdn7i"]
-radius = 0.55
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6gah4"]
 radius = 25.0
@@ -209,7 +212,12 @@ replication_config = SubResource("SceneReplicationConfig_fkicl")
 
 [node name="Components" type="Node3D" parent="."]
 
-[node name="HurtboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_xnl0s")]
+[node name="HitboxComponent" parent="Components" instance=ExtResource("3_xnl0s")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
+shape = SubResource("SphereShape3D_xt6vh")
+
+[node name="HurtboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_nn3wp")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 collision_layer = 8

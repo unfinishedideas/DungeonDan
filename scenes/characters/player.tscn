@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://4ci4b4lbd576" path="res://assets/audio/CrossbowShoot1.wav" id="5_8cl5s"]
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="6_an5og"]
 [ext_resource type="PackedScene" uid="uid://c7ktxtovcvt22" path="res://scenes/ui/gui.tscn" id="6_n2ka3"]
-[ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HitboxComponent.tscn" id="7_cj7fj"]
+[ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HurtboxComponent.tscn" id="7_cj7fj"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_rmayn"]
 

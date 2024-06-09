@@ -1,7 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbeom1qnay44v"]
+[gd_scene load_steps=2 format=3 uid="uid://momic4mvi375"]
 
-[ext_resource type="Script" path="res://scripts/components/HurtboxComponent.cs" id="1_glmv4"]
+[ext_resource type="Script" path="res://scripts/components/HitboxComponent.cs" id="1_qqu8v"]
 
-[node name="HurtboxComponent" type="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
-script = ExtResource("1_glmv4")
+[node name="HitboxComponent" type="Area3D"]
+script = ExtResource("1_qqu8v")
