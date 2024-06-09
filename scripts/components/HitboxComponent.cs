@@ -3,9 +3,6 @@ using System;
 
 public partial class HitboxComponent : Area3D
 {
-    [Export]
-    public float Damage = 10f;
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{

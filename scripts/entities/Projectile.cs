@@ -94,10 +94,7 @@ public partial class Projectile : Node3D
         {
             Area3D colliderArea3D = (Area3D)collider;
             HurtboxComponent hurtbox = colliderArea3D.GetNodeOrNull<HurtboxComponent>("%HurtboxComponent");
-            if (hurtbox != null)
-            {
-                hurtbox.Damage(ProjectileAttack);
-            }
+            hurtbox?.Damage(ProjectileAttack);
         }
         _destroyed = true;
         EmitSignal(SignalName.HitSomethingSignal);

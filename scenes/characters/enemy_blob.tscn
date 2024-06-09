@@ -239,8 +239,6 @@ unique_name_in_owner = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SensorAreaComponent"]
 shape = SubResource("SphereShape3D_fum7j")
 
-[connection signal="area_entered" from="Components/HurtboxComponent" to="." method="_on_hurtbox_component_area_entered"]
-[connection signal="body_entered" from="Components/HurtboxComponent" to="." method="_on_hurtbox_component_body_entered"]
 [connection signal="DeathSignal" from="Components/HealthComponent" to="." method="_on_health_component_death_signal"]
 [connection signal="TookDamage" from="Components/HealthComponent" to="." method="_on_health_component_took_damage"]
 [connection signal="NavTargetReached" from="SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]

@@ -135,16 +135,6 @@ public partial class enemy_blob : CharacterBody3D
         UpdateBlobColor();
     }
 
-    public void _on_hurtbox_component_body_entered(Node3D body)
-    {
-        HurtboxComponent hurtbox = body.GetNodeOrNull<HurtboxComponent>("%HurtboxComponent");
-        if (hurtbox != null)
-        {
-            BounceBack();
-            hurtbox.Damage(Attack1);
-        }
-    }
-
     public void _on_sensor_area_component_update_direction(Vector3 newDirection)
     {
         _direction = newDirection;
