@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://de1ikf3x1qj5m"]
+[gd_scene load_steps=15 format=3 uid="uid://de1ikf3x1qj5m"]
 
 [ext_resource type="Script" path="res://scripts/game_logic/SceneManager.cs" id="1_2jo1v"]
 [ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="1_bbdvm"]
@@ -8,6 +8,7 @@
 [ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://assets/materials/trunk01.tres" id="5_v817o"]
 [ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="6_g28hf"]
 [ext_resource type="PackedScene" uid="uid://bxau1uefiu637" path="res://scenes/characters/enemy_blob.tscn" id="8_ugbbw"]
+[ext_resource type="PackedScene" uid="uid://cveishbod8l0b" path="res://scenes/characters/FloatyGuy.tscn" id="9_q4u70"]
 
 [sub_resource type="Environment" id="Environment_kl7pc"]
 background_mode = 1
@@ -271,7 +272,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.8382, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Killzone"]
 shape = SubResource("WorldBoundaryShape3D_jgaqd")
 
-[node name="EnemyBlob" parent="." instance=ExtResource("8_ugbbw")]
+[node name="Monsters" type="Node3D" parent="."]
+
+[node name="EnemyBlob" parent="Monsters" instance=ExtResource("8_ugbbw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2068, 0.525936, -6.54056)
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("9_q4u70")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -4.05238, 1.51336, -2.69381)
 
 [connection signal="Quit" from="Player" to="." method="_on_player_quit"]

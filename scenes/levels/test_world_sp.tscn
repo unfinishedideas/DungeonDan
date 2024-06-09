@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://1dpg8eaw4esn"]
+[gd_scene load_steps=12 format=3 uid="uid://1dpg8eaw4esn"]
 
 [ext_resource type="Script" path="res://scripts/game_logic/SceneManager.cs" id="1_q8avc"]
 [ext_resource type="PackedScene" uid="uid://bptr8nwuooajv" path="res://scenes/environments/env_test.tscn" id="2_r8xph"]
+[ext_resource type="PackedScene" uid="uid://cveishbod8l0b" path="res://scenes/characters/FloatyGuy.tscn" id="2_xh7qi"]
 [ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="3_nuuen"]
 [ext_resource type="PackedScene" uid="uid://bxau1uefiu637" path="res://scenes/characters/enemy_blob.tscn" id="4_04mj7"]
 [ext_resource type="PackedScene" uid="uid://cjt1mg3hshqfo" path="res://scenes/misc/killzone.tscn" id="5_mb8ir"]
@@ -26,6 +27,9 @@ polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 5), PackedInt32Arr
 
 [node name="World" type="Node"]
 script = ExtResource("1_q8avc")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("2_xh7qi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.93524, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l2fg1")
