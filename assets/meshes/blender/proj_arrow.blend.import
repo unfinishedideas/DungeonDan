@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://t08d6vcn7pw"
-path="res://.godot/imported/wpn_crossbow.blend-47a06c55726f3e9bafcc3c97d3e24f17.scn"
+uid="uid://c2ck7elf51yjs"
+path="res://.godot/imported/proj_arrow.blend-41cf750f4c78a8fa8327dac6af54a51c.scn"
 
 [deps]
 
-source_file="res://meshes/blender/wpn_crossbow.blend"
-dest_files=["res://.godot/imported/wpn_crossbow.blend-47a06c55726f3e9bafcc3c97d3e24f17.scn"]
+source_file="res://assets/meshes/blender/proj_arrow.blend"
+dest_files=["res://.godot/imported/proj_arrow.blend-41cf750f4c78a8fa8327dac6af54a51c.scn"]
 
 [params]
 

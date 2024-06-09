@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dw858kxh7xig2"
-path="res://.godot/imported/FloatyGuyWithBones.glb-9bd34eb32093afe9fa26e92ca517ea94.scn"
+path="res://.godot/imported/FloatyGuyWithBones.glb-3831af361d8c418cdcc53f5c55d2dfa9.scn"
 
 [deps]
 
-source_file="res://assets/3d_models/FloatyGuyWithBones.glb"
-dest_files=["res://.godot/imported/FloatyGuyWithBones.glb-9bd34eb32093afe9fa26e92ca517ea94.scn"]
+source_file="res://assets/meshes/FloatyGuyWithBones.glb"
+dest_files=["res://.godot/imported/FloatyGuyWithBones.glb-3831af361d8c418cdcc53f5c55d2dfa9.scn"]
 
 [params]
 

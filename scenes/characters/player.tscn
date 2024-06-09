@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/entities/Player.cs" id="1_1tq64"]
 [ext_resource type="PackedScene" uid="uid://c3hm5n64bxe2d" path="res://scenes/weapons/Bolt.tscn" id="2_2abhe"]
 [ext_resource type="PackedScene" uid="uid://ch1561utwylxu" path="res://scenes/ui/PauseMenu.tscn" id="3_e8aap"]
-[ext_resource type="PackedScene" uid="uid://t08d6vcn7pw" path="res://meshes/blender/wpn_crossbow.blend" id="4_xi047"]
+[ext_resource type="PackedScene" uid="uid://t08d6vcn7pw" path="res://assets/meshes/blender/wpn_crossbow.blend" id="4_xi047"]
 [ext_resource type="AudioStream" uid="uid://4ci4b4lbd576" path="res://assets/audio/CrossbowShoot1.wav" id="5_8cl5s"]
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="6_an5og"]
 [ext_resource type="PackedScene" uid="uid://c7ktxtovcvt22" path="res://scenes/ui/gui.tscn" id="6_n2ka3"]

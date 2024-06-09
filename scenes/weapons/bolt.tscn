@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://c3hm5n64bxe2d"]
 
 [ext_resource type="Script" path="res://scripts/entities/Bolt.cs" id="1_y056g"]
-[ext_resource type="PackedScene" uid="uid://bk44ovsj42k5i" path="res://meshes/arrow1.glb" id="2_q4oyd"]
+[ext_resource type="PackedScene" uid="uid://bk44ovsj42k5i" path="res://assets/meshes/arrow1.glb" id="2_q4oyd"]
 [ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="3_41kw3"]
 [ext_resource type="AudioStream" uid="uid://b44jdivbffmy5" path="res://assets/audio/BoltHit.wav" id="4_75kih"]
 [ext_resource type="AudioStream" uid="uid://dc18twu4f0h7o" path="res://assets/audio/BoltHiss.wav" id="5_ovlma"]

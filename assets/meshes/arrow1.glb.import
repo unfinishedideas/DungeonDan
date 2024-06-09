@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bk44ovsj42k5i"
-path="res://.godot/imported/arrow1.glb-9a145fce7b46ea1a576d70aef21b01c0.scn"
+path="res://.godot/imported/arrow1.glb-231552f5d56aab174629cd8fb679c537.scn"
 
 [deps]
 
-source_file="res://meshes/arrow1.glb"
-dest_files=["res://.godot/imported/arrow1.glb-9a145fce7b46ea1a576d70aef21b01c0.scn"]
+source_file="res://assets/meshes/arrow1.glb"
+dest_files=["res://.godot/imported/arrow1.glb-231552f5d56aab174629cd8fb679c537.scn"]
 
 [params]
 
