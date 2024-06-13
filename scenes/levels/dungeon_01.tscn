@@ -31,7 +31,8 @@ material = ExtResource("6_g28hf")
 radius = 0.05
 height = 0.1
 
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_jgaqd"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1gwhi"]
+size = Vector3(1000, 1, 1000)
 
 [node name="World" type="Node"]
 script = ExtResource("1_2jo1v")
@@ -270,7 +271,7 @@ omni_range = 58.994
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.8382, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Killzone"]
-shape = SubResource("WorldBoundaryShape3D_jgaqd")
+shape = SubResource("BoxShape3D_1gwhi")
 
 [node name="Monsters" type="Node3D" parent="."]
 

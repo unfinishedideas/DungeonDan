@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bxau1uefiu637"]
+[gd_scene load_steps=18 format=3 uid="uid://bxau1uefiu637"]
 
 [ext_resource type="Script" path="res://scripts/entities/enemy_blob.cs" id="1_dgwge"]
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_utltq"]
@@ -7,7 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://runqb2gm7djg" path="res://scenes/components/VelocityComponent.tscn" id="5_l7nht"]
 [ext_resource type="PackedScene" uid="uid://ch7igm2qlltoj" path="res://scenes/components/SensorAreaComponent.tscn" id="6_ekasl"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h3vtw"]
+
 [sub_resource type="SphereMesh" id="SphereMesh_08y2i"]
+material = SubResource("ShaderMaterial_h3vtw")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_87anl"]
 albedo_color = Color(0.6, 0, 0.0599999, 1)

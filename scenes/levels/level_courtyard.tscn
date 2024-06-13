@@ -21,7 +21,8 @@ sky = SubResource("Sky_svav6")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_4e4ex"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ij1qb"]
+size = Vector3(1000, 1, 1500)
 
 [node name="World" type="Node"]
 script = ExtResource("1_5no54")
@@ -238,4 +239,4 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -26.056, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Killzone"]
-shape = SubResource("WorldBoundaryShape3D_4e4ex")
+shape = SubResource("BoxShape3D_ij1qb")
