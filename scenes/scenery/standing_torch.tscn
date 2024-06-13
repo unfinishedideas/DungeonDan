@@ -29,4 +29,7 @@ process_material = SubResource("ParticleProcessMaterial_g4qel")
 draw_pass_1 = SubResource("SphereMesh_3pmae")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.44103, 0)
+light_color = Color(0.77254, 0.544106, 0.375275, 1)
+shadow_enabled = true
+shadow_reverse_cull_face = true

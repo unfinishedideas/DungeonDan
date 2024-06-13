@@ -1,35 +1,33 @@
-[gd_scene load_steps=15 format=3 uid="uid://de1ikf3x1qj5m"]
+[gd_scene load_steps=12 format=3 uid="uid://de1ikf3x1qj5m"]
 
 [ext_resource type="Script" path="res://scripts/game_logic/SceneManager.cs" id="1_2jo1v"]
 [ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="1_bbdvm"]
 [ext_resource type="PackedScene" uid="uid://cjt1mg3hshqfo" path="res://scenes/misc/killzone.tscn" id="3_73n65"]
 [ext_resource type="Material" uid="uid://iyo1dmlgvbw" path="res://assets/materials/metal01.tres" id="3_iblul"]
 [ext_resource type="Material" uid="uid://cnqqgp7vgqmvr" path="res://assets/materials/brick01.tres" id="4_kkbfp"]
-[ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://assets/materials/trunk01.tres" id="5_v817o"]
-[ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="6_g28hf"]
+[ext_resource type="PackedScene" uid="uid://bct62c0lhwdkj" path="res://scenes/scenery/standing_torch.tscn" id="8_fq0xy"]
 [ext_resource type="PackedScene" uid="uid://bxau1uefiu637" path="res://scenes/characters/enemy_blob.tscn" id="8_ugbbw"]
 [ext_resource type="PackedScene" uid="uid://cveishbod8l0b" path="res://scenes/characters/FloatyGuy.tscn" id="9_q4u70"]
 
-[sub_resource type="Environment" id="Environment_kl7pc"]
-background_mode = 1
-ambient_light_color = Color(0.448067, 0.448067, 0.448067, 1)
-ambient_light_energy = 0.01
+[sub_resource type="Environment" id="Environment_mkg4d"]
+background_mode = 4
+ambient_light_source = 2
+ambient_light_color = Color(0.574328, 0.574328, 0.574328, 1)
+ambient_light_energy = 0.12
+reflected_light_source = 1
+tonemap_mode = 3
+tonemap_exposure = 2.0
+tonemap_white = 8.0
 sdfgi_enabled = true
-sdfgi_read_sky_light = false
+glow_normalized = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.02
+volumetric_fog_emission = Color(0.104862, 0.147372, 0.124452, 1)
+volumetric_fog_anisotropy = 0.0
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_rf0kk"]
-vertices = PackedVector3Array(-24.2811, 0.479941, -13.0839, -22.2811, 0.479941, -13.0839, -22.2811, 0.479941, -18.0839, -21.0311, 0.479941, -4.33385, -21.0311, 0.479941, -10.8339, -24.5311, 0.479941, -11.0839, -45.5311, 0.479941, -6.08385, -45.5311, 0.479941, -4.33385, -46.7811, 0.479941, -18.0839, -46.7811, 0.479941, -6.33385, -45.5311, 0.479941, -6.08385, -24.2811, 0.479941, -13.0839, -22.2811, 0.479941, -18.0839, -45.5311, 0.479941, -6.08385, -24.5311, 0.479941, -11.0839, -24.2811, 0.479941, -13.0839, -22.2811, 0.479941, -13.0839, 0.468899, 0.479941, -13.0839, 0.468899, 0.479941, -18.0839, -22.2811, 0.479941, -18.0839, 2.7189, 0.479941, 13.6661, 0.468899, 0.479941, 13.9161, 0.468899, 0.479941, 15.4161, 30.4689, 0.479941, 15.4161, 0.468899, 0.479941, -18.0839, 0.468899, 0.479941, -13.0839, 2.7189, 0.479941, -12.8339, 30.4689, 0.479941, -18.0839, 2.7189, 0.479941, -12.8339, 2.7189, 0.479941, 13.6661, 30.4689, 0.479941, 15.4161, 30.4689, 0.479941, -18.0839, 1.2189, 6.72994, 12.6661, -23.5311, 6.72994, 12.9161, 1.7189, 6.72994, 12.9161, 1.7189, 6.72994, -12.0839, -23.5311, 6.72994, -12.0839, 1.4689, 6.72994, -11.5839, 1.4689, 6.72994, -11.5839, 1.2189, 6.72994, 12.6661, 1.7189, 6.72994, 12.9161, 1.7189, 6.72994, -12.0839, -19.0311, 0.479941, -2.08385, -20.7811, 0.479941, -2.08385, -20.7811, 0.479941, 2.16615, -18.7811, 0.479941, 2.41615, -18.7811, 0.479941, 2.41615, -18.7811, 0.479941, 4.16615, 0.468899, 0.479941, 11.6661, -18.7811, 0.479941, -4.08385, -19.0311, 0.479941, -2.08385, -18.7811, 0.479941, 2.41615, 0.468899, 0.479941, 11.6661, 0.468899, 0.479941, -10.8339, -21.0311, 0.479941, -10.8339, -21.0311, 0.479941, -4.33385, -18.7811, 0.479941, -4.08385, 0.468899, 0.479941, -10.8339, -18.7811, 0.479941, 4.16615, -20.5311, 0.479941, 4.41615, -20.2811, 0.479941, 11.6661, 0.468899, 0.479941, 11.6661, -46.7811, 6.72994, -3.58385, -46.7811, 6.72994, -2.83385, -19.7811, 6.72994, -3.08385, -20.7811, 0.479941, 2.16615, -20.7811, 0.479941, -2.08385, -45.5311, 0.479941, -2.08385, -45.5311, 0.479941, 2.16615, -46.7811, 6.72994, 2.91615, -46.7811, 6.72994, 3.66615, -19.7811, 6.72994, 3.41615, -22.2811, 0.479941, 15.4161, -22.2811, 0.479941, 13.9161, -24.2811, 0.479941, 13.9161, -46.7811, 0.479941, 15.4161, -24.5311, 0.479941, 11.9161, -20.2811, 0.479941, 11.6661, -20.5311, 0.479941, 4.41615, -45.5311, 0.479941, 4.41615, -45.5311, 0.479941, 5.91615, -45.5311, 0.479941, 5.91615, -46.7811, 0.479941, 6.16615, -46.7811, 0.479941, 15.4161, -24.2811, 0.479941, 13.9161, -24.5311, 0.479941, 11.9161, -22.2811, 0.479941, 15.4161, 0.468899, 0.479941, 15.4161, 0.468899, 0.479941, 13.9161, -22.2811, 0.479941, 13.9161)
-polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 5), PackedInt32Array(5, 3, 6), PackedInt32Array(6, 3, 7), PackedInt32Array(9, 8, 10), PackedInt32Array(10, 8, 11), PackedInt32Array(11, 8, 12), PackedInt32Array(15, 14, 13), PackedInt32Array(19, 18, 16), PackedInt32Array(16, 18, 17), PackedInt32Array(21, 20, 22), PackedInt32Array(22, 20, 23), PackedInt32Array(25, 24, 26), PackedInt32Array(26, 24, 27), PackedInt32Array(29, 28, 30), PackedInt32Array(30, 28, 31), PackedInt32Array(34, 33, 32), PackedInt32Array(36, 35, 37), PackedInt32Array(39, 38, 40), PackedInt32Array(40, 38, 41), PackedInt32Array(43, 42, 44), PackedInt32Array(44, 42, 45), PackedInt32Array(48, 47, 46), PackedInt32Array(50, 49, 51), PackedInt32Array(51, 49, 53), PackedInt32Array(51, 53, 52), PackedInt32Array(55, 54, 56), PackedInt32Array(56, 54, 57), PackedInt32Array(59, 58, 60), PackedInt32Array(60, 58, 61), PackedInt32Array(64, 63, 62), PackedInt32Array(68, 67, 65), PackedInt32Array(65, 67, 66), PackedInt32Array(71, 70, 69), PackedInt32Array(73, 72, 74), PackedInt32Array(74, 72, 75), PackedInt32Array(77, 76, 78), PackedInt32Array(78, 76, 80), PackedInt32Array(78, 80, 79), PackedInt32Array(82, 81, 83), PackedInt32Array(83, 81, 85), PackedInt32Array(83, 85, 84), PackedInt32Array(89, 88, 86), PackedInt32Array(86, 88, 87)]
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4qel"]
-emission_shape = 1
-emission_sphere_radius = 0.05
-gravity = Vector3(0, 9.8, 0)
-
-[sub_resource type="SphereMesh" id="SphereMesh_3pmae"]
-material = ExtResource("6_g28hf")
-radius = 0.05
-height = 0.1
+vertices = PackedVector3Array(-46.8625, 6.97994, 15.4249, -61.8625, 6.72994, 15.9249, -46.8625, 6.97994, 15.9249, 29.8875, 6.97994, 15.9249, 30.1375, 6.72994, 59.4249, 30.3875, 6.72994, 16.1749, 30.3875, 6.72994, -19.3251, 30.3875, 6.72994, -39.5751, 29.8875, 6.72994, -19.0751, -46.8625, 6.97994, 15.9249, -46.6125, 6.72994, 18.6749, -46.1125, 6.97994, 15.9249, -46.8625, 6.97994, 15.4249, 30.3875, 6.72994, 16.1749, 37.1375, 6.72994, 15.9249, 30.6375, 6.97994, 15.4249, 30.6375, 6.97994, -18.5751, 32.8875, 6.72994, -19.0751, 30.3875, 6.72994, -19.3251, 29.8875, 6.72994, -19.0751, -46.8625, 6.97994, -18.5751, -46.8625, 6.97994, 15.4249, -46.1125, 6.97994, 15.9249, 29.8875, 6.97994, 15.9249, 30.6375, 6.97994, -18.5751, 29.8875, 6.72994, -19.0751, 29.8875, 6.97994, 15.9249, 30.3875, 6.72994, 16.1749, 30.6375, 6.97994, 15.4249, 30.6375, 6.97994, -18.5751, 29.8875, 6.72994, -19.0751, -66.3625, 6.72994, -19.0751, -46.8625, 6.97994, -18.5751, -24.6125, 0.479941, -12.8251, -22.8625, 0.479941, -13.0751, -23.1125, 0.479941, -17.8251, -45.3625, 0.479941, -17.8251, -20.8625, 0.479941, -4.32515, -20.8625, 0.479941, -10.8251, -24.6125, 0.479941, -11.0751, -45.3625, 0.479941, -4.32515, -24.6125, 0.479941, -11.0751, -24.6125, 0.479941, -12.8251, -45.3625, 0.479941, -17.8251, -45.3625, 0.479941, -4.32515, -22.8625, 0.479941, -13.0751, 0.887512, 0.479941, -13.0751, 1.13751, 0.479941, -17.8251, -23.1125, 0.479941, -17.8251, 2.63751, 0.479941, 13.6749, 1.38751, 0.479941, 13.9249, 1.38751, 0.479941, 14.6749, 29.1375, 0.479941, 14.6749, 1.13751, 0.479941, -17.8251, 0.887512, 0.479941, -13.0751, 2.63751, 0.479941, -12.8251, 29.1375, 0.479941, -17.8251, 2.63751, 0.479941, -12.8251, 2.63751, 0.479941, 13.6749, 29.1375, 0.479941, 14.6749, 29.1375, 0.479941, -17.8251, -18.8625, 0.479941, -2.07515, -20.6125, 0.479941, -2.07515, -20.6125, 0.479941, 2.17485, -18.6125, 0.479941, 2.42485, -18.6125, 0.479941, 2.42485, -18.6125, 0.479941, 4.17485, 0.387512, 0.479941, 11.6749, -18.6125, 0.479941, -4.07515, -18.8625, 0.479941, -2.07515, -18.6125, 0.479941, 2.42485, 0.387512, 0.479941, 11.6749, 0.387512, 0.479941, -10.8251, -20.8625, 0.479941, -10.8251, -20.8625, 0.479941, -4.32515, -18.6125, 0.479941, -4.07515, 0.387512, 0.479941, -10.8251, -18.6125, 0.479941, 4.17485, -20.3625, 0.479941, 4.42485, -20.1125, 0.479941, 11.6749, 0.387512, 0.479941, 11.6749, -20.6125, 0.479941, 2.17485, -20.6125, 0.479941, -2.07515, -45.3625, 0.479941, -2.07515, -45.3625, 0.479941, 2.17485, -24.3625, 0.479941, 11.6749, -20.1125, 0.479941, 11.6749, -20.3625, 0.479941, 4.42485, -24.3625, 0.479941, 11.6749, -20.3625, 0.479941, 4.42485, -45.3625, 0.479941, 4.42485, -45.3625, 0.479941, 14.6749, 1.38751, 0.479941, 14.6749, 1.38751, 0.479941, 13.9249, -24.6125, 0.479941, 13.6749, -45.3625, 0.479941, 14.6749, -24.6125, 0.479941, 13.6749, -24.3625, 0.479941, 11.6749, -45.3625, 0.479941, 14.6749)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 5), PackedInt32Array(8, 7, 6), PackedInt32Array(12, 11, 9), PackedInt32Array(9, 11, 10), PackedInt32Array(15, 14, 13), PackedInt32Array(19, 18, 16), PackedInt32Array(16, 18, 17), PackedInt32Array(21, 20, 22), PackedInt32Array(22, 20, 23), PackedInt32Array(23, 20, 25), PackedInt32Array(23, 25, 24), PackedInt32Array(27, 26, 28), PackedInt32Array(28, 26, 29), PackedInt32Array(32, 31, 30), PackedInt32Array(34, 33, 35), PackedInt32Array(35, 33, 36), PackedInt32Array(38, 37, 39), PackedInt32Array(39, 37, 40), PackedInt32Array(42, 41, 43), PackedInt32Array(43, 41, 44), PackedInt32Array(45, 48, 46), PackedInt32Array(46, 48, 47), PackedInt32Array(50, 49, 51), PackedInt32Array(51, 49, 52), PackedInt32Array(54, 53, 55), PackedInt32Array(55, 53, 56), PackedInt32Array(58, 57, 59), PackedInt32Array(59, 57, 60), PackedInt32Array(62, 61, 63), PackedInt32Array(63, 61, 64), PackedInt32Array(67, 66, 65), PackedInt32Array(69, 68, 70), PackedInt32Array(70, 68, 72), PackedInt32Array(70, 72, 71), PackedInt32Array(74, 73, 75), PackedInt32Array(75, 73, 76), PackedInt32Array(78, 77, 79), PackedInt32Array(79, 77, 80), PackedInt32Array(84, 83, 81), PackedInt32Array(81, 83, 82), PackedInt32Array(87, 86, 85), PackedInt32Array(91, 90, 88), PackedInt32Array(88, 90, 89), PackedInt32Array(93, 92, 94), PackedInt32Array(94, 92, 95), PackedInt32Array(98, 97, 96)]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1gwhi"]
 size = Vector3(1000, 1, 1000)
@@ -41,7 +39,7 @@ script = ExtResource("1_2jo1v")
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -43.7872, 1.17823, 0.388952)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_kl7pc")
+environment = SubResource("Environment_mkg4d")
 
 [node name="Geometry" type="Node3D" parent="."]
 
@@ -57,13 +55,37 @@ use_collision = true
 size = Vector3(78.105, 1, 34.464)
 material = ExtResource("3_iblul")
 
+[node name="ground_02" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Floors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.15152, 5.99606, -3.38979)
+use_collision = true
+size = Vector3(78.105, 1, 34.464)
+material = ExtResource("3_iblul")
+
 [node name="Walls" type="Node3D" parent="Geometry/NavigationRegion3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.03794)
 
 [node name="wall_01" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.7811, 3.05022, -2.08771)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.4726, 3.05022, -2.08771)
 use_collision = true
-size = Vector3(1, 6.67, 11.405)
+size = Vector3(1, 6.67, 38.175)
+material = ExtResource("4_kkbfp")
+
+[node name="wall_07" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12.2616, 3.05022, 13.8679)
+use_collision = true
+size = Vector3(1, 6.67, 100)
+material = ExtResource("4_kkbfp")
+
+[node name="wall_08" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 30.3335, 3.05022, 7.88691)
+use_collision = true
+size = Vector3(1, 6.67, 100)
+material = ExtResource("4_kkbfp")
+
+[node name="wall_09" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -16.8625, 3.05022, -20.9501)
+use_collision = true
+size = Vector3(1, 6.67, 100)
 material = ExtResource("4_kkbfp")
 
 [node name="wall_02" type="CSGBox3D" parent="Geometry/NavigationRegion3D/Walls"]
@@ -101,152 +123,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.592903, 0.0794015, 2.08754
 
 [node name="Torches" type="Node3D" parent="Lights"]
 
-[node name="standing_torch_01" type="Node3D" parent="Lights/Torches"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5859, -0.0794015, -4.65605)
+[node name="standing_torch" parent="Lights/Torches" instance=ExtResource("8_fq0xy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.0537, -0.0994606, -5.27248)
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_01"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("5_v817o")
+[node name="standing_torch2" parent="Lights/Torches" instance=ExtResource("8_fq0xy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.0537, -0.0994606, 0.963296)
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_01"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
-cast_shadow = 0
-process_material = SubResource("ParticleProcessMaterial_g4qel")
-draw_pass_1 = SubResource("SphereMesh_3pmae")
+[node name="standing_torch3" parent="Lights/Torches" instance=ExtResource("8_fq0xy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.169022, -0.0994606, 8.69887)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_01"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
-light_color = Color(0.822914, 0.578524, 0.325986, 1)
-light_energy = 5.0
+[node name="standing_torch4" parent="Lights/Torches" instance=ExtResource("8_fq0xy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.169022, -0.0994606, -12.2792)
 
-[node name="standing_torch_02" type="Node3D" parent="Lights/Torches"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5859, -0.0794015, 0.605586)
+[node name="standing_torch5" parent="Lights/Torches" instance=ExtResource("8_fq0xy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5945, -0.0994606, -10.1593)
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_02"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("5_v817o")
+[node name="standing_torch6" parent="Lights/Torches" instance=ExtResource("8_fq0xy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5945, -0.0994606, -0.323946)
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_02"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
-cast_shadow = 0
-process_material = SubResource("ParticleProcessMaterial_g4qel")
-draw_pass_1 = SubResource("SphereMesh_3pmae")
+[node name="standing_torch7" parent="Lights/Torches" instance=ExtResource("8_fq0xy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5945, -0.0994606, -19.0102)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_02"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
-light_color = Color(0.822914, 0.578524, 0.325986, 1)
-light_energy = 5.0
+[node name="standing_torch9" parent="Lights/Torches" instance=ExtResource("8_fq0xy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.48985, -0.0994606, -1.54685)
 
-[node name="standing_torch_03" type="Node3D" parent="Lights/Torches"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.4305, -0.0794015, -2.28352)
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_03"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("5_v817o")
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_03"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
-cast_shadow = 0
-process_material = SubResource("ParticleProcessMaterial_g4qel")
-draw_pass_1 = SubResource("SphereMesh_3pmae")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_03"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
-light_color = Color(0.822914, 0.578524, 0.325986, 1)
-light_energy = 5.0
-
-[node name="standing_torch_04" type="Node3D" parent="Lights/Torches"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0143604, -0.0794015, -12.3787)
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_04"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("5_v817o")
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_04"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
-cast_shadow = 0
-process_material = SubResource("ParticleProcessMaterial_g4qel")
-draw_pass_1 = SubResource("SphereMesh_3pmae")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_04"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
-light_color = Color(0.822914, 0.578524, 0.325986, 1)
-light_energy = 5.0
-
-[node name="standing_torch_05" type="Node3D" parent="Lights/Torches"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0143604, -0.0794015, 9.09214)
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_05"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("5_v817o")
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_05"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
-cast_shadow = 0
-process_material = SubResource("ParticleProcessMaterial_g4qel")
-draw_pass_1 = SubResource("SphereMesh_3pmae")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_05"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
-light_color = Color(0.822914, 0.578524, 0.325986, 1)
-light_energy = 5.0
-
-[node name="standing_torch_06" type="Node3D" parent="Lights/Torches"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.8318, -0.0794015, 10.3686)
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_06"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("5_v817o")
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_06"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
-cast_shadow = 0
-process_material = SubResource("ParticleProcessMaterial_g4qel")
-draw_pass_1 = SubResource("SphereMesh_3pmae")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_06"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
-light_color = Color(0.822914, 0.578524, 0.325986, 1)
-light_energy = 5.0
-
-[node name="standing_torch_07" type="Node3D" parent="Lights/Torches"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.8318, -0.0794015, -13.9681)
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Lights/Torches/standing_torch_07"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("5_v817o")
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="Lights/Torches/standing_torch_07"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
-cast_shadow = 0
-process_material = SubResource("ParticleProcessMaterial_g4qel")
-draw_pass_1 = SubResource("SphereMesh_3pmae")
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Lights/Torches/standing_torch_07"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8652, 0)
-light_color = Color(0.822914, 0.578524, 0.325986, 1)
-light_energy = 5.0
+[node name="standing_torch8" parent="Lights/Torches" instance=ExtResource("8_fq0xy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5945, -0.0994606, 10.8521)
 
 [node name="Omnis" type="Node3D" parent="Lights"]
 
@@ -256,7 +158,7 @@ light_color = Color(0.949266, 0.671187, 0.353374, 1)
 omni_range = 58.994
 
 [node name="OmniLight3D_02" type="OmniLight3D" parent="Lights/Omnis"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.8681, 2.70495, 12.3418)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.9254, 2.70495, 11.7167)
 light_color = Color(0.949266, 0.671187, 0.353374, 1)
 omni_range = 58.994
 

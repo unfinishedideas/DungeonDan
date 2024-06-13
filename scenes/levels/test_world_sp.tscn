@@ -14,11 +14,16 @@ polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 5), PackedInt32Arr
 [sub_resource type="BoxShape3D" id="BoxShape3D_07gb6"]
 size = Vector3(500, 1, 500)
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jm6x5"]
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ck1st"]
+sky_top_color = Color(0.308675, 0.457207, 0.641632, 1)
+sky_horizon_color = Color(0.603922, 0.670588, 0.686275, 1)
+sky_curve = 0.0724453
+sky_energy_multiplier = 0.8
+sun_angle_max = 30.56
+sun_curve = 0.0494815
 
 [sub_resource type="Sky" id="Sky_6oxbw"]
-sky_material = SubResource("ProceduralSkyMaterial_jm6x5")
+sky_material = SubResource("ProceduralSkyMaterial_ck1st")
 
 [sub_resource type="Environment" id="Environment_l2fg1"]
 background_mode = 2
