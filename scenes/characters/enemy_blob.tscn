@@ -218,16 +218,13 @@ replication_config = SubResource("SceneReplicationConfig_fkicl")
 
 [node name="HitboxComponent" parent="Components" instance=ExtResource("3_xnl0s")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0139279, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
 shape = SubResource("SphereShape3D_xt6vh")
 
 [node name="HurtboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_nn3wp")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0139279, 0)
-collision_layer = 8
-collision_mask = 6
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 _healthComponent = NodePath("../HealthComponent")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HurtboxComponent"]
