@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public partial class HitboxComponent : Area3D
 {
     [Export]
-    public float Damage;
+    public float Damage = 10f;
     [Export]
-    public float Knockback;
+    public float Knockback = 0f;
 
     public Attack HitboxAttack;
 
@@ -19,3 +19,4 @@ public partial class HitboxComponent : Area3D
         CollisionMask = 0;
 	}
 }
+
