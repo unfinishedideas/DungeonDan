@@ -84,11 +84,11 @@ menu_toggle={
 [layer_names]
 
 3d_physics/layer_1="World"
-3d_physics/layer_2="Player"
-3d_physics/layer_3="Projectiles"
-3d_physics/layer_4="Enemies"
-3d_physics/layer_5="Pickups"
-3d_physics/layer_32="Sensor Area"
+3d_physics/layer_2="Hitboxes"
+3d_physics/layer_3="Hurtboxes"
+3d_physics/layer_4="Players"
+3d_physics/layer_5="Enemies"
+3d_physics/layer_6="Pickups"
 
 [physics]
 

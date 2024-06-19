@@ -186,8 +186,8 @@ radius = 25.0
 
 [node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hurtboxComponent", "_velocityComponent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
-collision_layer = 8
-collision_mask = 15
+collision_layer = 16
+collision_mask = 25
 script = ExtResource("1_dgwge")
 _healthComponent = NodePath("Components/HealthComponent")
 _hurtboxComponent = NodePath("Components/HurtboxComponent")
@@ -218,13 +218,14 @@ replication_config = SubResource("SceneReplicationConfig_fkicl")
 
 [node name="HitboxComponent" parent="Components" instance=ExtResource("3_xnl0s")]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0139279, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
 shape = SubResource("SphereShape3D_xt6vh")
 
 [node name="HurtboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_nn3wp")]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0139279, 0)
 collision_layer = 8
 collision_mask = 6
 _healthComponent = NodePath("../HealthComponent")
@@ -232,17 +233,18 @@ _healthComponent = NodePath("../HealthComponent")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HurtboxComponent"]
 shape = SubResource("SphereShape3D_cdn7i")
 
+[node name="SensorAreaComponent" parent="Components" instance=ExtResource("6_ekasl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.497139, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/SensorAreaComponent"]
+shape = SubResource("SphereShape3D_fum7j")
+
 [node name="HealthComponent" parent="Components" instance=ExtResource("2_utltq")]
 unique_name_in_owner = true
 
 [node name="VelocityComponent" parent="Components" instance=ExtResource("5_l7nht")]
 
-[node name="SensorAreaComponent" parent="." instance=ExtResource("6_ekasl")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SensorAreaComponent"]
-shape = SubResource("SphereShape3D_fum7j")
-
+[connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
+[connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]
 [connection signal="DeathSignal" from="Components/HealthComponent" to="." method="_on_health_component_death_signal"]
 [connection signal="TookDamage" from="Components/HealthComponent" to="." method="_on_health_component_took_damage"]
-[connection signal="NavTargetReached" from="SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
-[connection signal="UpdateDirection" from="SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]
