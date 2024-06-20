@@ -29,9 +29,7 @@ public partial class SensorAreaComponent : Area3D
         _navAgent = GetNode<NavigationAgent3D>("NavAgent3D");
         _sightRay = GetNode<RayCast3D>("SightRay");
         _sensorResetTimer = GetNode<Timer>("SensorResetTimer");
-    
-        // TODO: Setup Sensor Area to only scan when timer times out instead of in _Process()
-        //_sensorResetTimer.Timeout += () => ScanAreaForTargets();
+        _sensorResetTimer.Timeout += () => SensorTimerReset();
 
         this.BodyEntered += (Node3D body) => CustomBodyEntered(body);
         this.BodyExited += (Node3D body) => CustomBodyExited(body);
@@ -42,26 +40,32 @@ public partial class SensorAreaComponent : Area3D
 
     public override void _Process(double delta)
     {
-        // If we are targeting a player, and they haven't disconnected, nav toward them
-        if (_targetList.Count != 0)
+        if (_currentTarget != null && IsInstanceValid(_currentTarget))
         {
+            // Check to see if there is a better target first
             UpdateCurrentTarget();
+            // If we are targeting a player, and they haven't disconnected, nav toward them
             if (_currentTarget != null && IsInstanceValid(_currentTarget))
             {
                 UpdateTargetLocation();
+                if (_navAgent.IsNavigationFinished())
+                {
+                    EmitSignal(SignalName.NavTargetReached);
+                }
+                else
+                {
+                    Vector3 destination = _navAgent.GetNextPathPosition();
+                    Vector3 localDestination = destination - GlobalPosition;
+                    _direction = localDestination.Normalized();
+                    EmitSignal(SignalName.UpdateDirection, _direction);
+                }
             }
         }
-        if (_navAgent.IsNavigationFinished())
-        {
-            EmitSignal(SignalName.NavTargetReached);
-        }
-        else
-        {
-            Vector3 destination = _navAgent.GetNextPathPosition();
-            Vector3 localDestination = destination - GlobalPosition;
-            _direction = localDestination.Normalized();
-            EmitSignal(SignalName.UpdateDirection, _direction);
-        }
+    }
+
+    private void SensorTimerReset()
+    {
+        ScanAreaForTargets();
     }
 
     private void ScanAreaForTargets()
