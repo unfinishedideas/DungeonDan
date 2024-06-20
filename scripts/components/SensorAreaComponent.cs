@@ -6,6 +6,7 @@ public partial class SensorAreaComponent : Area3D
 {
     public NavigationAgent3D _navAgent;
     public RayCast3D _sightRay;
+    public Timer _sensorResetTimer;
 
     private Vector3 _direction;
 
@@ -17,11 +18,21 @@ public partial class SensorAreaComponent : Area3D
     [Signal]
     public delegate void NavTargetReachedEventHandler();
 
+    [Signal]
+    public delegate void TargetAcquiredEventHandler();
+    [Signal]
+    public delegate void TargetLostEventHandler();
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         _navAgent = GetNode<NavigationAgent3D>("NavAgent3D");
         _sightRay = GetNode<RayCast3D>("SightRay");
+        _sensorResetTimer = GetNode<Timer>("SensorResetTimer");
+    
+        // TODO: Setup Sensor Area to only scan when timer times out instead of in _Process()
+        //_sensorResetTimer.Timeout += () => ScanAreaForTargets();
+
         this.BodyEntered += (Node3D body) => CustomBodyEntered(body);
         this.BodyExited += (Node3D body) => CustomBodyExited(body);
         _direction = Vector3.Zero;
@@ -81,6 +92,14 @@ public partial class SensorAreaComponent : Area3D
                 closestDistance = distanceFromTarget;
                 _currentTarget = target;
             }
+        }
+        if (_currentTarget != null)
+        {
+            EmitSignal(SignalName.TargetAcquired);
+        }
+        else
+        {
+            EmitSignal(SignalName.TargetLost);
         }
     }
 

@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://bvhb674ee54vf"]
+
+[ext_resource type="PackedScene" uid="uid://wcnblcjpd454" path="res://scenes/state/StateMachine.tscn" id="1_4jnfj"]
+[ext_resource type="PackedScene" uid="uid://ch7igm2qlltoj" path="res://scenes/components/SensorAreaComponent.tscn" id="1_nd5cm"]
+[ext_resource type="Script" path="res://scripts/states/EnemyIdle.cs" id="2_hkh8e"]
+[ext_resource type="Script" path="res://scripts/states/EnemyChase.cs" id="3_cng7f"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_8dk1b"]
+radius = 10.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_v38sa"]
+
+[node name="TestEnemy" type="Node3D"]
+
+[node name="StateMachine" parent="." instance=ExtResource("1_4jnfj")]
+
+[node name="EnemyIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState")]
+script = ExtResource("2_hkh8e")
+ChasingState = NodePath("../EnemyChase")
+
+[node name="EnemyChase" type="Node" parent="StateMachine" node_paths=PackedStringArray("IdleState")]
+script = ExtResource("3_cng7f")
+IdleState = NodePath("../EnemyIdle")
+
+[node name="Components" type="Node3D" parent="."]
+
+[node name="SensorAreaComponent" parent="Components" instance=ExtResource("1_nd5cm")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/SensorAreaComponent"]
+shape = SubResource("SphereShape3D_8dk1b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_v38sa")
+
+[connection signal="TargetAcquired" from="Components/SensorAreaComponent" to="StateMachine/EnemyIdle" method="_on_sensor_area_component_target_acquired"]
+[connection signal="TargetLost" from="Components/SensorAreaComponent" to="StateMachine/EnemyChase" method="_on_sensor_area_component_target_lost"]
