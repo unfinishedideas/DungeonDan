@@ -44,6 +44,7 @@ public partial class SensorAreaComponent : Area3D
         {
             // Check to see if there is a better target first
             UpdateCurrentTarget();
+
             // If we are targeting a player, and they haven't disconnected, nav toward them
             if (_currentTarget != null && IsInstanceValid(_currentTarget))
             {
@@ -73,7 +74,7 @@ public partial class SensorAreaComponent : Area3D
         Godot.Collections.Array<Node3D> startingOverlaps = this.GetOverlappingBodies();
         foreach(Node3D body in startingOverlaps)
         {
-            if (body.IsInGroup("players"))
+            if (body.IsInGroup("players") && !_targetList.Contains(body))
             {
                 _targetList.Add(body);
             }
@@ -84,6 +85,7 @@ public partial class SensorAreaComponent : Area3D
     private void UpdateCurrentTarget()
     {
         // enumerate potential targets and get the cloest one
+        Node3D oldTarget = _currentTarget;
         _currentTarget = null;
         float closestDistance = float.MaxValue;
 
@@ -99,9 +101,12 @@ public partial class SensorAreaComponent : Area3D
         }
         if (_currentTarget != null)
         {
-            EmitSignal(SignalName.TargetAcquired);
+            if (oldTarget != _currentTarget)
+            {
+                EmitSignal(SignalName.TargetAcquired);
+            }
         }
-        else
+        else if (_currentTarget == null && oldTarget != null)
         {
             EmitSignal(SignalName.TargetLost);
         }
