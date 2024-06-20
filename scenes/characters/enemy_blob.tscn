@@ -7,11 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://runqb2gm7djg" path="res://scenes/components/VelocityComponent.tscn" id="5_l7nht"]
 [ext_resource type="PackedScene" uid="uid://ch7igm2qlltoj" path="res://scenes/components/SensorAreaComponent.tscn" id="6_ekasl"]
 [ext_resource type="Script" path="res://scripts/states/StateMachine.cs" id="7_6a5xt"]
-[ext_resource type="Script" path="res://scripts/states/EnemyIdle.cs" id="8_v1dxe"]
-[ext_resource type="Script" path="res://scripts/states/EnemyChase.cs" id="9_bako5"]
-[ext_resource type="Script" path="res://scripts/states/EnemySearch.cs" id="10_8sv0p"]
-[ext_resource type="Script" path="res://scripts/states/EnemyAttack.cs" id="11_wuir7"]
-[ext_resource type="Script" path="res://scripts/states/EnemyDamaged.cs" id="12_jx40k"]
+[ext_resource type="PackedScene" uid="uid://bf7x4hvpcnue4" path="res://scenes/state/EnemyState-Idle.tscn" id="8_velev"]
+[ext_resource type="PackedScene" uid="uid://bcaxm22cdbs8k" path="res://scenes/state/EnemyState-Chase.tscn" id="10_k4ob2"]
+[ext_resource type="PackedScene" uid="uid://d2rh8wso200e5" path="res://scenes/state/EnemyState-Search.tscn" id="10_y4k7d"]
+[ext_resource type="PackedScene" uid="uid://cj5dvc14pl6h3" path="res://scenes/state/EnemyState-Attack.tscn" id="11_pexey"]
+[ext_resource type="PackedScene" uid="uid://b71ooaxj0xe8k" path="res://scenes/state/EnemyState-Damaged.tscn" id="12_yreod"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h3vtw"]
 
@@ -262,27 +262,25 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 script = ExtResource("7_6a5xt")
 
-[node name="EnemyIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState", "EnemyDamageState")]
-script = ExtResource("8_v1dxe")
+[node name="EnemyIdle" parent="StateMachine" node_paths=PackedStringArray("ChasingState", "EnemyDamageState") instance=ExtResource("8_velev")]
 ChasingState = NodePath("../EnemyChase")
 EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyChase" type="Node" parent="StateMachine" node_paths=PackedStringArray("SearchState", "AttackState")]
-script = ExtResource("9_bako5")
-SearchState = NodePath("../EnemySearch")
-AttackState = NodePath("../EnemyAttack")
-
-[node name="EnemySearch" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState", "IdleState")]
-script = ExtResource("10_8sv0p")
+[node name="EnemySearch" parent="StateMachine" node_paths=PackedStringArray("ChasingState", "IdleState", "EnemyDamageState") instance=ExtResource("10_y4k7d")]
 ChasingState = NodePath("../EnemyChase")
 IdleState = NodePath("../EnemyIdle")
+EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("IdleState")]
-script = ExtResource("11_wuir7")
+[node name="EnemyChase" parent="StateMachine" node_paths=PackedStringArray("SearchState", "AttackState", "EnemyDamageState") instance=ExtResource("10_k4ob2")]
+SearchState = NodePath("../EnemySearch")
+AttackState = NodePath("../EnemyAttack")
+EnemyDamageState = NodePath("../EnemyDamaged")
+
+[node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("IdleState", "EnemyDamageState") instance=ExtResource("11_pexey")]
 IdleState = NodePath("../EnemyIdle")
+EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyDamaged" type="Node" parent="StateMachine" node_paths=PackedStringArray("IdleState")]
-script = ExtResource("12_jx40k")
+[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("IdleState") instance=ExtResource("12_yreod")]
 IdleState = NodePath("../EnemyIdle")
 
 [connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]

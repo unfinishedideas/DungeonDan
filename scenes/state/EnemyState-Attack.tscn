@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cj5dvc14pl6h3"]
+
+[ext_resource type="Script" path="res://scripts/states/EnemyAttack.cs" id="1_lw5ap"]
+
+[node name="EnemyAttack" type="Node" node_paths=PackedStringArray("IdleState")]
+script = ExtResource("1_lw5ap")
+IdleState = NodePath("")

@@ -36,7 +36,7 @@ namespace StateMachine
             base._Process(delta);
             if (States.Count == 0 || InitialState == null)
             {
-                GD.PrintErr("State machine is empty!");
+                GD.PrintErr("State machine is empty! Check that all states are connected");
                 return;
             }
 

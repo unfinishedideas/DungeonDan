@@ -11,13 +11,13 @@ public partial class EnemyChase : EnemyState
     [Export]
     protected EnemyState EnemyDamageState;
 
+    public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+
     private SensorAreaComponent _sensorArea;
     private HealthComponent _healthComponent;
-
     private Vector3 _direction;
     private Vector3 _prevGlobalPosition;
     private Vector3 _originalGlobalPosition;
-    public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
     public override void _Ready()
     {

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcaxm22cdbs8k"]
+
+[ext_resource type="Script" path="res://scripts/states/EnemyChase.cs" id="1_vfp8f"]
+
+[node name="EnemyChase" type="Node" node_paths=PackedStringArray("SearchState", "AttackState", "EnemyDamageState")]
+script = ExtResource("1_vfp8f")
+SearchState = NodePath("")
+AttackState = NodePath("")
+EnemyDamageState = NodePath("")

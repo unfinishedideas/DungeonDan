@@ -6,11 +6,15 @@ public partial class EnemyAttack : EnemyState
 {
     [Export]
     protected EnemyState IdleState;
+    [Export]
+    protected EnemyState EnemyDamageState;
 
     [Export]
     public float AttackCooldownTime = 1f;
 
     protected Timer CooldownTimer;
+    private HealthComponent _healthComponent;
+    private bool tookDamage = false;
 
     public override void _Ready()
     {
@@ -20,12 +24,25 @@ public partial class EnemyAttack : EnemyState
         CooldownTimer.WaitTime = AttackCooldownTime;
         CooldownTimer.OneShot = true;
         CooldownTimer.Timeout += () => CooldownTimeout();
+        _healthComponent = Owner.GetNode<HealthComponent>("%HealthComponent"); 
         OnEnter += Enter;
+        OnExit += Exit;
     }
 
     private void Enter()
     {
         Attack();
+        _healthComponent.TookDamage += TookDamage;
+    }
+
+    private void Exit()
+    {
+        _healthComponent.TookDamage -= TookDamage;
+    }
+
+    private void TookDamage()
+    {
+        tookDamage = true;
     }
 
     public void Attack()
@@ -36,7 +53,14 @@ public partial class EnemyAttack : EnemyState
 
     public void CooldownTimeout()
     {
-        StateMachine?.ChangeState(IdleState);
+        if (tookDamage == true)
+        {
+            StateMachine?.ChangeState(EnemyDamageState);
+        }
+        else
+        {
+            StateMachine?.ChangeState(IdleState);
+        }
     }
 }
 
