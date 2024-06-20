@@ -68,9 +68,6 @@ uppercase = true
 
 [node name="Components" type="Node3D" parent="."]
 
-[node name="HealthComponent" parent="Components" instance=ExtResource("2_ukuw5")]
-unique_name_in_owner = true
-
 [node name="HitboxComponent" parent="Components" instance=ExtResource("2_6vye2")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
@@ -90,6 +87,9 @@ unique_name_in_owner = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/SensorAreaComponent"]
 shape = SubResource("SphereShape3D_vdhxv")
+
+[node name="HealthComponent" parent="Components" instance=ExtResource("2_ukuw5")]
+unique_name_in_owner = true
 
 [node name="StateMachine" parent="." instance=ExtResource("1_4jnfj")]
 unique_name_in_owner = true

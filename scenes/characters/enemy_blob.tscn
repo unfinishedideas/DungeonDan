@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bxau1uefiu637"]
+[gd_scene load_steps=24 format=3 uid="uid://bxau1uefiu637"]
 
 [ext_resource type="Script" path="res://scripts/entities/enemy_blob.cs" id="1_dgwge"]
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_utltq"]
@@ -8,6 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://ch7igm2qlltoj" path="res://scenes/components/SensorAreaComponent.tscn" id="6_ekasl"]
 [ext_resource type="Script" path="res://scripts/states/StateMachine.cs" id="7_6a5xt"]
 [ext_resource type="Script" path="res://scripts/states/EnemyIdle.cs" id="8_v1dxe"]
+[ext_resource type="Script" path="res://scripts/states/EnemyChase.cs" id="9_bako5"]
+[ext_resource type="Script" path="res://scripts/states/EnemySearch.cs" id="10_8sv0p"]
+[ext_resource type="Script" path="res://scripts/states/EnemyAttack.cs" id="11_wuir7"]
+[ext_resource type="Script" path="res://scripts/states/EnemyDamaged.cs" id="12_jx40k"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h3vtw"]
 
@@ -258,8 +262,28 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 script = ExtResource("7_6a5xt")
 
-[node name="EnemyIdle" type="Node" parent="StateMachine"]
+[node name="EnemyIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState", "EnemyDamageState")]
 script = ExtResource("8_v1dxe")
+ChasingState = NodePath("../EnemyChase")
+EnemyDamageState = NodePath("../EnemyDamaged")
+
+[node name="EnemyChase" type="Node" parent="StateMachine" node_paths=PackedStringArray("SearchState", "AttackState")]
+script = ExtResource("9_bako5")
+SearchState = NodePath("../EnemySearch")
+AttackState = NodePath("../EnemyAttack")
+
+[node name="EnemySearch" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState", "IdleState")]
+script = ExtResource("10_8sv0p")
+ChasingState = NodePath("../EnemyChase")
+IdleState = NodePath("../EnemyIdle")
+
+[node name="EnemyAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("IdleState")]
+script = ExtResource("11_wuir7")
+IdleState = NodePath("../EnemyIdle")
+
+[node name="EnemyDamaged" type="Node" parent="StateMachine" node_paths=PackedStringArray("IdleState")]
+script = ExtResource("12_jx40k")
+IdleState = NodePath("../EnemyIdle")
 
 [connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
 [connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]
