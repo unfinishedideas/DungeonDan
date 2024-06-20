@@ -2,11 +2,6 @@ using Godot;
 using System;
 using StateMachine;
 
-// Signals to connect
-// _on_sensor_area_component_target_lost()
-// _on_sensor_area_component_update_direction(Vector3 Direction)
-// _on_sensor_area_component_nav_target_reached()
-
 public partial class EnemyChase : EnemyState
 {
     [Export]

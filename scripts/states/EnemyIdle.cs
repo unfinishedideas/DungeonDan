@@ -2,28 +2,31 @@ using Godot;
 using System;
 using StateMachine;
 
-// Signals to connect
-// _on_sensor_area_component_target_acquired
-
 public partial class EnemyIdle : EnemyState
 {
     [Export]
     protected EnemyState ChasingState;
+    [Export]
+    protected EnemyState EnemyDamageState;
+
     private SensorAreaComponent _sensorArea;
+    private HealthComponent _healthComponent;
 
     public override void _Ready()
     {
         OnProcess += Process;
         OnEnter += Enter;
         OnExit += Exit;
-       _sensorArea = Owner.GetNode<SensorAreaComponent>("%SensorAreaComponent"); 
+        _sensorArea = Owner.GetNode<SensorAreaComponent>("%SensorAreaComponent"); 
+        _healthComponent = Owner.GetNode<HealthComponent>("%HealthComponent"); 
     }
 
     private void Process(double delta){}
 
     private void Enter()
     {
-       _sensorArea.TargetAcquired += TargetDetected;
+        _sensorArea.TargetAcquired += TargetDetected;
+        _healthComponent.TookDamage += TookDamage;
     }
 
     private void Exit()
@@ -35,4 +38,10 @@ public partial class EnemyIdle : EnemyState
     {
         StateMachine?.ChangeState(ChasingState);
     }
+
+    private void TookDamage()
+    {
+        StateMachine?.ChangeState(EnemyDamageState);
+    }
 }
+

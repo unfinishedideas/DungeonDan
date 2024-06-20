@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://1dpg8eaw4esn"]
+[gd_scene load_steps=15 format=3 uid="uid://1dpg8eaw4esn"]
 
 [ext_resource type="Script" path="res://scripts/game_logic/SceneManager.cs" id="1_q8avc"]
 [ext_resource type="PackedScene" uid="uid://bvhb674ee54vf" path="res://scenes/characters/test_enemy.tscn" id="2_5a22h"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cveishbod8l0b" path="res://scenes/characters/FloatyGuy.tscn" id="2_xh7qi"]
 [ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="3_nuuen"]
 [ext_resource type="PackedScene" uid="uid://cjt1mg3hshqfo" path="res://scenes/misc/killzone.tscn" id="5_mb8ir"]
+[ext_resource type="PackedScene" uid="uid://bxau1uefiu637" path="res://scenes/characters/enemy_blob.tscn" id="8_f63l8"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_fjs00"]
 radius = 3.449
@@ -84,5 +85,8 @@ environment = SubResource("Environment_l2fg1")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 21.2554, 0)
 shadow_enabled = true
+
+[node name="EnemyBlob" parent="." instance=ExtResource("8_f63l8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.62066, 4.72955, -5.43185)
 
 [connection signal="Quit" from="Characters/Player" to="." method="_on_player_quit"]

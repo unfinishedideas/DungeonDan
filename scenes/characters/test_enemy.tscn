@@ -1,12 +1,16 @@
-[gd_scene load_steps=12 format=3 uid="uid://bvhb674ee54vf"]
+[gd_scene load_steps=18 format=3 uid="uid://bvhb674ee54vf"]
 
 [ext_resource type="PackedScene" uid="uid://wcnblcjpd454" path="res://scenes/state/StateMachine.tscn" id="1_4jnfj"]
 [ext_resource type="Script" path="res://scripts/entities/Enemy.cs" id="1_46oti"]
 [ext_resource type="PackedScene" uid="uid://ch7igm2qlltoj" path="res://scenes/components/SensorAreaComponent.tscn" id="1_nd5cm"]
+[ext_resource type="PackedScene" uid="uid://momic4mvi375" path="res://scenes/components/HitboxComponent.tscn" id="2_6vye2"]
 [ext_resource type="Script" path="res://scripts/states/EnemyIdle.cs" id="2_hkh8e"]
+[ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_ukuw5"]
 [ext_resource type="Script" path="res://scripts/states/EnemyChase.cs" id="3_cng7f"]
+[ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HurtboxComponent.tscn" id="3_ngcb6"]
 [ext_resource type="Script" path="res://scripts/states/EnemySearch.cs" id="6_j6xnn"]
 [ext_resource type="Script" path="res://scripts/states/EnemyAttack.cs" id="7_4jbll"]
+[ext_resource type="Script" path="res://scripts/states/EnemyDamaged.cs" id="11_2es0f"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_egklu"]
 properties/0/path = NodePath(".:position")
@@ -22,6 +26,11 @@ properties/2/replication_mode = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_1yg2m"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_v38sa"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fkx4i"]
+size = Vector3(2.2, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ye3tc"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_vdhxv"]
 radius = 10.0
@@ -59,6 +68,23 @@ uppercase = true
 
 [node name="Components" type="Node3D" parent="."]
 
+[node name="HealthComponent" parent="Components" instance=ExtResource("2_ukuw5")]
+unique_name_in_owner = true
+
+[node name="HitboxComponent" parent="Components" instance=ExtResource("2_6vye2")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0167236, 0, 0.995794)
+shape = SubResource("BoxShape3D_fkx4i")
+
+[node name="HurtboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_ngcb6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+_healthComponent = NodePath("../HealthComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HurtboxComponent"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
+shape = SubResource("BoxShape3D_ye3tc")
+
 [node name="SensorAreaComponent" parent="Components" instance=ExtResource("1_nd5cm")]
 unique_name_in_owner = true
 
@@ -85,3 +111,6 @@ IdleState = NodePath("../EnemyIdle")
 [node name="EnemyAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("IdleState")]
 script = ExtResource("7_4jbll")
 IdleState = NodePath("../EnemyIdle")
+
+[node name="EnemyDamaged" type="Node" parent="StateMachine"]
+script = ExtResource("11_2es0f")

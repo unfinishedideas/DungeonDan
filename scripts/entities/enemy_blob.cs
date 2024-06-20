@@ -5,6 +5,15 @@ using System.Collections.Generic;
 
 public partial class enemy_blob : Enemy
 {
+    [Export]
+    public Label3D _hpLabel;
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        _hpLabel.Text = _healthComponent.Health.ToString();
+    }
+
     /*
        [Export]
        public float Speed = 5.0f;

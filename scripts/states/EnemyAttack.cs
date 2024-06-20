@@ -1,4 +1,3 @@
-
 using Godot;
 using System;
 using StateMachine;
@@ -37,8 +36,7 @@ public partial class EnemyAttack : EnemyState
 
     public void CooldownTimeout()
     {
-        GD.Print("Attack timer timeout");
         StateMachine?.ChangeState(IdleState);
     }
-
 }
+

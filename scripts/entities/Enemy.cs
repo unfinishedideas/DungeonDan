@@ -9,16 +9,16 @@ public partial class Enemy : CharacterBody3D
 
     // Components
     [Export]
-    private HealthComponent _healthComponent;
+    public HealthComponent _healthComponent;
     [Export]
-    private HurtboxComponent _hurtboxComponent;
+    public HurtboxComponent _hurtboxComponent;
     [Export]
-    private SensorAreaComponent _sensorAreaComponent;
+    public SensorAreaComponent _sensorAreaComponent;
 
     [Export]
-    private float JumpForce = 10f;
+    public float JumpForce = 10f;
     [Export]
-    private float BounceBackForce = 200f;
+    public float BounceBackForce = 200f;
 
     public Attack Attack1 = new Attack(10f, 0f);
 

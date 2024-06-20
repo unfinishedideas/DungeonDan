@@ -186,13 +186,15 @@ radius = 0.6
 [sub_resource type="SphereShape3D" id="SphereShape3D_fum7j"]
 radius = 25.0
 
-[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hurtboxComponent")]
+[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_hpLabel", "_healthComponent", "_hurtboxComponent", "_sensorAreaComponent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
 collision_layer = 16
 collision_mask = 25
 script = ExtResource("1_dgwge")
+_hpLabel = NodePath("MeshInstance3D/HPLabel")
 _healthComponent = NodePath("Components/HealthComponent")
 _hurtboxComponent = NodePath("Components/HurtboxComponent")
+_sensorAreaComponent = NodePath("Components/SensorAreaComponent")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_08y2i")
@@ -203,6 +205,15 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.638456, 0)
 billboard = 1
 text = "hp"
+
+[node name="StateLabel" type="Label3D" parent="MeshInstance3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.900704, 0)
+pixel_size = 0.009
+billboard = 1
+modulate = Color(1, 0, 0, 1)
+text = "STATE"
+uppercase = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_esdvy")
@@ -232,6 +243,7 @@ _healthComponent = NodePath("../HealthComponent")
 shape = SubResource("SphereShape3D_cdn7i")
 
 [node name="SensorAreaComponent" parent="Components" instance=ExtResource("6_ekasl")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.497139, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/SensorAreaComponent"]
@@ -243,6 +255,7 @@ unique_name_in_owner = true
 [node name="VelocityComponent" parent="Components" instance=ExtResource("5_l7nht")]
 
 [node name="StateMachine" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("7_6a5xt")
 
 [node name="EnemyIdle" type="Node" parent="StateMachine"]

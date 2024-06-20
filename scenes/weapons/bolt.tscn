@@ -316,7 +316,7 @@ transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -0.02743, 0)
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0.0547224, -1.02242)
 target_position = Vector3(0, 0, 1)
-collision_mask = 11
+collision_mask = 5
 collide_with_areas = true
 
 [node name="Sparkles" type="GPUParticles3D" parent="."]

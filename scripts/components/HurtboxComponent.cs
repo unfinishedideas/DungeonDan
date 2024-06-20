@@ -9,8 +9,9 @@ public partial class HurtboxComponent : Area3D
 
     public override void _Ready()
     {
-        CollisionLayer = 0;
-        CollisionMask = 2;
+        // Leaving this for reference, a tutorial did this for some reason
+        //CollisionLayer = 0;
+        //CollisionMask = 2;
     }
 
     // This is sometimes called from other places

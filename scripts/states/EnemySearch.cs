@@ -2,10 +2,6 @@ using Godot;
 using System;
 using StateMachine;
 
-// Signals to connect
-// _on_sensor_area_component_target_acquired
-// _on_sensor_area_component_nav_target_reached()
-
 public partial class EnemySearch : EnemyState
 {
     [Export]
@@ -84,3 +80,4 @@ public partial class EnemySearch : EnemyState
         _enemy.MoveAndSlide();
     }
 }
+
