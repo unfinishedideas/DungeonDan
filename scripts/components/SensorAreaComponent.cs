@@ -6,6 +6,7 @@ public partial class SensorAreaComponent : Area3D
 {
     public NavigationAgent3D _navAgent;
     public RayCast3D _sightRay;
+    public Timer _sensorResetTimer;
 
     private Vector3 _direction;
 
@@ -17,11 +18,19 @@ public partial class SensorAreaComponent : Area3D
     [Signal]
     public delegate void NavTargetReachedEventHandler();
 
+    [Signal]
+    public delegate void TargetAcquiredEventHandler();
+    [Signal]
+    public delegate void TargetLostEventHandler();
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         _navAgent = GetNode<NavigationAgent3D>("NavAgent3D");
         _sightRay = GetNode<RayCast3D>("SightRay");
+        _sensorResetTimer = GetNode<Timer>("SensorResetTimer");
+        _sensorResetTimer.Timeout += () => SensorTimerReset();
+
         this.BodyEntered += (Node3D body) => CustomBodyEntered(body);
         this.BodyExited += (Node3D body) => CustomBodyExited(body);
         _direction = Vector3.Zero;
@@ -31,15 +40,13 @@ public partial class SensorAreaComponent : Area3D
 
     public override void _Process(double delta)
     {
-        // If we are targeting a player, and they haven't disconnected, nav toward them
-        if (_targetList.Count != 0)
+        // Check to see if there is a better target first
+        UpdateCurrentTarget();
+        if (_currentTarget != null && IsInstanceValid(_currentTarget))
         {
-            UpdateCurrentTarget();
-            if (_currentTarget != null && IsInstanceValid(_currentTarget))
-            {
-                UpdateTargetLocation();
-            }
+            UpdateTargetLocation();
         }
+
         if (_navAgent.IsNavigationFinished())
         {
             EmitSignal(SignalName.NavTargetReached);
@@ -53,12 +60,17 @@ public partial class SensorAreaComponent : Area3D
         }
     }
 
+    private void SensorTimerReset()
+    {
+        ScanAreaForTargets();
+    }
+
     private void ScanAreaForTargets()
     {
         Godot.Collections.Array<Node3D> startingOverlaps = this.GetOverlappingBodies();
         foreach(Node3D body in startingOverlaps)
         {
-            if (body.IsInGroup("players"))
+            if (body.IsInGroup("players") && !_targetList.Contains(body))
             {
                 _targetList.Add(body);
             }
@@ -69,6 +81,7 @@ public partial class SensorAreaComponent : Area3D
     private void UpdateCurrentTarget()
     {
         // enumerate potential targets and get the cloest one
+        Node3D oldTarget = _currentTarget;
         _currentTarget = null;
         float closestDistance = float.MaxValue;
 
@@ -81,6 +94,17 @@ public partial class SensorAreaComponent : Area3D
                 closestDistance = distanceFromTarget;
                 _currentTarget = target;
             }
+        }
+        if (_currentTarget != null)
+        {
+            if (oldTarget != _currentTarget)
+            {
+                EmitSignal(SignalName.TargetAcquired);
+            }
+        }
+        else if (_currentTarget == null && oldTarget != null)
+        {
+            EmitSignal(SignalName.TargetLost);
         }
     }
 

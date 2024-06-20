@@ -12,3 +12,7 @@ debug_enabled = true
 
 [node name="SightRay" type="RayCast3D" parent="."]
 collision_mask = 9
+
+[node name="SensorResetTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true

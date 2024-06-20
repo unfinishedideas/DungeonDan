@@ -1,0 +1,87 @@
+[gd_scene load_steps=12 format=3 uid="uid://bvhb674ee54vf"]
+
+[ext_resource type="PackedScene" uid="uid://wcnblcjpd454" path="res://scenes/state/StateMachine.tscn" id="1_4jnfj"]
+[ext_resource type="Script" path="res://scripts/entities/Enemy.cs" id="1_46oti"]
+[ext_resource type="PackedScene" uid="uid://ch7igm2qlltoj" path="res://scenes/components/SensorAreaComponent.tscn" id="1_nd5cm"]
+[ext_resource type="Script" path="res://scripts/states/EnemyIdle.cs" id="2_hkh8e"]
+[ext_resource type="Script" path="res://scripts/states/EnemyChase.cs" id="3_cng7f"]
+[ext_resource type="Script" path="res://scripts/states/EnemySearch.cs" id="6_j6xnn"]
+[ext_resource type="Script" path="res://scripts/states/EnemyAttack.cs" id="7_4jbll"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_egklu"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = false
+properties/0/replication_mode = 1
+properties/1/path = NodePath("AnimationPlayer:current_animation")
+properties/1/spawn = false
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Components/HealthComponent:Health")
+properties/2/spawn = false
+properties/2/replication_mode = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1yg2m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_v38sa"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vdhxv"]
+radius = 10.0
+
+[node name="TestEnemy" type="CharacterBody3D"]
+collision_layer = 16
+collision_mask = 25
+script = ExtResource("1_46oti")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_egklu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_1yg2m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_v38sa")
+
+[node name="HPLabel" type="Label3D" parent="MeshInstance3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.972677, 0)
+billboard = 1
+text = "hp"
+
+[node name="StateLabel" type="Label3D" parent="MeshInstance3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.707882, 0)
+pixel_size = 0.009
+billboard = 1
+modulate = Color(1, 0, 0, 1)
+text = "STATE"
+uppercase = true
+
+[node name="Components" type="Node3D" parent="."]
+
+[node name="SensorAreaComponent" parent="Components" instance=ExtResource("1_nd5cm")]
+unique_name_in_owner = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/SensorAreaComponent"]
+shape = SubResource("SphereShape3D_vdhxv")
+
+[node name="StateMachine" parent="." instance=ExtResource("1_4jnfj")]
+unique_name_in_owner = true
+
+[node name="EnemyIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState")]
+script = ExtResource("2_hkh8e")
+ChasingState = NodePath("../EnemyChase")
+
+[node name="EnemyChase" type="Node" parent="StateMachine" node_paths=PackedStringArray("SearchState", "AttackState")]
+script = ExtResource("3_cng7f")
+SearchState = NodePath("../EnemySearch")
+AttackState = NodePath("../EnemyAttack")
+
+[node name="EnemySearch" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState", "IdleState")]
+script = ExtResource("6_j6xnn")
+ChasingState = NodePath("../EnemyChase")
+IdleState = NodePath("../EnemyIdle")
+
+[node name="EnemyAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("IdleState")]
+script = ExtResource("7_4jbll")
+IdleState = NodePath("../EnemyIdle")
