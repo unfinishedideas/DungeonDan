@@ -40,27 +40,23 @@ public partial class SensorAreaComponent : Area3D
 
     public override void _Process(double delta)
     {
+        // Check to see if there is a better target first
+        UpdateCurrentTarget();
         if (_currentTarget != null && IsInstanceValid(_currentTarget))
         {
-            // Check to see if there is a better target first
-            UpdateCurrentTarget();
+            UpdateTargetLocation();
+        }
 
-            // If we are targeting a player, and they haven't disconnected, nav toward them
-            if (_currentTarget != null && IsInstanceValid(_currentTarget))
-            {
-                UpdateTargetLocation();
-                if (_navAgent.IsNavigationFinished())
-                {
-                    EmitSignal(SignalName.NavTargetReached);
-                }
-                else
-                {
-                    Vector3 destination = _navAgent.GetNextPathPosition();
-                    Vector3 localDestination = destination - GlobalPosition;
-                    _direction = localDestination.Normalized();
-                    EmitSignal(SignalName.UpdateDirection, _direction);
-                }
-            }
+        if (_navAgent.IsNavigationFinished())
+        {
+            EmitSignal(SignalName.NavTargetReached);
+        }
+        else
+        {
+            Vector3 destination = _navAgent.GetNextPathPosition();
+            Vector3 localDestination = destination - GlobalPosition;
+            _direction = localDestination.Normalized();
+            EmitSignal(SignalName.UpdateDirection, _direction);
         }
     }
 

@@ -13,6 +13,7 @@ public partial class EnemySearch : EnemyState
     [Export]
     protected EnemyState IdleState;
 
+    private SensorAreaComponent _sensorArea;
     private Vector3 _direction;
     private Vector3 _prevGlobalPosition;
     private Vector3 _originalGlobalPosition;
@@ -24,12 +25,44 @@ public partial class EnemySearch : EnemyState
         _direction = Vector3.Zero;
         _prevGlobalPosition = _enemy.GlobalPosition;
         _originalGlobalPosition = _enemy.GlobalPosition;
+        _sensorArea = Owner.GetNode<SensorAreaComponent>("%SensorAreaComponent"); 
         OnPhysicsProcess += PhysicsProcess;
+        OnEnter += Enter;
+        OnExit += Exit;
     }
 
     private void PhysicsProcess(double delta)
     {
         MoveTowardTarget(delta);
+    }
+
+    private void Enter()
+    {
+        _sensorArea.TargetAcquired += TargetAcquired;
+        _sensorArea.NavTargetReached += NavTargetReached;
+        _sensorArea.UpdateDirection += UpdateDirection;
+    }
+
+    private void Exit()
+    {
+        _sensorArea.TargetAcquired -= TargetAcquired;
+        _sensorArea.NavTargetReached -= NavTargetReached;
+        _sensorArea.UpdateDirection -= UpdateDirection;
+    }
+
+    private void TargetAcquired()
+    {
+        StateMachine?.ChangeState(ChasingState);
+    }
+
+    private void NavTargetReached()
+    {
+        StateMachine?.ChangeState(IdleState);
+    }
+
+    private void UpdateDirection(Vector3 direction)
+    {
+        _direction = direction;
     }
 
     public void MoveTowardTarget(double delta)
@@ -49,22 +82,5 @@ public partial class EnemySearch : EnemyState
         velocity.Y -= Gravity * (float)delta;
         _enemy.Velocity = velocity;
         _enemy.MoveAndSlide();
-    }
-
-    // Signals ----------------------------------------------------------------
-    public void _on_sensor_area_component_target_acquired()
-    {
-        StateMachine?.ChangeState(ChasingState);
-    }
-
-    public void _on_sensor_area_component_nav_target_reached()
-    {
-        GD.Print("Enemy Search nav reached");
-        StateMachine?.ChangeState(IdleState);
-    }
-
-    public void _on_sensor_area_component_update_direction(Vector3 Direction)
-    {
-        _direction = Direction;
     }
 }

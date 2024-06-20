@@ -60,6 +60,7 @@ uppercase = true
 [node name="Components" type="Node3D" parent="."]
 
 [node name="SensorAreaComponent" parent="Components" instance=ExtResource("1_nd5cm")]
+unique_name_in_owner = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/SensorAreaComponent"]
 shape = SubResource("SphereShape3D_vdhxv")
@@ -84,11 +85,3 @@ IdleState = NodePath("../EnemyIdle")
 [node name="EnemyAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("IdleState")]
 script = ExtResource("7_4jbll")
 IdleState = NodePath("../EnemyIdle")
-
-[connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="StateMachine/EnemyChase" method="_on_sensor_area_component_nav_target_reached"]
-[connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="StateMachine/EnemySearch" method="_on_sensor_area_component_nav_target_reached"]
-[connection signal="TargetAcquired" from="Components/SensorAreaComponent" to="StateMachine/EnemyIdle" method="_on_sensor_area_component_target_acquired"]
-[connection signal="TargetAcquired" from="Components/SensorAreaComponent" to="StateMachine/EnemySearch" method="_on_sensor_area_component_target_acquired"]
-[connection signal="TargetLost" from="Components/SensorAreaComponent" to="StateMachine/EnemyChase" method="_on_sensor_area_component_target_lost"]
-[connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="StateMachine/EnemyChase" method="_on_sensor_area_component_update_direction"]
-[connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="StateMachine/EnemySearch" method="_on_sensor_area_component_update_direction"]

@@ -14,6 +14,7 @@ public partial class EnemyChase : EnemyState
     [Export]
     protected EnemyState AttackState;
 
+    private SensorAreaComponent _sensorArea;
     private Vector3 _direction;
     private Vector3 _prevGlobalPosition;
     private Vector3 _originalGlobalPosition;
@@ -25,7 +26,40 @@ public partial class EnemyChase : EnemyState
         _direction = Vector3.Zero;
         _prevGlobalPosition = _enemy.GlobalPosition;
         _originalGlobalPosition = _enemy.GlobalPosition;
+        _sensorArea = Owner.GetNode<SensorAreaComponent>("%SensorAreaComponent"); 
         OnPhysicsProcess += PhysicsProcess;
+        OnEnter += Enter;
+        OnExit += Exit;
+    }
+
+    private void Enter()
+    {
+        _sensorArea.TargetLost += TargetLost;
+        _sensorArea.UpdateDirection += UpdateDirection;
+        _sensorArea.NavTargetReached += NavTargetReached;
+    }
+
+    private void Exit()
+    {
+        _sensorArea.TargetLost -= TargetLost;
+        _sensorArea.UpdateDirection -= UpdateDirection;
+        _sensorArea.NavTargetReached -= NavTargetReached;
+    }
+
+    private void TargetLost()
+    {
+        StateMachine?.ChangeState(SearchState);
+    }
+
+    private void UpdateDirection(Vector3 direction)
+    {
+        _direction = direction;
+    }
+
+    private void NavTargetReached()
+    {
+        _direction = Vector3.Zero;
+        StateMachine?.ChangeState(AttackState);
     }
 
     private void PhysicsProcess(double delta)
@@ -51,23 +85,5 @@ public partial class EnemyChase : EnemyState
         velocity.Y -= Gravity * (float)delta;
         _enemy.Velocity = velocity;
         _enemy.MoveAndSlide();
-    }
-
-    // Signals ----------------------------------------------------------------
-    public void _on_sensor_area_component_target_lost()
-    {
-        StateMachine?.ChangeState(SearchState);
-    }
-
-    public void _on_sensor_area_component_update_direction(Vector3 Direction)
-    {
-        _direction = Direction;
-    }
-
-    public void _on_sensor_area_component_nav_target_reached()
-    {
-        GD.Print("EnemyChase Nav target reached");
-        _direction = Vector3.Zero;
-        StateMachine?.ChangeState(AttackState);
     }
 }
