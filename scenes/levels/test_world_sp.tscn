@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://1dpg8eaw4esn"]
+[gd_scene load_steps=14 format=3 uid="uid://1dpg8eaw4esn"]
 
 [ext_resource type="Script" path="res://scripts/game_logic/SceneManager.cs" id="1_q8avc"]
 [ext_resource type="PackedScene" uid="uid://bvhb674ee54vf" path="res://scenes/characters/test_enemy.tscn" id="2_5a22h"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://bptr8nwuooajv" path="res://scenes/environments/env_test.tscn" id="2_r8xph"]
 [ext_resource type="PackedScene" uid="uid://cveishbod8l0b" path="res://scenes/characters/FloatyGuy.tscn" id="2_xh7qi"]
 [ext_resource type="PackedScene" uid="uid://bn1o0e0w6iimt" path="res://scenes/characters/player.tscn" id="3_nuuen"]
-[ext_resource type="PackedScene" uid="uid://bxau1uefiu637" path="res://scenes/characters/enemy_blob.tscn" id="4_04mj7"]
 [ext_resource type="PackedScene" uid="uid://cjt1mg3hshqfo" path="res://scenes/misc/killzone.tscn" id="5_mb8ir"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_fjs00"]
@@ -49,9 +48,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.4302, 3.4554, 22.5869)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Characters/TESTHitboxComponent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.7273, 3.52464, 21.0565)
 shape = SubResource("SphereShape3D_fjs00")
-
-[node name="EnemyBlob" parent="Characters" instance=ExtResource("4_04mj7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.883762, 2.88313, -23.7548)
 
 [node name="FloatyGuy" parent="Characters" instance=ExtResource("2_xh7qi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.4636, 1.93524, 0)

@@ -186,14 +186,13 @@ radius = 0.6
 [sub_resource type="SphereShape3D" id="SphereShape3D_fum7j"]
 radius = 25.0
 
-[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hurtboxComponent", "_velocityComponent")]
+[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hurtboxComponent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
 collision_layer = 16
 collision_mask = 25
 script = ExtResource("1_dgwge")
 _healthComponent = NodePath("Components/HealthComponent")
 _hurtboxComponent = NodePath("Components/HurtboxComponent")
-_velocityComponent = NodePath("Components/VelocityComponent")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_08y2i")
