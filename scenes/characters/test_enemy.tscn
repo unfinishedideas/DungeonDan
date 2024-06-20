@@ -69,12 +69,14 @@ uppercase = true
 [node name="Components" type="Node3D" parent="."]
 
 [node name="HitboxComponent" parent="Components" instance=ExtResource("2_6vye2")]
+unique_name_in_owner = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HitboxComponent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0167236, 0, 0.995794)
 shape = SubResource("BoxShape3D_fkx4i")
 
 [node name="HurtboxComponent" parent="Components" node_paths=PackedStringArray("_healthComponent") instance=ExtResource("3_ngcb6")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 _healthComponent = NodePath("../HealthComponent")
 
@@ -94,14 +96,16 @@ unique_name_in_owner = true
 [node name="StateMachine" parent="." instance=ExtResource("1_4jnfj")]
 unique_name_in_owner = true
 
-[node name="EnemyIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState")]
+[node name="EnemyIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState", "EnemyDamageState")]
 script = ExtResource("2_hkh8e")
 ChasingState = NodePath("../EnemyChase")
+EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyChase" type="Node" parent="StateMachine" node_paths=PackedStringArray("SearchState", "AttackState")]
+[node name="EnemyChase" type="Node" parent="StateMachine" node_paths=PackedStringArray("SearchState", "AttackState", "EnemyDamageState")]
 script = ExtResource("3_cng7f")
 SearchState = NodePath("../EnemySearch")
 AttackState = NodePath("../EnemyAttack")
+EnemyDamageState = NodePath("../EnemyDamaged")
 
 [node name="EnemySearch" type="Node" parent="StateMachine" node_paths=PackedStringArray("ChasingState", "IdleState")]
 script = ExtResource("6_j6xnn")
@@ -112,5 +116,6 @@ IdleState = NodePath("../EnemyIdle")
 script = ExtResource("7_4jbll")
 IdleState = NodePath("../EnemyIdle")
 
-[node name="EnemyDamaged" type="Node" parent="StateMachine"]
+[node name="EnemyDamaged" type="Node" parent="StateMachine" node_paths=PackedStringArray("IdleState")]
 script = ExtResource("11_2es0f")
+IdleState = NodePath("../EnemyIdle")

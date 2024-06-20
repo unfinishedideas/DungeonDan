@@ -8,8 +8,12 @@ public partial class EnemyChase : EnemyState
     protected EnemyState SearchState;
     [Export]
     protected EnemyState AttackState;
+    [Export]
+    protected EnemyState EnemyDamageState;
 
     private SensorAreaComponent _sensorArea;
+    private HealthComponent _healthComponent;
+
     private Vector3 _direction;
     private Vector3 _prevGlobalPosition;
     private Vector3 _originalGlobalPosition;
@@ -22,6 +26,7 @@ public partial class EnemyChase : EnemyState
         _prevGlobalPosition = _enemy.GlobalPosition;
         _originalGlobalPosition = _enemy.GlobalPosition;
         _sensorArea = Owner.GetNode<SensorAreaComponent>("%SensorAreaComponent"); 
+        _healthComponent = Owner.GetNode<HealthComponent>("%HealthComponent"); 
         OnPhysicsProcess += PhysicsProcess;
         OnEnter += Enter;
         OnExit += Exit;
@@ -32,6 +37,7 @@ public partial class EnemyChase : EnemyState
         _sensorArea.TargetLost += TargetLost;
         _sensorArea.UpdateDirection += UpdateDirection;
         _sensorArea.NavTargetReached += NavTargetReached;
+        _healthComponent.TookDamage += TookDamage;
     }
 
     private void Exit()
@@ -39,6 +45,7 @@ public partial class EnemyChase : EnemyState
         _sensorArea.TargetLost -= TargetLost;
         _sensorArea.UpdateDirection -= UpdateDirection;
         _sensorArea.NavTargetReached -= NavTargetReached;
+        _healthComponent.TookDamage -= TookDamage;
     }
 
     private void TargetLost()
@@ -55,6 +62,11 @@ public partial class EnemyChase : EnemyState
     {
         _direction = Vector3.Zero;
         StateMachine?.ChangeState(AttackState);
+    }
+
+    private void TookDamage()
+    {
+        StateMachine?.ChangeState(EnemyDamageState);
     }
 
     private void PhysicsProcess(double delta)

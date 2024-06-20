@@ -4,3 +4,4 @@
 
 [node name="HealthComponent" type="Node"]
 script = ExtResource("1_ow7ni")
+IFramesTime = 0.283

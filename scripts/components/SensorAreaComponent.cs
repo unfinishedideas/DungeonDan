@@ -60,12 +60,18 @@ public partial class SensorAreaComponent : Area3D
         }
     }
 
+    // Useful for EnemyDamage State resetting targeting
+    public void ClearCurrentTarget()
+    {
+        _currentTarget = null;
+    }
+
     private void SensorTimerReset()
     {
         ScanAreaForTargets();
     }
 
-    private void ScanAreaForTargets()
+    public void ScanAreaForTargets()
     {
         Godot.Collections.Array<Node3D> startingOverlaps = this.GetOverlappingBodies();
         foreach(Node3D body in startingOverlaps)

@@ -27,11 +27,13 @@ public partial class EnemyIdle : EnemyState
     {
         _sensorArea.TargetAcquired += TargetDetected;
         _healthComponent.TookDamage += TookDamage;
+        _sensorArea.ClearCurrentTarget();
     }
 
     private void Exit()
     {
         _sensorArea.TargetAcquired -= TargetDetected;
+        _healthComponent.TookDamage -= TookDamage;
     }
 
     private void TargetDetected()
