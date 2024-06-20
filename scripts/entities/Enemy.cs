@@ -25,16 +25,20 @@ public partial class Enemy : CharacterBody3D
     private AnimationPlayer _player;
     private MeshInstance3D _mesh;
     private Label3D _hpLabel;
+    private Label3D _stateLabel;
     //private Vector3 _direction;
     //private Vector3 _prevGlobalPosition;
     private Timer _stuckTimer;
     //public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+    private StateMachine.StateMachine _stateMachine;
 
     public override void _Ready()
     {
         _mesh =  GetNode<MeshInstance3D>("MeshInstance3D");
         _player = GetNode<AnimationPlayer>("AnimationPlayer");
         _hpLabel = GetNode<Label3D>("%HPLabel");
+        _stateLabel = GetNode<Label3D>("%StateLabel");
+        _stateMachine = GetNode<StateMachine.StateMachine>("%StateMachine");
         //_direction = Vector3.Zero;
         //_prevGlobalPosition = this.GlobalPosition;
 
@@ -47,6 +51,12 @@ public partial class Enemy : CharacterBody3D
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
     public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+
+    public override void _Process(double  delta)
+    {
+        base._Process(delta);
+        _stateLabel.Text = _stateMachine.GetStateName();
+    }
 
     public override void _PhysicsProcess(double delta)
     {

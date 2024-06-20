@@ -31,7 +31,6 @@ namespace StateMachine
             }
         }
 
-        // Called every frame. 'delta' is the elapsed time since the previous frame.
         public override void _Process(double delta)
         {
             base._Process(delta);
@@ -92,6 +91,15 @@ namespace StateMachine
         {
             base._UnhandledInput(@event);
             CurrentState?.OnInput?.Invoke(@event);
+        }
+
+        public String GetStateName()
+        {
+            if (States.Count == 0 || InitialState == null)
+            {
+                return "State Machine has no state!";
+            }
+            return CurrentState.Name;
         }
     }
 }

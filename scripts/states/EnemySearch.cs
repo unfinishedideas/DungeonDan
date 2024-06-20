@@ -3,16 +3,15 @@ using System;
 using StateMachine;
 
 // Signals to connect
-// _on_sensor_area_component_target_lost()
-// _on_sensor_area_component_update_direction(Vector3 Direction)
+// _on_sensor_area_component_target_acquired
 // _on_sensor_area_component_nav_target_reached()
 
-public partial class EnemyChase : EnemyState
+public partial class EnemySearch : EnemyState
 {
     [Export]
-    protected EnemyState SearchState;
+    protected EnemyState ChasingState;
     [Export]
-    protected EnemyState AttackState;
+    protected EnemyState IdleState;
 
     private Vector3 _direction;
     private Vector3 _prevGlobalPosition;
@@ -46,7 +45,6 @@ public partial class EnemyChase : EnemyState
             velocity.X = Mathf.MoveToward(_enemy.Velocity.X, 0, _enemy.Speed);
             velocity.Z = Mathf.MoveToward(_enemy.Velocity.Z, 0, _enemy.Speed);
         }
-
         _prevGlobalPosition = _enemy.GlobalPosition;
         velocity.Y -= Gravity * (float)delta;
         _enemy.Velocity = velocity;
@@ -54,20 +52,19 @@ public partial class EnemyChase : EnemyState
     }
 
     // Signals ----------------------------------------------------------------
-    public void _on_sensor_area_component_target_lost()
+    public void _on_sensor_area_component_target_acquired()
     {
-        StateMachine?.ChangeState(SearchState);
+        StateMachine?.ChangeState(ChasingState);
+    }
+
+    public void _on_sensor_area_component_nav_target_reached()
+    {
+        GD.Print("Enemy Search nav reached");
+        StateMachine?.ChangeState(IdleState);
     }
 
     public void _on_sensor_area_component_update_direction(Vector3 Direction)
     {
         _direction = Direction;
-    }
-
-    public void _on_sensor_area_component_nav_target_reached()
-    {
-        GD.Print("EnemyChase Nav target reached");
-        _direction = Vector3.Zero;
-        StateMachine?.ChangeState(AttackState);
     }
 }
