@@ -1,4 +1,3 @@
-
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -6,125 +5,50 @@ using System.Collections.Generic;
 public partial class enemy_blob : Enemy
 {
     [Export]
-    public Label3D _hpLabel;
-
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-        _hpLabel.Text = _healthComponent.Health.ToString();
-    }
-
-    /*
-       [Export]
-       public float Speed = 5.0f;
-
-    // Components
-    [Export]
-    private HealthComponent _healthComponent;
-    [Export]
-    private HurtboxComponent _hurtboxComponent;
-    [Export]
-    private SensorAreaComponent _sensorAreaComponent;
-    [Export]
-    private VelocityComponent _velocityComponent;
-
-    [Export]
-    private float JumpForce = 10f;
-    [Export]
-    private float BounceBackForce = 200f;
-
-    public Attack Attack1 = new Attack(10f, 0f);
+    public MeshInstance3D _mesh;
 
     private AnimationPlayer _player;
-    private MeshInstance3D _mesh;
-    private Label3D _hpLabel;
-    private Vector3 _direction;
-    private Vector3 _prevGlobalPosition;
     private Timer _stuckTimer;
-    public float GRAVITY = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
     public override void _Ready()
     {
-    _mesh =  GetNode<MeshInstance3D>("MeshInstance3D");
-    _player = GetNode<AnimationPlayer>("AnimationPlayer");
-    _hpLabel = GetNode<Label3D>("%HPLabel");
-    _direction = Vector3.Zero;
-    _prevGlobalPosition = this.GlobalPosition;
+        _player = GetNode<AnimationPlayer>("AnimationPlayer");
 
-    _stuckTimer = new Timer();
-    AddChild(_stuckTimer);
-    _stuckTimer.WaitTime = 1f;
-    _stuckTimer.OneShot = true;
-    _stuckTimer.Timeout += () => StuckTimerExpire();
+        _stuckTimer = new Timer();
+        AddChild(_stuckTimer);
+        _stuckTimer.WaitTime = 1f;
+        _stuckTimer.OneShot = true;
+        _stuckTimer.Timeout += () => StuckTimerExpire();
     }
 
-    // Get the gravity from the project settings to be synced with RigidBody nodes.
-    public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-
-    public override void _PhysicsProcess(double delta)
+    // Darkens the blob's color as it takes damage
+    private void UpdateBlobColor()
     {
-    _hpLabel.Text = _healthComponent.Health.ToString();
-    MoveTowardTarget(delta);
+        float value = _healthComponent.Health / _healthComponent.MaxHealth;
+        Material meshMaterial  = _mesh.GetSurfaceOverrideMaterial(0);
+        if (meshMaterial is StandardMaterial3D)
+        {
+            StandardMaterial3D meshSMaterial = (StandardMaterial3D)meshMaterial;
+            Color newColor = meshSMaterial.AlbedoColor;
+            newColor.V = value / 2;
+            meshSMaterial.AlbedoColor = newColor;
+            _mesh.SetSurfaceOverrideMaterial(0, meshSMaterial);
+        }
     }
 
-    public void MoveTowardTarget(double delta)
+    // try to jump over small obstacles
+    public void StuckTimerExpire()
     {
-    Vector3 velocity = Velocity;
-    if (_direction != Vector3.Zero)
-    {
-    velocity.X = _direction.X * Speed;
-    velocity.Z = _direction.Z * Speed;
-    }
-    else
-    {
-    velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-    velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+        Vector3 velocity = Velocity;
+        velocity.Y = JumpForce;
+        Velocity = velocity;
+        MoveAndSlide();
     }
 
-    float distanceTravelled = _prevGlobalPosition.DistanceTo(this.GlobalPosition);
-    if (_direction != Vector3.Zero && distanceTravelled <= 0.001 && _stuckTimer.IsStopped())
+    /*
+    // Bounce back when hitting an enemy
+    private void BounceBack()
     {
-    _stuckTimer.Start();
-}
-_prevGlobalPosition = this.GlobalPosition;
-velocity.Y -= GRAVITY * (float)delta;
-Velocity = velocity;
-MoveAndSlide();
-}
-
-public void Die()
-{
-    GD.Print(this.Name.ToString() + ": has died!");
-    _player.Play("die");
-}
-
-// Darkens the blob's color as it takes damage
-private void UpdateBlobColor()
-{
-    float value = _healthComponent.Health / _healthComponent.MaxHealth;
-    Material meshMaterial  = _mesh.GetSurfaceOverrideMaterial(0);
-    if (meshMaterial is StandardMaterial3D)
-    {
-        StandardMaterial3D meshSMaterial = (StandardMaterial3D)meshMaterial;
-        Color newColor = meshSMaterial.AlbedoColor;
-        newColor.V = value / 2;
-        meshSMaterial.AlbedoColor = newColor;
-        _mesh.SetSurfaceOverrideMaterial(0, meshSMaterial);
-    }
-}
-
-// try to jump over small obstacles
-public void StuckTimerExpire()
-{
-    Vector3 velocity = Velocity;
-    velocity.Y = JumpForce;
-    Velocity = velocity;
-    MoveAndSlide();
-}
-
-// Bounce back when hitting an enemy
-private void BounceBack()
-{
     Vector3 backDirection = new Vector3(_direction.X * -1, _direction.Y, _direction.Z * -1);
 
     Vector3 velocity = Velocity;
@@ -133,28 +57,12 @@ private void BounceBack()
     Velocity = velocity;
 
     MoveAndSlide();
-}
+    }
+    */
 
-// signals ----------------------------------------------------------------
-public void _on_health_component_death_signal()
-{
-    Die();
+    // signals ----------------------------------------------------------------
+    public void _on_health_component_took_damage()
+    {
+        UpdateBlobColor();
+    }
 }
-
-public void _on_health_component_took_damage()
-{
-    UpdateBlobColor();
-}
-
-public void _on_sensor_area_component_update_direction(Vector3 newDirection)
-{
-    _direction = newDirection;
-}
-
-public void _on_sensor_area_component_nav_target_reached()
-{
-    _direction = Vector3.Zero;
-}
-*/
-}
-

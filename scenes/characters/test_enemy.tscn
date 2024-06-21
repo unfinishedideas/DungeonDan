@@ -37,15 +37,14 @@ size = Vector3(2.2, 1, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_vdhxv"]
 radius = 10.0
 
-[node name="TestEnemy" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hpLabel", "_stateLabel")]
+[node name="TestEnemy" type="CharacterBody3D" node_paths=PackedStringArray("_stateMachine", "_healthComponent", "_hpLabel", "_stateLabel")]
 collision_layer = 16
 collision_mask = 25
 script = ExtResource("1_46oti")
+_stateMachine = NodePath("StateMachine")
 _healthComponent = NodePath("Components/HealthComponent")
 _hpLabel = NodePath("MeshInstance3D/HPLabel")
 _stateLabel = NodePath("MeshInstance3D/StateLabel")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_egklu")

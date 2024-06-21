@@ -51,7 +51,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.7273, 3.52464, 21.0565)
 shape = SubResource("SphereShape3D_fjs00")
 
 [node name="FloatyGuy" parent="Characters" instance=ExtResource("2_xh7qi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.4636, 1.93524, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.14086, 0.687402, -3.83089)
 
 [node name="Player" parent="Characters" instance=ExtResource("3_nuuen")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.51584, 3.4668, 21.3563)
@@ -87,6 +87,6 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="EnemyBlob" parent="." instance=ExtResource("8_f63l8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6207, 2.72955, -5.43185)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0652952, 2.72955, -22.3676)
 
 [connection signal="Quit" from="Characters/Player" to="." method="_on_player_quit"]
