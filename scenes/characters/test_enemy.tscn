@@ -115,5 +115,6 @@ EnemyDamageState = NodePath("../EnemyDamaged")
 IdleState = NodePath("../EnemyIdle")
 EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("IdleState") instance=ExtResource("11_yryix")]
-IdleState = NodePath("../EnemyIdle")
+[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("SearchingState", "ChasingState") instance=ExtResource("11_yryix")]
+SearchingState = NodePath("../EnemySearch")
+ChasingState = NodePath("../EnemyChase")

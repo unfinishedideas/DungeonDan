@@ -5,14 +5,18 @@ using StateMachine;
 public partial class EnemyDamaged : EnemyState
 {
     [Export]
-    protected EnemyState IdleState;
+    protected EnemyState SearchingState;
+    [Export]
+    protected EnemyState ChasingState;
 
     private HealthComponent _healthComponent;
+    private SensorAreaComponent _sensorArea;
 
     public override void _Ready()
     {
         base._Ready();
         _healthComponent = Owner.GetNode<HealthComponent>("%HealthComponent");
+        _sensorArea = Owner.GetNode<SensorAreaComponent>("%SensorAreaComponent"); 
         OnEnter += Enter;
         OnExit += Exit;
     }
@@ -37,7 +41,14 @@ public partial class EnemyDamaged : EnemyState
 
     public void CooldownTimeout()
     {
-        StateMachine?.ChangeState(IdleState);
+        if (_sensorArea.IsCurrentTargetSet())
+        {
+            StateMachine?.ChangeState(ChasingState);
+        }
+        else
+        {
+            StateMachine?.ChangeState(SearchingState);
+        }
     }
 }
 

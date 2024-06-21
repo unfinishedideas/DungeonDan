@@ -280,8 +280,9 @@ EnemyDamageState = NodePath("../EnemyDamaged")
 IdleState = NodePath("../EnemyIdle")
 EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("IdleState") instance=ExtResource("12_yreod")]
-IdleState = NodePath("../EnemyIdle")
+[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("SearchingState", "ChasingState") instance=ExtResource("12_yreod")]
+SearchingState = NodePath("../EnemySearch")
+ChasingState = NodePath("../EnemyChase")
 
 [connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
 [connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]

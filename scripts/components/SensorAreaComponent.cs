@@ -66,6 +66,11 @@ public partial class SensorAreaComponent : Area3D
         _currentTarget = null;
     }
 
+    public bool IsCurrentTargetSet()
+    {
+        return _currentTarget != null;
+    }
+
     private void SensorTimerReset()
     {
         ScanAreaForTargets();
