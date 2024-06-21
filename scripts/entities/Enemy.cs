@@ -11,42 +11,31 @@ public partial class Enemy : CharacterBody3D
     [Export]
     public HealthComponent _healthComponent;
     [Export]
-    public HurtboxComponent _hurtboxComponent;
+    public Label3D _hpLabel;
     [Export]
-    public SensorAreaComponent _sensorAreaComponent;
+    public Label3D _stateLabel;
 
     [Export]
     public float JumpForce = 10f;
     [Export]
     public float BounceBackForce = 200f;
+    [Export]
+    public float MeleeAttackDamage = 10f;
+    [Export]
+    public float MeleeAttackKnockback = 0f;
 
-    public Attack Attack1 = new Attack(10f, 0f);
+    public Attack Attack1;
 
-    private AnimationPlayer _player;
     private MeshInstance3D _mesh;
-    private Label3D _hpLabel;
-    private Label3D _stateLabel;
-    //private Vector3 _direction;
-    //private Vector3 _prevGlobalPosition;
-    private Timer _stuckTimer;
-    //public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
     private StateMachine.StateMachine _stateMachine;
 
     public override void _Ready()
     {
         _mesh =  GetNode<MeshInstance3D>("MeshInstance3D");
-        _player = GetNode<AnimationPlayer>("AnimationPlayer");
         _hpLabel = GetNode<Label3D>("%HPLabel");
         _stateLabel = GetNode<Label3D>("%StateLabel");
         _stateMachine = GetNode<StateMachine.StateMachine>("%StateMachine");
-        //_direction = Vector3.Zero;
-        //_prevGlobalPosition = this.GlobalPosition;
-
-        _stuckTimer = new Timer();
-        AddChild(_stuckTimer);
-        _stuckTimer.WaitTime = 1f;
-        _stuckTimer.OneShot = true;
-        _stuckTimer.Timeout += () => StuckTimerExpire();
+        Attack1 = new Attack(MeleeAttackDamage, MeleeAttackKnockback);
     }
 
     // Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -56,45 +45,7 @@ public partial class Enemy : CharacterBody3D
     {
         base._Process(delta);
         _stateLabel.Text = _stateMachine.GetStateName();
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        //_hpLabel.Text = _healthComponent.Health.ToString();
-        //MoveTowardTarget(delta);
-    }
-
-    /*
-    public void MoveTowardTarget(double delta)
-    {
-        Vector3 velocity = Velocity;
-        if (_direction != Vector3.Zero)
-        {
-            velocity.X = _direction.X * Speed;
-            velocity.Z = _direction.Z * Speed;
-        }
-        else
-        {
-            velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-            velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
-        }
-
-        float distanceTravelled = _prevGlobalPosition.DistanceTo(this.GlobalPosition);
-        if (_direction != Vector3.Zero && distanceTravelled <= 0.001 && _stuckTimer.IsStopped())
-        {
-            _stuckTimer.Start();
-        }
-        _prevGlobalPosition = this.GlobalPosition;
-        velocity.Y -= Gravity * (float)delta;
-        Velocity = velocity;
-        MoveAndSlide();
-    }
-    */
-
-    public void Die()
-    {
-        GD.Print(this.Name.ToString() + ": has died!");
-        _player.Play("die");
+        _hpLabel.Text = _healthComponent.Health.ToString();
     }
 
     // Darkens the blob's color as it takes damage
@@ -125,37 +76,20 @@ public partial class Enemy : CharacterBody3D
     // Bounce back when hitting an enemy
     private void BounceBack()
     {
-        Vector3 backDirection = new Vector3(_direction.X * -1, _direction.Y, _direction.Z * -1);
+    Vector3 backDirection = new Vector3(_direction.X * -1, _direction.Y, _direction.Z * -1);
 
-        Vector3 velocity = Velocity;
-        velocity.X = backDirection.X * BounceBackForce;
-        velocity.Z = backDirection.Z * BounceBackForce;
-        Velocity = velocity;
+    Vector3 velocity = Velocity;
+    velocity.X = backDirection.X * BounceBackForce;
+    velocity.Z = backDirection.Z * BounceBackForce;
+    Velocity = velocity;
 
-        MoveAndSlide();
+    MoveAndSlide();
     }
     */
 
     // signals ----------------------------------------------------------------
-    public void _on_health_component_death_signal()
-    {
-        Die();
-    }
-
     public void _on_health_component_took_damage()
     {
         UpdateBlobColor();
     }
-
-    /*
-    public void _on_sensor_area_component_update_direction(Vector3 newDirection)
-    {
-        _direction = newDirection;
-    }
-
-    public void _on_sensor_area_component_nav_target_reached()
-    {
-        _direction = Vector3.Zero;
-    }
-    */
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bxau1uefiu637"]
+[gd_scene load_steps=25 format=3 uid="uid://bxau1uefiu637"]
 
 [ext_resource type="Script" path="res://scripts/entities/enemy_blob.cs" id="1_dgwge"]
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_utltq"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://d2rh8wso200e5" path="res://scenes/state/EnemyState-Search.tscn" id="10_y4k7d"]
 [ext_resource type="PackedScene" uid="uid://cj5dvc14pl6h3" path="res://scenes/state/EnemyState-Attack.tscn" id="11_pexey"]
 [ext_resource type="PackedScene" uid="uid://b71ooaxj0xe8k" path="res://scenes/state/EnemyState-Damaged.tscn" id="12_yreod"]
+[ext_resource type="PackedScene" uid="uid://rqfsoumrvpa4" path="res://scenes/state/EnemyState-Dead.tscn" id="13_wcyfp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h3vtw"]
 
@@ -190,15 +191,14 @@ radius = 0.6
 [sub_resource type="SphereShape3D" id="SphereShape3D_fum7j"]
 radius = 25.0
 
-[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_hpLabel", "_healthComponent", "_hurtboxComponent", "_sensorAreaComponent")]
+[node name="EnemyBlob" type="CharacterBody3D" node_paths=PackedStringArray("_hpLabel", "_healthComponent", "_hpLabel")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.510142, 0)
 collision_layer = 16
 collision_mask = 25
 script = ExtResource("1_dgwge")
 _hpLabel = NodePath("MeshInstance3D/HPLabel")
 _healthComponent = NodePath("Components/HealthComponent")
-_hurtboxComponent = NodePath("Components/HurtboxComponent")
-_sensorAreaComponent = NodePath("Components/SensorAreaComponent")
+_hpLabel = NodePath("MeshInstance3D/HPLabel")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_08y2i")
@@ -280,9 +280,13 @@ EnemyDamageState = NodePath("../EnemyDamaged")
 IdleState = NodePath("../EnemyIdle")
 EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("SearchingState", "ChasingState") instance=ExtResource("12_yreod")]
+[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("SearchingState", "ChasingState", "DeadState") instance=ExtResource("12_yreod")]
 SearchingState = NodePath("../EnemySearch")
 ChasingState = NodePath("../EnemyChase")
+DeadState = NodePath("../EnemyDead")
+
+[node name="EnemyDead" parent="StateMachine" node_paths=PackedStringArray("_animationPlayer") instance=ExtResource("13_wcyfp")]
+_animationPlayer = NodePath("../../AnimationPlayer")
 
 [connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
 [connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]

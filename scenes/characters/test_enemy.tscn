@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bvhb674ee54vf"]
+[gd_scene load_steps=19 format=3 uid="uid://bvhb674ee54vf"]
 
 [ext_resource type="PackedScene" uid="uid://wcnblcjpd454" path="res://scenes/state/StateMachine.tscn" id="1_4jnfj"]
 [ext_resource type="Script" path="res://scripts/entities/Enemy.cs" id="1_46oti"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bcaxm22cdbs8k" path="res://scenes/state/EnemyState-Chase.tscn" id="8_wx28l"]
 [ext_resource type="PackedScene" uid="uid://cj5dvc14pl6h3" path="res://scenes/state/EnemyState-Attack.tscn" id="10_o0iau"]
 [ext_resource type="PackedScene" uid="uid://b71ooaxj0xe8k" path="res://scenes/state/EnemyState-Damaged.tscn" id="11_yryix"]
+[ext_resource type="PackedScene" uid="uid://rqfsoumrvpa4" path="res://scenes/state/EnemyState-Dead.tscn" id="12_w4b5h"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_egklu"]
 properties/0/path = NodePath(".:position")
@@ -36,10 +37,13 @@ size = Vector3(2.2, 1, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_vdhxv"]
 radius = 10.0
 
-[node name="TestEnemy" type="CharacterBody3D"]
+[node name="TestEnemy" type="CharacterBody3D" node_paths=PackedStringArray("_healthComponent", "_hpLabel", "_stateLabel")]
 collision_layer = 16
 collision_mask = 25
 script = ExtResource("1_46oti")
+_healthComponent = NodePath("Components/HealthComponent")
+_hpLabel = NodePath("MeshInstance3D/HPLabel")
+_stateLabel = NodePath("MeshInstance3D/StateLabel")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
@@ -93,6 +97,7 @@ shape = SubResource("SphereShape3D_vdhxv")
 
 [node name="HealthComponent" parent="Components" instance=ExtResource("2_ukuw5")]
 unique_name_in_owner = true
+Health = 100.0
 
 [node name="StateMachine" parent="." instance=ExtResource("1_4jnfj")]
 unique_name_in_owner = true
@@ -115,6 +120,9 @@ EnemyDamageState = NodePath("../EnemyDamaged")
 IdleState = NodePath("../EnemyIdle")
 EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("SearchingState", "ChasingState") instance=ExtResource("11_yryix")]
+[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("SearchingState", "ChasingState", "DeadState") instance=ExtResource("11_yryix")]
 SearchingState = NodePath("../EnemySearch")
 ChasingState = NodePath("../EnemyChase")
+DeadState = NodePath("../EnemyDead")
+
+[node name="EnemyDead" parent="StateMachine" instance=ExtResource("12_w4b5h")]

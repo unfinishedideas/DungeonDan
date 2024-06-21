@@ -8,6 +8,8 @@ public partial class EnemyDamaged : EnemyState
     protected EnemyState SearchingState;
     [Export]
     protected EnemyState ChasingState;
+    [Export]
+    protected EnemyState DeadState;
 
     private HealthComponent _healthComponent;
     private SensorAreaComponent _sensorArea;
@@ -26,12 +28,19 @@ public partial class EnemyDamaged : EnemyState
         TakeDamage();
         _healthComponent.TookDamage += TakeDamage;
         _healthComponent.IFramesExpired += CooldownTimeout;
+        _healthComponent.DeathSignal += TimeToDie;
     }
 
     private void Exit()
     {
         _healthComponent.TookDamage -= TakeDamage;
         _healthComponent.IFramesExpired -= CooldownTimeout;
+        _healthComponent.DeathSignal -= TimeToDie;
+    }
+
+    private void TimeToDie()
+    {
+        StateMachine?.ChangeState(DeadState);
     }
 
     public void TakeDamage()
