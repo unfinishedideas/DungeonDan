@@ -19,9 +19,10 @@ public partial class EnemyState : State
         _originalGlobalPosition = _enemy.GlobalPosition;
     }
 
-    public void UpdateDirectionHandler(Vector3 direction, Node3D currentTarget)
+    public void UpdateDirectionHandler(Vector3 direction, Vector3 targetPos)
     {
         _direction = direction;
+        _enemy.LookAt(new Vector3(targetPos.X, _enemy.GlobalTransform.Origin.Y, targetPos.Z), new Vector3(0,1,0));
     }
 
     public void MoveTowardTarget(double delta)
