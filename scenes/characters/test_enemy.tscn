@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bvhb674ee54vf"]
+[gd_scene load_steps=20 format=3 uid="uid://bvhb674ee54vf"]
 
 [ext_resource type="PackedScene" uid="uid://wcnblcjpd454" path="res://scenes/state/StateMachine.tscn" id="1_4jnfj"]
 [ext_resource type="Script" path="res://scripts/entities/Enemy.cs" id="1_46oti"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://momic4mvi375" path="res://scenes/components/HitboxComponent.tscn" id="2_6vye2"]
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_ukuw5"]
 [ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HurtboxComponent.tscn" id="3_ngcb6"]
+[ext_resource type="PackedScene" uid="uid://c0vbcbxxqr1q2" path="res://scenes/components/SightRay.tscn" id="5_w7aci"]
 [ext_resource type="PackedScene" uid="uid://bf7x4hvpcnue4" path="res://scenes/state/EnemyState-Idle.tscn" id="7_rnewt"]
 [ext_resource type="PackedScene" uid="uid://d2rh8wso200e5" path="res://scenes/state/EnemyState-Search.tscn" id="8_c2rag"]
 [ext_resource type="PackedScene" uid="uid://bcaxm22cdbs8k" path="res://scenes/state/EnemyState-Chase.tscn" id="8_wx28l"]
@@ -88,8 +89,11 @@ _healthComponent = NodePath("../HealthComponent")
 transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
 shape = SubResource("BoxShape3D_ye3tc")
 
-[node name="SensorAreaComponent" parent="Components" instance=ExtResource("1_nd5cm")]
+[node name="SensorAreaComponent" parent="Components" node_paths=PackedStringArray("_sightRay") instance=ExtResource("1_nd5cm")]
 unique_name_in_owner = true
+_sightRay = NodePath("SightRay")
+
+[node name="SightRay" parent="Components/SensorAreaComponent" instance=ExtResource("5_w7aci")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/SensorAreaComponent"]
 shape = SubResource("SphereShape3D_vdhxv")

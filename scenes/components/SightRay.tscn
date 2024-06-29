@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://c0vbcbxxqr1q2"]
+
+[node name="SightRay" type="RayCast3D"]
+collision_mask = 9

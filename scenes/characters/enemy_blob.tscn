@@ -1,10 +1,11 @@
-[gd_scene load_steps=25 format=3 uid="uid://bxau1uefiu637"]
+[gd_scene load_steps=26 format=3 uid="uid://bxau1uefiu637"]
 
 [ext_resource type="Script" path="res://scripts/entities/enemy_blob.cs" id="1_dgwge"]
 [ext_resource type="PackedScene" uid="uid://bsj7kln3prsc4" path="res://scenes/components/HealthComponent.tscn" id="2_utltq"]
 [ext_resource type="PackedScene" uid="uid://dbeom1qnay44v" path="res://scenes/components/HurtboxComponent.tscn" id="3_nn3wp"]
 [ext_resource type="PackedScene" uid="uid://momic4mvi375" path="res://scenes/components/HitboxComponent.tscn" id="3_xnl0s"]
 [ext_resource type="PackedScene" uid="uid://runqb2gm7djg" path="res://scenes/components/VelocityComponent.tscn" id="5_l7nht"]
+[ext_resource type="PackedScene" uid="uid://c0vbcbxxqr1q2" path="res://scenes/components/SightRay.tscn" id="5_pn64w"]
 [ext_resource type="PackedScene" uid="uid://ch7igm2qlltoj" path="res://scenes/components/SensorAreaComponent.tscn" id="6_ekasl"]
 [ext_resource type="Script" path="res://scripts/states/StateMachine.cs" id="7_6a5xt"]
 [ext_resource type="PackedScene" uid="uid://bf7x4hvpcnue4" path="res://scenes/state/EnemyState-Idle.tscn" id="8_velev"]
@@ -248,12 +249,15 @@ _healthComponent = NodePath("../HealthComponent")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/HurtboxComponent"]
 shape = SubResource("SphereShape3D_cdn7i")
 
-[node name="SensorAreaComponent" parent="Components" instance=ExtResource("6_ekasl")]
+[node name="SensorAreaComponent" parent="Components" node_paths=PackedStringArray("_sightRay") instance=ExtResource("6_ekasl")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.497139, 0)
+_sightRay = NodePath("SightRay")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Components/SensorAreaComponent"]
 shape = SubResource("SphereShape3D_fum7j")
+
+[node name="SightRay" parent="Components/SensorAreaComponent" instance=ExtResource("5_pn64w")]
 
 [node name="HealthComponent" parent="Components" instance=ExtResource("2_utltq")]
 unique_name_in_owner = true
@@ -273,10 +277,10 @@ ChasingState = NodePath("../EnemyChase")
 IdleState = NodePath("../EnemyIdle")
 EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyChase" parent="StateMachine" node_paths=PackedStringArray("SearchState", "AttackState", "EnemyDamageState") instance=ExtResource("10_k4ob2")]
+[node name="EnemyChase" parent="StateMachine" node_paths=PackedStringArray("SearchState", "EnemyDamageState", "AttackState") instance=ExtResource("10_k4ob2")]
 SearchState = NodePath("../EnemySearch")
-AttackState = NodePath("../EnemyAttack")
 EnemyDamageState = NodePath("../EnemyDamaged")
+AttackState = NodePath("../EnemyAttack")
 
 [node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("IdleState", "EnemyDamageState") instance=ExtResource("11_pexey")]
 IdleState = NodePath("../EnemyIdle")

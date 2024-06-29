@@ -4,12 +4,14 @@ using System.Collections.Generic;
 
 public partial class SensorAreaComponent : Area3D
 {
-    public NavigationAgent3D _navAgent;
+    [Export]
+    public bool StareAtTarget = false;
+    [Export]
     public RayCast3D _sightRay;
+
+    public NavigationAgent3D _navAgent;
     public Timer _sensorResetTimer;
-
     private Vector3 _direction;
-
     private Node3D _currentTarget;
     private List<Node3D> _targetList = new List<Node3D>();
 
@@ -27,7 +29,6 @@ public partial class SensorAreaComponent : Area3D
     public override void _Ready()
     {
         _navAgent = GetNode<NavigationAgent3D>("NavAgent3D");
-        _sightRay = GetNode<RayCast3D>("SightRay");
         _sensorResetTimer = GetNode<Timer>("SensorResetTimer");
         _sensorResetTimer.Timeout += () => SensorTimerReset();
 
@@ -56,8 +57,15 @@ public partial class SensorAreaComponent : Area3D
             Vector3 destination = _navAgent.GetNextPathPosition();
             Vector3 localDestination = destination - GlobalPosition;
             _direction = localDestination.Normalized();
-            Vector3 signalDestination = _currentTarget == null ?  destination : _currentTarget.GlobalPosition;
-            EmitSignal(SignalName.UpdateDirection, _direction, signalDestination);
+            if (StareAtTarget == false)
+            {
+                EmitSignal(SignalName.UpdateDirection, _direction, destination);
+            }
+            else
+            {
+                Vector3 targetPos = _currentTarget == null ?  destination : _currentTarget.GlobalPosition;
+                EmitSignal(SignalName.UpdateDirection, _direction, targetPos);
+            }
         }
     }
 
