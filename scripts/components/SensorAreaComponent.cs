@@ -14,7 +14,7 @@ public partial class SensorAreaComponent : Area3D
     private List<Node3D> _targetList = new List<Node3D>();
 
     [Signal]
-    public delegate void UpdateDirectionEventHandler(Vector3 Direction);
+    public delegate void UpdateDirectionEventHandler(Vector3 Direction, Node3D target);
     [Signal]
     public delegate void NavTargetReachedEventHandler();
 
@@ -38,7 +38,7 @@ public partial class SensorAreaComponent : Area3D
         ScanAreaForTargets();
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         // Check to see if there is a better target first
         UpdateCurrentTarget();
@@ -56,7 +56,7 @@ public partial class SensorAreaComponent : Area3D
             Vector3 destination = _navAgent.GetNextPathPosition();
             Vector3 localDestination = destination - GlobalPosition;
             _direction = localDestination.Normalized();
-            EmitSignal(SignalName.UpdateDirection, _direction);
+            EmitSignal(SignalName.UpdateDirection, _direction, _currentTarget);
         }
     }
 
@@ -121,8 +121,8 @@ public partial class SensorAreaComponent : Area3D
 
     private bool IsTargetInLineOfSight(Node3D target, float distanceFromTarget)
     {
-        Vector3 local_destination = target.GlobalPosition - _sightRay.GlobalPosition;
-        _sightRay.TargetPosition = local_destination;
+        Vector3 targetPosition = target.GlobalPosition - _sightRay.GlobalPosition;
+        _sightRay.TargetPosition = targetPosition;
         _sightRay.ForceRaycastUpdate();
         GodotObject collided_object = _sightRay.GetCollider();
 

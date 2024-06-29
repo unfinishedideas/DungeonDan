@@ -160,6 +160,9 @@ public partial class Player : CharacterBody3D
 
         _debugLabel.Text += $"\nVelocity: {Velocity}";
         _debugLabel.Text += $"\nDirection: {direction}";
+        _debugLabel.Text += $"\nGlobal Position: {GlobalPosition}";
+        _debugLabel.Text += $"\nGlobal Rotation: {GlobalRotation}";
+        //_debugLabel.Text += $"\nGlobal Transform: {GlobalTransform}";
 
         // Animate the Crossbow --------------------------------------------
         if (_animPlayer.CurrentAnimation != "shoot")

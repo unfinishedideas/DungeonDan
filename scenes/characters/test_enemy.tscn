@@ -110,10 +110,11 @@ ChasingState = NodePath("../EnemyChase")
 IdleState = NodePath("../EnemyIdle")
 EnemyDamageState = NodePath("../EnemyDamaged")
 
-[node name="EnemyChase" parent="StateMachine" node_paths=PackedStringArray("SearchState", "AttackState", "EnemyDamageState") instance=ExtResource("8_wx28l")]
+[node name="EnemyChase" parent="StateMachine" node_paths=PackedStringArray("SearchState", "EnemyDamageState", "EnemyMesh", "AttackState") instance=ExtResource("8_wx28l")]
 SearchState = NodePath("../EnemySearch")
-AttackState = NodePath("../EnemyAttack")
 EnemyDamageState = NodePath("../EnemyDamaged")
+EnemyMesh = NodePath("../../MeshInstance3D")
+AttackState = NodePath("../EnemyAttack")
 
 [node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("IdleState", "EnemyDamageState") instance=ExtResource("10_o0iau")]
 IdleState = NodePath("../EnemyIdle")

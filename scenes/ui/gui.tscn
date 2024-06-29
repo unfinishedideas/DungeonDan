@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7ktxtovcvt22"]
+[gd_scene load_steps=5 format=3 uid="uid://c7ktxtovcvt22"]
 
 [ext_resource type="Texture2D" uid="uid://c1w7qk05s6g2m" path="res://assets/ui/UI_HP.png" id="1_782i0"]
 [ext_resource type="PackedScene" uid="uid://iwlpamd20oko" path="res://addons/customizableCrosshair/crosshair/crosshair.tscn" id="1_qm8ab"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5a4f5"]
 font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_yvxpi"]
+outline_color = Color(0, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 1)
 
 [node name="GUI" type="Control"]
 layout_mode = 3
@@ -59,4 +63,5 @@ size_flags_vertical = 1
 text = "Debug Text
 velocity (0,0,0,)
 velocity (100,102420,1000.10030)555555555555555"
+label_settings = SubResource("LabelSettings_yvxpi")
 horizontal_alignment = 2
