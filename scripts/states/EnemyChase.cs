@@ -67,7 +67,7 @@ public partial class EnemyChase : EnemyState
 
     private void StartAttackTimer()
     {
-        if (AnimPlayer != null)
+        if (AnimPlayer != null && AttackChargeAnimationName != null)
         {
             AnimPlayer.Play(AttackChargeAnimationName);
         }

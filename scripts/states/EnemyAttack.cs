@@ -44,7 +44,7 @@ public partial class EnemyAttack : EnemyState
 
         _timeToHitTimer = new Timer();
         AddChild(_timeToHitTimer);
-        _timeToHitTimer.WaitTime = AttackCooldownTime;
+        _timeToHitTimer.WaitTime = TimeToHit;
         _timeToHitTimer.OneShot = true;
         _timeToHitTimer.Timeout += () => DealDamage();
 
@@ -87,7 +87,13 @@ public partial class EnemyAttack : EnemyState
     // Once the attack has finished
     public void CooldownTimeout()
     {
-        if (tookDamage == true)
+        // Check to see if target is still in range and attack again if so
+        if (HitboxComponent.IsTargetInRange() == true)
+        {
+            // TODO: Currently, killing the enemy doesn't stop this loop
+            Attack();
+        }
+        else if (tookDamage == true)
         {
             StateMachine?.ChangeState(EnemyDamageState);
         }

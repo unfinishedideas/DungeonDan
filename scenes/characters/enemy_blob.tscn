@@ -282,17 +282,17 @@ SearchState = NodePath("../EnemySearch")
 EnemyDamageState = NodePath("../EnemyDamaged")
 AttackState = NodePath("../EnemyAttack")
 
-[node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("IdleState", "EnemyDamageState") instance=ExtResource("11_pexey")]
+[node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("IdleState", "EnemyDamageState", "HitboxComponent") instance=ExtResource("11_pexey")]
 IdleState = NodePath("../EnemyIdle")
 EnemyDamageState = NodePath("../EnemyDamaged")
+HitboxComponent = NodePath("../../Components/HitboxComponent")
 
 [node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("SearchingState", "ChasingState", "DeadState") instance=ExtResource("12_yreod")]
 SearchingState = NodePath("../EnemySearch")
 ChasingState = NodePath("../EnemyChase")
 DeadState = NodePath("../EnemyDead")
 
-[node name="EnemyDead" parent="StateMachine" node_paths=PackedStringArray("_animationPlayer") instance=ExtResource("13_wcyfp")]
-_animationPlayer = NodePath("../../AnimationPlayer")
+[node name="EnemyDead" parent="StateMachine" instance=ExtResource("13_wcyfp")]
 
 [connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
 [connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]

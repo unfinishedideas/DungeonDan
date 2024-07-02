@@ -68,6 +68,19 @@ public partial class HitboxComponent : Area3D
         }
     }
 
+    public bool IsTargetInRange()
+    {
+        var areas = GetOverlappingAreas();
+        foreach (Area3D area in areas)
+        {
+            if (area is HurtboxComponent hurtbox && !Owner.IsAncestorOf(hurtbox))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void _on_area_entered(Area3D area)
     {
         EmitSignal(SignalName.DetectedHurtbox);
