@@ -4,9 +4,6 @@ using StateMachine;
 
 public partial class EnemyDead : EnemyState
 {
-    [Export]
-    public AnimationPlayer _animationPlayer;
-
     public override void _Ready()
     {
         base._Ready();
@@ -16,9 +13,9 @@ public partial class EnemyDead : EnemyState
     private void Enter()
     {
         GD.Print($"{_enemy.Name.ToString()} has died!");
-        if (_animationPlayer != null)
+        if (AnimPlayer != null)
         {
-            _animationPlayer?.Play("die");
+            AnimPlayer?.Play("die");
         }
         else
         {

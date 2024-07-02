@@ -120,9 +120,10 @@ EnemyDamageState = NodePath("../EnemyDamaged")
 EnemyMesh = NodePath("../../MeshInstance3D")
 AttackState = NodePath("../EnemyAttack")
 
-[node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("IdleState", "EnemyDamageState") instance=ExtResource("10_o0iau")]
+[node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("IdleState", "EnemyDamageState", "HitboxComponent") instance=ExtResource("10_o0iau")]
 IdleState = NodePath("../EnemyIdle")
 EnemyDamageState = NodePath("../EnemyDamaged")
+HitboxComponent = NodePath("../../Components/HitboxComponent")
 
 [node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("SearchingState", "ChasingState", "DeadState") instance=ExtResource("11_yryix")]
 SearchingState = NodePath("../EnemySearch")

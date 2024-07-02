@@ -3,6 +3,9 @@ using StateMachine;
 
 public partial class EnemyState : State
 {
+    [Export]
+    public AnimationPlayer AnimPlayer;
+
     protected Enemy _enemy;
     public Vector3 _direction;
     private Vector3 _prevGlobalPosition;

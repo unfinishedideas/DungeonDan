@@ -12,15 +12,36 @@ public partial class EnemyChase : EnemyState
     protected Node3D EnemyMesh;
     [Export]
     protected EnemyState AttackState;
+    [Export]
+    protected float AttackWindupTime = 0.25f;
+    [Export]
+    protected string AttackChargeAnimationName;
 
     private SensorAreaComponent _sensorArea;
     private HealthComponent _healthComponent;
+    private HitboxComponent _hitbox;
+    private Timer _attackTimer;
 
     public override void _Ready()
     {
         base._Ready();
+
+        if (AnimPlayer != null && AttackChargeAnimationName != null)
+        {
+            AnimPlayer.AnimationFinished += (AttackChargeAnimationName) => AttackTarget();
+        }
+        else
+        {
+            _attackTimer = new Timer();
+            AddChild(_attackTimer);
+            _attackTimer.WaitTime = AttackWindupTime;
+            _attackTimer.OneShot = true;
+            _attackTimer.Timeout += () => AttackTarget();
+        }
+
         _sensorArea = Owner.GetNode<SensorAreaComponent>("%SensorAreaComponent"); 
         _healthComponent = Owner.GetNode<HealthComponent>("%HealthComponent"); 
+        _hitbox = Owner.GetNode<HitboxComponent>("%HitboxComponent");
         OnPhysicsProcess += PhysicsProcess;
         OnEnter += Enter;
         OnExit += Exit;
@@ -32,6 +53,7 @@ public partial class EnemyChase : EnemyState
         _sensorArea.UpdateDirection += UpdateDirectionHandler;
         _sensorArea.NavTargetReached += NavTargetReachedHandler;
         _healthComponent.TookDamage += TookDamage;
+        _hitbox.DetectedHurtbox += StartAttackTimer;
     }
 
     private void Exit()
@@ -40,6 +62,24 @@ public partial class EnemyChase : EnemyState
         _sensorArea.UpdateDirection -= UpdateDirectionHandler;
         _sensorArea.NavTargetReached -= NavTargetReachedHandler;
         _healthComponent.TookDamage -= TookDamage;
+        _hitbox.DetectedHurtbox -= StartAttackTimer;
+    }
+
+    private void StartAttackTimer()
+    {
+        if (AnimPlayer != null)
+        {
+            AnimPlayer.Play(AttackChargeAnimationName);
+        }
+        else
+        {
+            _attackTimer.Start();
+        }
+    }
+
+    private void AttackTarget()
+    {
+        StateMachine?.ChangeState(AttackState);
     }
 
     private void TargetLost()

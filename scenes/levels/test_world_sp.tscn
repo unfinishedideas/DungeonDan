@@ -51,9 +51,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.262328, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.4302, 2.84786, 22.5869)
 
 [node name="TESTHitboxComponent" parent="Characters" instance=ExtResource("2_52ld7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5104, 4.36088, 23.5566)
+Attacking = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Characters/TESTHitboxComponent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.7273, 3.52464, 21.0565)
 shape = SubResource("SphereShape3D_fjs00")
 
 [node name="Player" parent="Characters" instance=ExtResource("3_nuuen")]

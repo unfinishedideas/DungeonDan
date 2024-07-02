@@ -8,6 +8,8 @@ public partial class EnemyIdle : EnemyState
     protected EnemyState ChasingState;
     [Export]
     protected EnemyState EnemyDamageState;
+    [Export]
+    public string IdleAnimName;
 
     private SensorAreaComponent _sensorArea;
     private HealthComponent _healthComponent;
@@ -28,6 +30,7 @@ public partial class EnemyIdle : EnemyState
         _sensorArea.TargetAcquired += TargetDetected;
         _healthComponent.TookDamage += TookDamage;
         _sensorArea.ClearCurrentTarget();
+        AnimPlayer?.Play(IdleAnimName);
     }
 
     private void Exit()

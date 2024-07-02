@@ -23,10 +23,12 @@ public partial class HurtboxComponent : Area3D
     // If this doesn't fire, ensure that the signal is connected to root node
     public void _on_area_entered(Area3D area)
     {
-        if (area is HitboxComponent && !Owner.IsAncestorOf(area))
+        if (area is HitboxComponent hitbox && 
+                hitbox.Attacking == true && 
+                !Owner.IsAncestorOf(area)
+           )
         {
-            HitboxComponent box = (HitboxComponent)area;
-            Damage(box.HitboxAttack);
+            Damage(hitbox.HitboxAttack);
         }
     }
 }

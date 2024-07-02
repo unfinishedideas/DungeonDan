@@ -10,20 +10,44 @@ public partial class EnemyAttack : EnemyState
     protected EnemyState EnemyDamageState;
 
     [Export]
-    public float AttackCooldownTime = 1f;
+    public float AttackCooldownTime = 1f;   // time to wait before changing to another state (if no animation present)
 
-    protected Timer CooldownTimer;
+    [Export]
+    public float TimeToHit = .25f;      // the time to wait before actually dealing damage during the animation
+    [Export]
+    public string AttackAnimationName;
+
+    [Export]
+    public HitboxComponent HitboxComponent;
+
+    protected Timer _cooldownTimer;
+    protected Timer _timeToHitTimer;
     private HealthComponent _healthComponent;
     private bool tookDamage = false;
 
     public override void _Ready()
     {
         base._Ready();
-        CooldownTimer = new Timer();
-        AddChild(CooldownTimer);
-        CooldownTimer.WaitTime = AttackCooldownTime;
-        CooldownTimer.OneShot = true;
-        CooldownTimer.Timeout += () => CooldownTimeout();
+
+        if (AnimPlayer != null && AttackAnimationName != null)
+        {
+            AnimPlayer.AnimationFinished += (AttackAnimationName) => CooldownTimeout();
+        }
+        else
+        {
+            _cooldownTimer = new Timer();
+            AddChild(_cooldownTimer);
+            _cooldownTimer.WaitTime = AttackCooldownTime;
+            _cooldownTimer.OneShot = true;
+            _cooldownTimer.Timeout += () => CooldownTimeout();
+        }
+
+        _timeToHitTimer = new Timer();
+        AddChild(_timeToHitTimer);
+        _timeToHitTimer.WaitTime = AttackCooldownTime;
+        _timeToHitTimer.OneShot = true;
+        _timeToHitTimer.Timeout += () => DealDamage();
+
         _healthComponent = Owner.GetNode<HealthComponent>("%HealthComponent"); 
         OnEnter += Enter;
         OnExit += Exit;
@@ -40,17 +64,27 @@ public partial class EnemyAttack : EnemyState
         _healthComponent.TookDamage -= TookDamage;
     }
 
+    // Begin the attack procedures
+    public void Attack()
+    {
+        AnimPlayer?.Play(AttackAnimationName);
+        _timeToHitTimer.Start();
+    }
+
+    // Actually deal damage once time to hit times out
+    private void DealDamage()
+    {
+        _cooldownTimer?.Start();
+        HitboxComponent.Attack();
+    }
+
+    // If the enemy takes damage during the attack
     private void TookDamage()
     {
         tookDamage = true;
     }
 
-    public void Attack()
-    {
-        GD.Print("ATTACK!");
-        CooldownTimer.Start();
-    }
-
+    // Once the attack has finished
     public void CooldownTimeout()
     {
         if (tookDamage == true)
