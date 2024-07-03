@@ -9,16 +9,35 @@ public partial class EnemyDamaged : EnemyState
     [Export]
     protected EnemyState ChasingState;
     [Export]
-    protected EnemyState DeadState;
+    protected EnemyState AttackState;
+    [Export]
+    protected HitboxComponent HitboxComponent;
+    [Export]
+    protected String HurtAnimationName; // write the name of the hurt animation here
 
     private HealthComponent _healthComponent;
     private SensorAreaComponent _sensorArea;
+    private Timer _resetTimer = null;  // used in case there is not a hurt animation to play to call CooldownTimeout()
 
     public override void _Ready()
     {
         base._Ready();
         _healthComponent = Owner.GetNode<HealthComponent>("%HealthComponent");
         _sensorArea = Owner.GetNode<SensorAreaComponent>("%SensorAreaComponent"); 
+
+        if (AnimPlayer != null && HurtAnimationName != null)
+        {
+            AnimPlayer.AnimationFinished += (HurtAnimationName) => CooldownTimeout();
+        }
+        else
+        {
+            _resetTimer = new Timer();
+            AddChild(_resetTimer);
+            _resetTimer.WaitTime = _healthComponent.IFramesTime;
+            _resetTimer.OneShot = true;
+            _resetTimer.Timeout += () => CooldownTimeout();
+        }
+
         OnEnter += Enter;
         OnExit += Exit;
     }
@@ -27,30 +46,34 @@ public partial class EnemyDamaged : EnemyState
     {
         TakeDamage();
         _healthComponent.TookDamage += TakeDamage;
-        _healthComponent.IFramesExpired += CooldownTimeout;
-        _healthComponent.DeathSignal += TimeToDie;
     }
 
     private void Exit()
     {
         _healthComponent.TookDamage -= TakeDamage;
-        _healthComponent.IFramesExpired -= CooldownTimeout;
-        _healthComponent.DeathSignal -= TimeToDie;
-    }
-
-    private void TimeToDie()
-    {
-        StateMachine?.ChangeState(DeadState);
     }
 
     public void TakeDamage()
     {
-        GD.Print("OW!");
+        GD.Print("EnemyDamaged: OW!");
+
+        if (AnimPlayer != null && HurtAnimationName != null)
+        {
+            AnimPlayer.Play(HurtAnimationName);
+        }
+        else
+        {
+            _resetTimer.Start();
+        }
     }
 
     public void CooldownTimeout()
     {
-        if (_sensorArea.IsCurrentTargetSet())
+        if (HitboxComponent.IsTargetInRange())
+        {
+            StateMachine?.ChangeState(AttackState);
+        }
+        else if (_sensorArea.IsCurrentTargetSet())
         {
             StateMachine?.ChangeState(ChasingState);
         }

@@ -23,7 +23,7 @@ public partial class EnemyAttack : EnemyState
     protected Timer _cooldownTimer;
     protected Timer _timeToHitTimer;
     private HealthComponent _healthComponent;
-    private bool tookDamage = false;
+    private bool _tookDamage = false;
 
     public override void _Ready()
     {
@@ -56,6 +56,7 @@ public partial class EnemyAttack : EnemyState
     private void Enter()
     {
         Attack();
+        _tookDamage = false;
         _healthComponent.TookDamage += TookDamage;
     }
 
@@ -81,21 +82,21 @@ public partial class EnemyAttack : EnemyState
     // If the enemy takes damage during the attack
     private void TookDamage()
     {
-        tookDamage = true;
+        _tookDamage = true;
     }
 
     // Once the attack has finished
     public void CooldownTimeout()
     {
-        // Check to see if target is still in range and attack again if so
-        if (HitboxComponent.IsTargetInRange() == true)
+        if (_tookDamage == true)
         {
-            // TODO: Currently, killing the enemy doesn't stop this loop
-            Attack();
-        }
-        else if (tookDamage == true)
-        {
+            _tookDamage = false;
             StateMachine?.ChangeState(EnemyDamageState);
+        }
+        // Attack again if there is still a target in range
+        else if (HitboxComponent.IsTargetInRange() == true)
+        {
+            Attack();
         }
         else
         {

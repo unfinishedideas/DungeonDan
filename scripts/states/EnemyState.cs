@@ -5,13 +5,15 @@ public partial class EnemyState : State
 {
     [Export]
     public AnimationPlayer AnimPlayer;
+    [Export]
+    protected EnemyState DeadState;
 
     protected Enemy _enemy;
     public Vector3 _direction;
     private Vector3 _prevGlobalPosition;
     private Vector3 _originalGlobalPosition;
+    private HealthComponent _healthComponent;
     public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-
 
     public override void _Ready()
     {
@@ -20,6 +22,8 @@ public partial class EnemyState : State
         _enemy = Owner as Enemy;
         _prevGlobalPosition = _enemy.GlobalPosition;
         _originalGlobalPosition = _enemy.GlobalPosition;
+        _healthComponent = Owner.GetNode<HealthComponent>("%HealthComponent");
+        _healthComponent.DeathSignal += TimeToDie;
     }
 
     public void UpdateDirectionHandler(Vector3 direction, Vector3 targetPos)
@@ -53,6 +57,16 @@ public partial class EnemyState : State
         _enemy.MoveAndSlide();
     }
 
-
+    private void TimeToDie()
+    {
+        if (DeadState != null)
+        {
+            StateMachine?.ChangeState(DeadState);
+        }
+        else
+        {
+            Owner.QueueFree();
+        }
+    }
 }
 

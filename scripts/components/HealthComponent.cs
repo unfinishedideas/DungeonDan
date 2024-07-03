@@ -19,7 +19,7 @@ public partial class HealthComponent : Node
     [Signal]
     public delegate void IFramesExpiredEventHandler();
 
-    private bool _iFramesActive = false;
+    public bool IFramesActive = false;
     private Timer _iFramesTimer; 
 
 	// Called when the node enters the scene tree for the first time.
@@ -35,10 +35,10 @@ public partial class HealthComponent : Node
 
     public void Damage(Attack attack)
     {
-        if (_iFramesActive == false)
+        if (IFramesActive == false)
         {
             _iFramesTimer.Start();
-            _iFramesActive = true;
+            IFramesActive = true;
             EmitSignal(SignalName.TookDamage);
             Health -= attack.Damage;
 
@@ -58,7 +58,7 @@ public partial class HealthComponent : Node
 
     public void IFramesTimeout()
     {
-        _iFramesActive = false;
+        IFramesActive = false;
         EmitSignal(SignalName.IFramesExpired);
     }
 }
