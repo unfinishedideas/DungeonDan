@@ -5,8 +5,6 @@ public partial class EnemyState : State
 {
     [Export]
     public AnimationPlayer AnimPlayer;
-    [Export]
-    protected EnemyState DeadState;
 
     protected Enemy _enemy;
     public Vector3 _direction;
@@ -38,9 +36,9 @@ public partial class EnemyState : State
     {
         _direction = direction;
 
-        // TODO: This still causes errors if position/targetPos is the same
         if (!_enemy.GlobalPosition.IsEqualApprox(targetPos))
         {
+            // TODO: This still causes errors if position/targetPos is the same
             _enemy.LookAt(new Vector3(targetPos.X, _enemy.GlobalPosition.Y, targetPos.Z), new Vector3(0,1,0));
         }
     }
@@ -65,16 +63,10 @@ public partial class EnemyState : State
         _enemy.MoveAndSlide();
     }
 
+    // TODO: This is getting called by every state at once!
     private void TimeToDie()
     {
-        if (DeadState != null)
-        {
-            StateMachine?.ChangeState(DeadState);
-        }
-        else
-        {
-            Owner.QueueFree();
-        }
+        StateMachine?.ChangeState(STATE_DEAD);
     }
 }
 
