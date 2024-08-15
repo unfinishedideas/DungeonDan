@@ -4,13 +4,6 @@ using StateMachine;
 
 public partial class EnemySearch : EnemyState
 {
-    [Export]
-    protected EnemyState ChasingState;
-    [Export]
-    protected EnemyState IdleState;
-    [Export]
-    protected EnemyState EnemyDamageState;
-
     private SensorAreaComponent _sensorArea;
     private HealthComponent _healthComponent;
 
@@ -47,23 +40,23 @@ public partial class EnemySearch : EnemyState
 
     private void TargetAcquired()
     {
-        StateMachine?.ChangeState(ChasingState);
+        StateMachine?.ChangeState(STATE_CHASE);
     }
 
     private void TargetDetected()
     {
-        StateMachine?.ChangeState(ChasingState);
+        StateMachine?.ChangeState(STATE_CHASE);
     }
 
     private void TookDamage()
     {
-        StateMachine?.ChangeState(EnemyDamageState);
+        StateMachine?.ChangeState(STATE_DAMAGED);
     }
 
     public void NavTargetReachedHandler()
     {
         _direction = Vector3.Zero;
-        StateMachine?.ChangeState(IdleState);
+        StateMachine?.ChangeState(STATE_IDLE);
     }
 }
 

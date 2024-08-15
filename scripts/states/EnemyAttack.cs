@@ -5,11 +5,6 @@ using StateMachine;
 public partial class EnemyAttack : EnemyState
 {
     [Export]
-    protected EnemyState IdleState;
-    [Export]
-    protected EnemyState EnemyDamageState;
-
-    [Export]
     public float AttackCooldownTime = 1f;   // time to wait before changing to another state (if no animation present)
 
     [Export]
@@ -91,7 +86,7 @@ public partial class EnemyAttack : EnemyState
         if (_tookDamage == true)
         {
             _tookDamage = false;
-            StateMachine?.ChangeState(EnemyDamageState);
+            StateMachine?.ChangeState(STATE_DAMAGED);
         }
         // Attack again if there is still a target in range
         else if (HitboxComponent.IsTargetInRange() == true)
@@ -100,7 +95,7 @@ public partial class EnemyAttack : EnemyState
         }
         else
         {
-            StateMachine?.ChangeState(IdleState);
+            StateMachine?.ChangeState(STATE_IDLE);
         }
     }
 }

@@ -5,13 +5,7 @@ using StateMachine;
 public partial class EnemyChase : EnemyState
 {
     [Export]
-    protected EnemyState SearchState;
-    [Export]
-    protected EnemyState EnemyDamageState;
-    [Export]
     protected Node3D EnemyMesh;
-    [Export]
-    protected EnemyState AttackState;
     [Export]
     protected float AttackWindupTime = 0.25f;
     [Export]
@@ -79,17 +73,17 @@ public partial class EnemyChase : EnemyState
 
     private void AttackTarget()
     {
-        StateMachine?.ChangeState(AttackState);
+        StateMachine?.ChangeState(STATE_ATTACK);
     }
 
     private void TargetLost()
     {
-        StateMachine?.ChangeState(SearchState);
+        StateMachine?.ChangeState(STATE_SEARCH);
     }
 
     private void TookDamage()
     {
-        StateMachine?.ChangeState(EnemyDamageState);
+        StateMachine?.ChangeState(STATE_DAMAGED);
     }
 
     private void PhysicsProcess(double delta)
@@ -100,6 +94,6 @@ public partial class EnemyChase : EnemyState
     public void NavTargetReachedHandler()
     {
         _direction = Vector3.Zero;
-        StateMachine?.ChangeState(AttackState);
+        StateMachine?.ChangeState(STATE_ATTACK);
     }
 }

@@ -4,11 +4,6 @@ using StateMachine;
 
 public partial class EnemyIdle : EnemyState
 {
-    [Export]
-    protected EnemyState ChasingState;
-    [Export]
-    protected EnemyState EnemyDamageState;
-    [Export]
     public string IdleAnimName;
 
     private SensorAreaComponent _sensorArea;
@@ -41,12 +36,12 @@ public partial class EnemyIdle : EnemyState
 
     private void TargetDetected()
     {
-        StateMachine?.ChangeState(ChasingState);
+        StateMachine?.ChangeState(STATE_CHASE);
     }
 
     private void TookDamage()
     {
-        StateMachine?.ChangeState(EnemyDamageState);
+        StateMachine?.ChangeState(STATE_DAMAGED);
     }
 }
 

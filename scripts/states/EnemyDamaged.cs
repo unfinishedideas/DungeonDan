@@ -5,12 +5,6 @@ using StateMachine;
 public partial class EnemyDamaged : EnemyState
 {
     [Export]
-    protected EnemyState SearchingState;
-    [Export]
-    protected EnemyState ChasingState;
-    [Export]
-    protected EnemyState AttackState;
-    [Export]
     protected HitboxComponent HitboxComponent;
     [Export]
     protected String HurtAnimationName; // write the name of the hurt animation here
@@ -71,15 +65,15 @@ public partial class EnemyDamaged : EnemyState
     {
         if (HitboxComponent.IsTargetInRange())
         {
-            StateMachine?.ChangeState(AttackState);
+            StateMachine?.ChangeState(STATE_ATTACK);
         }
         else if (_sensorArea.IsCurrentTargetSet())
         {
-            StateMachine?.ChangeState(ChasingState);
+            StateMachine?.ChangeState(STATE_CHASE);
         }
         else
         {
-            StateMachine?.ChangeState(SearchingState);
+            StateMachine?.ChangeState(STATE_SEARCH);
         }
     }
 }

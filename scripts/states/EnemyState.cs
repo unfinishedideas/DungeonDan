@@ -15,6 +15,14 @@ public partial class EnemyState : State
     private HealthComponent _healthComponent;
     public float Gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
+    // State names for state changes
+    public string STATE_IDLE = "EnemyIdle";
+    public string STATE_SEARCH = "EnemySearch";
+    public string STATE_CHASE = "EnemyChase";
+    public string STATE_ATTACK = "EnemyAttack";
+    public string STATE_DAMAGED = "EnemyDamaged";
+    public string STATE_DEAD = "EnemyDead";
+
     public override void _Ready()
     {
         base._Ready();
