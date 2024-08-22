@@ -105,22 +105,17 @@ Health = 100.0
 [node name="StateMachine" parent="." instance=ExtResource("1_4jnfj")]
 unique_name_in_owner = true
 
-[node name="EnemyIdle" parent="StateMachine" node_paths=PackedStringArray("DeadState") instance=ExtResource("7_rnewt")]
-DeadState = NodePath("../EnemyDead")
+[node name="EnemyIdle" parent="StateMachine" instance=ExtResource("7_rnewt")]
 
-[node name="EnemySearch" parent="StateMachine" node_paths=PackedStringArray("DeadState") instance=ExtResource("8_c2rag")]
-DeadState = NodePath("../EnemyDead")
+[node name="EnemySearch" parent="StateMachine" instance=ExtResource("8_c2rag")]
 
-[node name="EnemyChase" parent="StateMachine" node_paths=PackedStringArray("EnemyMesh", "DeadState") instance=ExtResource("8_wx28l")]
+[node name="EnemyChase" parent="StateMachine" node_paths=PackedStringArray("EnemyMesh") instance=ExtResource("8_wx28l")]
 EnemyMesh = NodePath("../../MeshInstance3D")
-DeadState = NodePath("../EnemyDead")
 
-[node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("HitboxComponent", "DeadState") instance=ExtResource("10_o0iau")]
+[node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("HitboxComponent") instance=ExtResource("10_o0iau")]
 HitboxComponent = NodePath("../../Components/HitboxComponent")
-DeadState = NodePath("../EnemyDead")
 
-[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("HitboxComponent", "DeadState") instance=ExtResource("11_yryix")]
+[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("HitboxComponent") instance=ExtResource("11_yryix")]
 HitboxComponent = NodePath("../../Components/HitboxComponent")
-DeadState = NodePath("../EnemyDead")
 
 [node name="EnemyDead" parent="StateMachine" instance=ExtResource("12_w4b5h")]

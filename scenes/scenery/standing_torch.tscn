@@ -1,7 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bct62c0lhwdkj"]
+[gd_scene load_steps=7 format=3 uid="uid://bct62c0lhwdkj"]
 
-[ext_resource type="Material" uid="uid://pq2qs63t3f1j" path="res://assets/materials/trunk01.tres" id="1_syuu8"]
+[ext_resource type="PackedScene" uid="uid://v6nkyhunrjed" path="res://assets/models/torch01.glb" id="1_65oyy"]
 [ext_resource type="Material" uid="uid://bi5yupvk63ip0" path="res://assets/materials/glowyYellow.tres" id="2_pnsfr"]
+[ext_resource type="PackedScene" uid="uid://bvqkxibxysiyr" path="res://scenes/fx/fire01.tscn" id="3_vgi3g"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_57sgm"]
+size = Vector3(0.346008, 1.7934, 0.358643)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g4qel"]
 emission_shape = 1
@@ -13,17 +17,18 @@ material = ExtResource("2_pnsfr")
 radius = 0.05
 height = 0.1
 
-[node name="standing_torch" type="Node3D"]
+[node name="standing_torch" type="StaticBody3D"]
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.936863, 0)
-use_collision = true
-radius = 0.043
-height = 1.77
-material = ExtResource("1_syuu8")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0368347, 0.923251, -0.0057373)
+shape = SubResource("BoxShape3D_57sgm")
+
+[node name="torch01" parent="." instance=ExtResource("1_65oyy")]
+transform = Transform3D(0.469463, 0, 0, 0, 0.469463, 0, 0, 0, 0.469463, 0, 0, 0)
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83558, 0)
+visible = false
 cast_shadow = 0
 process_material = SubResource("ParticleProcessMaterial_g4qel")
 draw_pass_1 = SubResource("SphereMesh_3pmae")
@@ -33,3 +38,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.44103, 0)
 light_color = Color(0.77254, 0.544106, 0.375275, 1)
 shadow_enabled = true
 shadow_reverse_cull_face = true
+
+[node name="Fire" parent="." instance=ExtResource("3_vgi3g")]

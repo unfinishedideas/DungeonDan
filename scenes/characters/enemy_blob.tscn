@@ -268,25 +268,19 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 script = ExtResource("7_6a5xt")
 
-[node name="EnemyIdle" parent="StateMachine" node_paths=PackedStringArray("DeadState") instance=ExtResource("8_velev")]
-DeadState = NodePath("../EnemyDead")
+[node name="EnemyIdle" parent="StateMachine" instance=ExtResource("8_velev")]
 
-[node name="EnemySearch" parent="StateMachine" node_paths=PackedStringArray("DeadState") instance=ExtResource("10_y4k7d")]
-DeadState = NodePath("../EnemyDead")
+[node name="EnemySearch" parent="StateMachine" instance=ExtResource("10_y4k7d")]
 
-[node name="EnemyChase" parent="StateMachine" node_paths=PackedStringArray("DeadState") instance=ExtResource("10_k4ob2")]
-DeadState = NodePath("../EnemyDead")
+[node name="EnemyChase" parent="StateMachine" instance=ExtResource("10_k4ob2")]
 
-[node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("HitboxComponent", "DeadState") instance=ExtResource("11_pexey")]
+[node name="EnemyAttack" parent="StateMachine" node_paths=PackedStringArray("HitboxComponent") instance=ExtResource("11_pexey")]
 HitboxComponent = NodePath("../../Components/HitboxComponent")
-DeadState = NodePath("../EnemyDead")
 
-[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("HitboxComponent", "DeadState") instance=ExtResource("12_yreod")]
+[node name="EnemyDamaged" parent="StateMachine" node_paths=PackedStringArray("HitboxComponent") instance=ExtResource("12_yreod")]
 HitboxComponent = NodePath("../../Components/HitboxComponent")
-DeadState = NodePath("../EnemyDead")
 
-[node name="EnemyDead" parent="StateMachine" node_paths=PackedStringArray("DeadState") instance=ExtResource("13_wcyfp")]
-DeadState = NodePath(".")
+[node name="EnemyDead" parent="StateMachine" instance=ExtResource("13_wcyfp")]
 
 [connection signal="NavTargetReached" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_nav_target_reached"]
 [connection signal="UpdateDirection" from="Components/SensorAreaComponent" to="." method="_on_sensor_area_component_update_direction"]
